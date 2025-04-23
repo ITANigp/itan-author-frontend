@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import HeroSection from "@/components/HeroSection";
 import Image from "next/image";
 
 import  HeroSection from "@/components/HeroSection"
@@ -17,7 +18,6 @@ const Home = () => {
             <div className="relative h-[50vh] medium:h-72 large:h-80 xl:h-96 overflow-hidden rounded-lg bg-[url('/images/placeholder.png')] bg-cover bg-center">
               {/* Dark overlay to make background more visible */}
               <div className="absolute inset-0 bg-[#FEE6E6] bg-opacity-40"></div>
-
               {/* Centered text with light background for readability */}
               <div className="flex items-center justify-center h-full relative z-10">
                 <FadeIn delay={0.6} direction="up" distance={15} duration={1.4}>
