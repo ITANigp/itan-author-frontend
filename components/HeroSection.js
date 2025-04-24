@@ -3,6 +3,7 @@ import React from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import FadeIn from "@/components/FadeIn";
+import Link from "next/link";
 
 const HeroSection = () => {
   const pathname = usePathname();
@@ -68,7 +69,6 @@ const HeroSection = () => {
             />
           </figure>
         </div>
-
         {/* Buttons - Original position, only visible on mobile/medium screens */}
         <div className="mt-4 flex flex-col items-center gap-3 w-full large:hidden xl:hidden">
           <button className="w-[170px] px-0 py-1.5 text-sm medium:w-[180px] medium:py-2 medium:text-base font-semibold border-2 border-red-500 text-red-500 bg-white hover:bg-red-50 rounded-md transition-colors duration-300 shadow-sm text-center">
