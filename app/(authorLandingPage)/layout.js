@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 
 import AnimatedLayout from "@/components/AnimatedLayout";
 import ScrollToTop from "@/components/ScrollToTop";
@@ -15,4 +15,3 @@ export default function RootLayout({ children }) {
           </AnimatedLayout>
   );
 }
-
