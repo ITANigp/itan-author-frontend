@@ -1,21 +1,15 @@
-export const metadata = {
-//   title: {
-//     default: "IGP"
-//   },
-  icons: {
-    icon: "/images/itan-favicon.png",
-  },
-};
 
-
+import "./globals.css";
 import RootLayout from "./RootLayout";
+
+export const metadata = {
+  title: "Itan Audiobook",
+  description: "Your audiobook platform",
+};
 
 export default function Layout({ children }) {
   return (
-    <html lang="en">
-      <body className="bg-gray-100">
-        <RootLayout>{children}</RootLayout>
-      </body>
-    </html>
+    <RootLayout>{children}</RootLayout>
   );
 }
+

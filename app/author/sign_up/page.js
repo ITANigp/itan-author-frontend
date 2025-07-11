@@ -5,15 +5,21 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { registerAuthor } from "@/utils/auth/authorApi";
 import ReCAPTCHA from "react-google-recaptcha";
+// import GoogleAuthButton from "../../../components/GoogleAuthButton";
+import dynamic from "next/dynamic";
+
+const GoogleAuthButton = dynamic(
+  () => import("../../../components/GoogleAuthButton"),
+  { ssr: false }
+);
+
 
 const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
 const SignUp = () => {
   const [captchaToken, setCaptchaToken] = useState("");
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [password_confirmation, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -24,21 +30,14 @@ const SignUp = () => {
     setMessage("");
 
     try {
-      const author = await registerAuthor(
-        // name,
-        email,
-        password,
-        captchaToken
-        // password_confirmation
-      );
+      const author = await registerAuthor(email, password, captchaToken);
       if (author?.data?.id) {
         setMessage("Registration successful! You can now log in.");
         router.push("/author/sign_in");
       }
     } catch (error) {
       setMessage(
-        error.response?.data?.message ||
-          "Registration failed. Please try again."
+        error.response?.data?.message || "Registration failed. Please try again."
       );
     } finally {
       setLoading(false);
@@ -73,24 +72,6 @@ const SignUp = () => {
 
         <form onSubmit={handleSignup} aria-label="Signup Form">
           <fieldset>
-            {/* <div className="mt-4">
-              <label
-                htmlFor="name"
-                className="block mb-2 text-sm font-medium text-gray-900"
-              >
-                Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                className="h-[50px] bg-gray-50 border-0 text-gray-900 rounded-lg focus:ring-1 focus:outline-none focus:ring-[#E50913] block w-full p-2.5"
-                placeholder="Enter Your Name"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div> */}
-
             <div className="mt-4">
               <label
                 htmlFor="email"
@@ -126,24 +107,6 @@ const SignUp = () => {
               />
             </div>
 
-            {/* <div className="my-4">
-              <label
-                htmlFor="password"
-                className="block mb-2 text-sm font-medium text-gray-900"
-              >
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                // id="password"
-                className="h-[50px] bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-1 focus:ring-[#E50913] focus:border-[#E50913] block w-full p-2.5"
-                required
-                value={password_confirmation}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
-            </div> */}
-
-            {/* ✅ Added reCAPTCHA component here */}
             <div className="my-4">
               <ReCAPTCHA
                 sitekey={SITE_KEY}
@@ -155,42 +118,34 @@ const SignUp = () => {
               <button
                 type="submit"
                 className="h-[50px] font-semibold text-white bg-[#E50913] hover:bg-[#ba2129] rounded-lg px-5 py-2.5 w-full"
-                disabled={loading || !captchaToken} // ✅ Disable button until reCAPTCHA is complete
+                disabled={loading || !captchaToken}
               >
                 {loading ? "Loading..." : "Sign Up"}
               </button>
-
-              <div className="inline-flex items-center justify-center w-full my-5">
-                <p className="ml-10 h-[1px] w-full bg-gray-300" />
-                <span className="px-3 font-extralight text-sm text-gray-300">
-                  OR
-                </span>
-                <p className="h-[1px] w-full bg-gray-300 mr-10" />
-              </div>
-
-              <button
-                type="button"
-                className="h-[50px] hover:text-white text-[#4e4c4c] space-x-5 flex w-full px-3 py-2 font-medium text-center items-center justify-center bg-gray-200 rounded-lg hover:bg-gray-400 focus:ring-1 focus:outline-none focus:ring-[#E50913]"
-              >
-                <img
-                  src="/images/google.png"
-                  className="w-6 h-6"
-                  alt="Google Logo"
-                />
-                <p>Continue with Google</p>
-              </button>
             </div>
-
-            {message && (
-              <p
-                className="mt-4 text-center text-sm text-[#E50913]"
-                aria-live="polite"
-              >
-                {message}
-              </p>
-            )}
           </fieldset>
         </form>
+
+        {/* Divider */}
+        <div className="inline-flex items-center justify-center w-full my-5">
+          <p className="ml-10 h-[1px] w-full bg-gray-300" />
+          <span className="px-3 font-extralight text-sm text-gray-400">OR</span>
+          <p className="h-[1px] w-full bg-gray-300 mr-10" />
+        </div>
+
+        {/* Google Login Button */}
+        <div className="w-full">
+          <GoogleAuthButton />
+        </div>
+
+        {message && (
+          <p
+            className="mt-4 text-center text-sm text-[#E50913]"
+            aria-live="polite"
+          >
+            {message}
+          </p>
+        )}
       </section>
     </main>
   );
