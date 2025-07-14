@@ -11,6 +11,7 @@ import GenreSelector from "@/components/SelectGenre";
 
 const BookDetails = () => {
   const { formData, updateFormData } = useForm();
+  console.log("Current categories value:", formData.categories);
   // const [selectedOption, setSelectedOption] = useState("option1");
   const [errors, setErrors] = useState({});
   const [tags, setTags] = useState([]);
@@ -21,7 +22,9 @@ const BookDetails = () => {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
 
- 
+  useEffect(() => {
+    console.log("Categories changed:", formData.categories);
+  }, [formData.categories]);
 
   useEffect(() => {
     localStorage.setItem("bookFormData", JSON.stringify(formData));
@@ -277,7 +280,11 @@ const BookDetails = () => {
       <p>Choose categories</p>
       <GenreSelector
         value={formData.categories}
-        onChange={(updated) => updateFormData({ categories: updated })}
+        onChange={(updated) => {
+          
+          console.log("GenreSelector updated:", updated);  
+          updateFormData({ categories: updated })}
+        }
       />
       <h3 className="font-bold text-lg mt-7 mb-3">Keywords</h3>
       <p className="w-full max-w-[650px] my-3 text-sm sm:text-base">
