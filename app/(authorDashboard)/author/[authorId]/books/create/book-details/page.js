@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-
+import Link from "next/link";
 import { useForm } from "@/context/FormContext";
 import { storedAuthorInfo } from "@/utils/storedAuthorInfo";
 import { api } from "@/utils/auth/authorApi";
@@ -200,6 +200,28 @@ const BookDetails = () => {
       <p className="w-full max-w-[650px] mb-1 text-sm sm:text-base">
         Summarize your book. This will be your product description on itan, so
         readers/listeners can learn more about your book.
+        <span className="inline-block ml-2">
+          <Link
+            href="/author-resources"
+            target="_blank"
+            className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 underline decoration-dotted underline-offset-2 hover:decoration-solid transition-all duration-200 font-medium"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            Learn how to generate your optimized description
+          </Link>
+        </span>
       </p>
       <textarea
         placeholder="Not more than 1,000 characters"
@@ -281,16 +303,37 @@ const BookDetails = () => {
       <GenreSelector
         value={formData.categories}
         onChange={(updated) => {
-          
-          console.log("GenreSelector updated:", updated);  
-          updateFormData({ categories: updated })}
-        }
+          console.log("GenreSelector updated:", updated);
+          updateFormData({ categories: updated });
+        }}
       />
       <h3 className="font-bold text-lg mt-7 mb-3">Keywords</h3>
       <p className="w-full max-w-[650px] my-3 text-sm sm:text-base">
         Select up to 4 keywords (max 50 characters) that describe your book's
         unique themes, genres, or topics. Examples: 'medieval fantasy', 'romance
         novel', 'sci-fi adventure'
+        <span className="inline-block ml-2">
+          <Link
+            href="/author-resources"
+            target="_blank"
+            className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 underline decoration-dotted underline-offset-2 hover:decoration-solid transition-all duration-200 font-medium"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            Learn How to Generate Keywords
+          </Link>
+        </span>
       </p>
       <p className="">Your Keywords</p>
       <div className="w-full max-w-[650px] flex">
@@ -342,6 +385,28 @@ const BookDetails = () => {
         />
       </div>
       <h3 className="font-bold">Tags</h3>
+      <span className="inline-block ml-2">
+        <Link
+          href="/author-resources"
+          target="_blank"
+          className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 underline decoration-dotted underline-offset-2 hover:decoration-solid transition-all duration-200 font-medium"
+        >
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          Learn How to Generate your BookTags
+        </Link>
+      </span>
       <div className="h-[1px] bg-gray-200 w-full max-w-[650px] mb-2" />
       <div className="flex flex-wrap gap-2 mt-2">
         {tags.map((tag, index) => (
