@@ -26,9 +26,7 @@ const Footer = ({ styles }) => {
     pathname.startsWith("/author") || pathname.startsWith("/dashboard");
 
   return (
-    <footer
-      className={`${styles} bg-[#111928]`}
-    >
+    <footer className={`${styles} bg-[#111928]`}>
       <section className="relative z-30 h-[150px] xs:h-[170px] medium:h-[200px] large:h-[220px] xl:h-[250px] flex flex-col items-center justify-center text-center">
         {/* Background image */}
         <div
@@ -113,8 +111,7 @@ const Footer = ({ styles }) => {
 
           <div className="text-[13px] sm:grid grid-cols-2 gap-x-3 lg:gap-x-10 hidden h-28 text-gray-400 min-w-[250px]">
             <Link
-              href="https://itanglobalpublishing.substack.com/"
-              target="_blank"
+              href="/author-resources"
               className="cursor-pointer hover:text-[#EF5353]"
             >
               Author Resources
@@ -128,14 +125,13 @@ const Footer = ({ styles }) => {
             </Link>
             <Link
               href="mailto:support@itan.app"
-              target="_blank"
               aria-label="Contact support via email"
               className="cursor-pointer hover:text-[#EF5353]"
             >
               Help Center
             </Link>
             <Link
-              href="#"
+              href="/content-policy"
               target="_blank"
               className="cursor-pointer hover:text-[#EF5353]"
             >
@@ -205,8 +201,7 @@ const Footer = ({ styles }) => {
           <div className=" flex flex-col items-center mt-3 text-[12px] text-gray-400">
             <div className="flex flex-col items-center sm:hidden space-y-3">
               <Link
-                href="https://itanglobalpublishing.substack.com/"
-                target="_blank"
+                href="/author-resources"
                 className="cursor-pointer hover:text-[#EF5353]"
               >
                 Author Resources
@@ -241,7 +236,7 @@ const Footer = ({ styles }) => {
                 Contact
               </Link>
               <Link
-                href="#"
+                href="/content-policy"
                 target="_blank"
                 className="cursor-pointer hover:text-[#EF5353]"
               >
