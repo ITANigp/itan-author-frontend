@@ -115,14 +115,13 @@ const Footer = ({ styles }) => {
             </Link>
             <Link
               href="mailto:support@itan.app"
-              target="_blank"
               aria-label="Contact support via email"
               className="cursor-pointer hover:text-[#EF5353]"
             >
               Help Center
             </Link>
             <Link
-              href="#"
+              href="/content-policy"
               target="_blank"
               className="cursor-pointer hover:text-[#EF5353]"
             >
@@ -227,7 +226,7 @@ const Footer = ({ styles }) => {
                 Contact
               </Link>
               <Link
-                href="#"
+                href="/content-policy"
                 target="_blank"
                 className="cursor-pointer hover:text-[#EF5353]"
               >
