@@ -27,6 +27,8 @@ export default function RootLayout({ children }) {
   const privacyPages =
     pathname.startsWith("/privacy-policies") ||
     pathname.startsWith("/terms&conditions");
+  
+  const contentPolicy = pathname.startsWith("/content-policy");
 
   const PasswordPage =
     pathname.endsWith("/auth/forget-password") ||
@@ -42,6 +44,7 @@ export default function RootLayout({ children }) {
       PasswordPage ||
       adminPage ||
       authPages ||
+      contentPolicy ||
       readerPage
         ? "hidden"
         : "";
