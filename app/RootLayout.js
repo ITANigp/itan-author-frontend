@@ -57,6 +57,7 @@ export default function RootLayout({ children }) {
 
 
   return (
+    <div
       className={`z-10  ${isRegPage ? "bg-slate-800" : "bg-white"} overflow-hidden`}
     >
       <AuthorProvider>
@@ -76,7 +77,6 @@ export default function RootLayout({ children }) {
           </main>
         </FormProvider>
       </AuthorProvider>
-    </div>rmProvider>
     </div>
   );
 }

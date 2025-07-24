@@ -15,9 +15,41 @@ export const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     config.withCredentials = true;
+    // Ensure SameSite and other cookie headers work in production
+    if (typeof window !== "undefined") {
+      config.headers["X-Requested-With"] = "XMLHttpRequest";
+    }
+
+    // Debug logging for production issues
+    if (process.env.NODE_ENV === "production") {
+      console.log("🚀 API Request:", {
+        url: config.url,
+        baseURL: config.baseURL,
+        withCredentials: config.withCredentials,
+        method: config.method,
+      });
+    }
+
     return config;
   },
   (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Add response interceptor for error handling
+api.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response?.status === 401) {
+      console.error("🔒 Authentication failed:", {
+        url: error.config?.url,
+        status: error.response?.status,
+        data: error.response?.data,
+      });
+    }
     return Promise.reject(error);
   }
 );

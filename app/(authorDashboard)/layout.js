@@ -84,17 +84,21 @@ export default function AuthorDashboardLayout({ children }) {
         } w-full h-16 py-2 shadow-md z-10 bg-white`}
       >
         <div className="flex-1 relative mr-8">
-          <Image
-            width={50}
-            height={50}
-            className={`w-12 h-12 absolute right-0 -top-6 rounded-full bg-slate-400 object-cover ${profile.author_profile_image_url ? "" : "bg-slate-400 p-2"}`}
-            alt="Profile"
-            src={
-              profile.author_profile_image_url
-                ? profile.author_profile_image_url
-                : `/images/avatar.png`
-            }
-          />
+          {loading ? (
+            <div className="w-12 h-12 absolute right-0 -top-6 rounded-full bg-gray-300 animate-pulse"></div>
+          ) : (
+            <Image
+              width={50}
+              height={50}
+              className={`w-12 h-12 absolute right-0 -top-6 rounded-full bg-slate-400 object-cover ${profile?.author_profile_image_url ? "" : "bg-slate-400 p-2"}`}
+              alt="Profile"
+              src={
+                profile?.author_profile_image_url
+                  ? profile?.author_profile_image_url
+                  : `/images/avatar.png`
+              }
+            />
+          )}
         </div>
       </div>
 

@@ -32,19 +32,30 @@ const layout = ({ children }) => {
     }
   };
 
+  // Show loading state while profile is being fetched
+  if (loading) {
+    return (
+      <div className="mx-2 lg:pl-64 lg:pt-24 bg-gray-100 lg:bg-white">
+        <div className="flex justify-center items-center h-64">
+          <p>Loading profile...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="mx-2  lg:pl-64  lg:pt-24 bg-gray-100 lg:bg-white">
       <div className="lg:flex lg:space-x-6 p-4 bg-gray-100 rounded-md">
         <nav className="hidden lg:flex">
           <ul className="space-y-7">
-            <Link href={`/author/${profile.id}/profile`}>
+            <Link href={`/author/${profile?.id}/profile`}>
               <li
                 className={`hover:text-red-500 cursor-pointer ${isProfilePage ? "text-red-500 " : ""} `}
               >
                 Profile
               </li>
             </Link>
-            <Link href={`/author/${profile.id}/profile/security`}>
+            <Link href={`/author/${profile?.id}/profile/security`}>
               <li
                 className={`hover:text-red-500 cursor-pointer ${isPrivacyPage ? "text-red-500 " : ""} `}
               >
