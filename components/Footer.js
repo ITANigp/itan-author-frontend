@@ -106,41 +106,42 @@ const Footer = ({ styles }) => {
             >
               Author Resources
             </Link>
-            <Link
-              href="https://itanglobalpublishing.substack.com/"
-              target="_blank"
-              className="cursor-pointer hover:text-[#EF5353]"
-            >
+            <Link href="/blog" className="cursor-pointer hover:text-[#EF5353]">
               Blog
             </Link>
-            <Link
+            <a
               href="mailto:support@itan.app"
               aria-label="Contact support via email"
               className="cursor-pointer hover:text-[#EF5353]"
+              onClick={(e) => {
+                // For debugging only
+                console.log("Email link clicked");
+                // Don't prevent default - let browser handle mailto
+              }}
             >
               Help Center
-            </Link>
+            </a>
             <Link
-              href="#"
+              href="/content-policy"
               target="_blank"
               className="cursor-pointer hover:text-[#EF5353]"
             >
               Content Policy
             </Link>
             <Link
-              href="/content-policy"
+              href="https://www.youtube.com/@itanIGP"
               target="_blank"
               className="cursor-pointer hover:text-[#EF5353]"
             >
               Youtube
             </Link>
-            <Link
-              href="#"
-              target="_blank"
+            <a
+              href="mailto:support@itan.app"
+              aria-label="Contact support via email"
               className="cursor-pointer hover:text-[#EF5353]"
             >
               Contact
-            </Link>
+            </a>
           </div>
         </div>
 
@@ -196,14 +197,18 @@ const Footer = ({ styles }) => {
               >
                 Author Resources
               </Link>
-              <Link
+              <a
                 href="mailto:support@itan.app"
-                target="_blank"
                 aria-label="Contact support via email"
                 className="cursor-pointer hover:text-[#EF5353]"
+                onClick={(e) => {
+                  // For debugging only
+                  console.log("Mobile email link clicked");
+                  // Don't prevent default - let browser handle mailto
+                }}
               >
                 Help Center
-              </Link>
+              </a>
               <Link
                 href="https://www.youtube.com/@itanIGP"
                 target="_blank"
@@ -212,21 +217,19 @@ const Footer = ({ styles }) => {
                 Youtube
               </Link>
               <Link
-                href="https://itanglobalpublishing.substack.com/"
-                target="_blank"
+                href="/blog"
                 className="cursor-pointer hover:text-[#EF5353]"
               >
                 Blog
               </Link>
               <Link
-                href="#"
-                target="_blank"
+                href="/help"
                 className="cursor-pointer hover:text-[#EF5353]"
               >
                 Contact
               </Link>
               <Link
-                href="#"
+                href="/content-policy"
                 target="_blank"
                 className="cursor-pointer hover:text-[#EF5353]"
               >
