@@ -5,11 +5,13 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
-
-import { getAuthorProfile, updateAuthorProfile } from "@/utils/auth/authorApi";
+import { updateAuthorProfile } from "@/utils/auth/authorApi";
+import { useAuthor } from "@/context/AuthorContext";
 import Image from "next/image";
 
 const Modal = ({ isOpen, onClose, onProfileUpdate }) => {
+  const { profile: globalProfile, updateProfile } = useAuthor();
+
   const [profile, setProfile] = useState({
     first_name: "",
     last_name: "",
@@ -27,27 +29,17 @@ const Modal = ({ isOpen, onClose, onProfileUpdate }) => {
   };
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const { data } = await getAuthorProfile();
-        setProfile({
-          first_name: data.first_name || "",
-          last_name: data.last_name || "",
-          bio: data.bio || "",
-          phone_number: data.phone_number || "",
-          country: data.country || "",
-          location: data.location || "",
-        });
-      } catch (err) {
-        setError("Failed to fetch author profile.");
-        console.error(err);
-      }
-    };
-
-    if (isOpen) {
-      fetchProfile();
+    if (isOpen && globalProfile) {
+      setProfile({
+        first_name: globalProfile.first_name || "",
+        last_name: globalProfile.last_name || "",
+        bio: globalProfile.bio || "",
+        phone_number: globalProfile.phone_number || "",
+        country: globalProfile.country || "",
+        location: globalProfile.location || "",
+      });
     }
-  }, [isOpen]);
+  }, [isOpen, globalProfile]);
 
   useEffect(() => {
     const handleEsc = (e) => {

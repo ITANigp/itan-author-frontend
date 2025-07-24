@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 import { signInAuthor } from "@/utils/auth/authorApi";
+import { useAuthor } from "@/context/AuthorContext";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
@@ -21,6 +22,7 @@ const SignIn = () => {
   const [googleLoading, setGoogleLoading] = useState(false);
 
   const router = useRouter();
+  const { fetchProfile, clearProfile } = useAuthor();
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -40,6 +42,10 @@ const SignIn = () => {
 
       if (author?.data?.id) {
         localStorage.setItem("authorInfo", JSON.stringify(author.data));
+
+        // Fetch the profile data after successful login
+        await fetchProfile();
+
         router.push(`/dashboard/author/${author.data.id}`);
         toast.success("Logged in successfully");
       }
@@ -66,7 +72,7 @@ const SignIn = () => {
       setCaptchaToken("");
     }
   }, [email, password]);
-  
+
   useEffect(() => {
     // Check for OAuth errors or success in URL params
     const urlParams = new URLSearchParams(window.location.search);

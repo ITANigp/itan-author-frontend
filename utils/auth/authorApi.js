@@ -7,8 +7,20 @@ export const api = axios.create({
   withCredentials: true,
   headers: {
     Accept: "application/json",
+    "Content-Type": "application/json",
   },
 });
+
+// Add request interceptor to ensure credentials are always sent
+api.interceptors.request.use(
+  (config) => {
+    config.withCredentials = true;
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 // Register an author
 export const registerAuthor = async (email, password, captchaToken) => {
@@ -36,13 +48,14 @@ export const registerAuthor = async (email, password, captchaToken) => {
 // Forget password reset
 export const resetPassword = async (req, res) => {
   try {
-    const apiRes = await api.post(`/authors/password`, req.body)
-    res.status(apiRes.status).json(apiRes.data)
+    const apiRes = await api.post(`/authors/password`, req.body);
+    res.status(apiRes.status).json(apiRes.data);
   } catch (error) {
-    res.status(error.response?.status || 500).json(error.response?.data || { errors: ['Server error'] })
+    res
+      .status(error.response?.status || 500)
+      .json(error.response?.data || { errors: ["Server error"] });
   }
-}
-
+};
 
 // Enable 2FA Email Verification
 
@@ -56,12 +69,11 @@ export const enableEmailTwoFactor = async () => {
 
     return true;
   } catch (error) {
-    throw new Error(`Failed to enable email two-factor: ${error? error.message : String(error)}`);
+    throw new Error(
+      `Failed to enable email two-factor: ${error ? error.message : String(error)}`
+    );
   }
 };
-
-
-
 
 // Sign in an author
 export const signInAuthor = async (email, password, captchaToken) => {

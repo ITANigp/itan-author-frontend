@@ -8,6 +8,7 @@ import { Toaster } from "react-hot-toast";
 import TopNav from "../components/TopNav";
 import Footer from "../components/Footer";
 import { FormProvider } from "@/context/FormContext";
+import { AuthorProvider } from "@/context/AuthorContext";
 
 config.autoAddCss = false;
 
@@ -56,24 +57,26 @@ export default function RootLayout({ children }) {
 
 
   return (
-    <div
       className={`z-10  ${isRegPage ? "bg-slate-800" : "bg-white"} overflow-hidden`}
     >
-      <FormProvider>
-        <Toaster />
-        <main className="w-full min-h-screen">
-          <div>
-            {/* <AnimatedLayout> */}
-            <div className="">
-              <TopNav styles={shouldHideHeader } />
-              <div>{children}</div>
-              <Footer styles={shouldHideHeader} />
-              {/* <ScrollToTop styles={hideIfAuthorPage} /> */}
+      <AuthorProvider>
+        <FormProvider>
+          <Toaster />
+          <main className="w-full min-h-screen">
+            <div>
+              {/* <AnimatedLayout> */}
+              <div className="">
+                <TopNav styles={shouldHideHeader } />
+                <div>{children}</div>
+                <Footer styles={shouldHideHeader} />
+                {/* <ScrollToTop styles={hideIfAuthorPage} /> */}
+              </div>
+              {/* </AnimatedLayout> */}
             </div>
-            {/* </AnimatedLayout> */}
-          </div>
-        </main>
-      </FormProvider>
+          </main>
+        </FormProvider>
+      </AuthorProvider>
+    </div>rmProvider>
     </div>
   );
 }

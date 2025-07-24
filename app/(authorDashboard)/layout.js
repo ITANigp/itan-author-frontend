@@ -17,16 +17,19 @@ import {
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { getAuthorProfile } from "@/utils/auth/authorApi";
+import { useAuthor } from "@/context/AuthorContext";
 
 export default function AuthorDashboardLayout({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [openSales, setOpenSales] = useState(false);
   const [authorId, setAuthorId] = useState(null);
-  const [profile, setProfile] = useState({});
   const sidebarRef = useRef(null);
   const pathName = usePathname();
   const router = useRouter();
+
+  // Use global author context
+  const { profile, loading, error, fetchProfile, isAuthenticated } =
+    useAuthor();
 
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem("authorInfo") || "{}");
@@ -35,22 +38,12 @@ export default function AuthorDashboardLayout({ children }) {
       router.push("/author/sign_in");
     } else {
       setAuthorId(stored.id);
-    }
-  }, [router]);
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const { data } = await getAuthorProfile();
-        setProfile(data);
-        console.log("Fetched Profile Data: ", data);
-      } catch (err) {
-        console.error(err);
+      // Fetch profile only if not already loaded and not currently loading
+      if (!profile && !loading) {
+        fetchProfile();
       }
-    };
-
-    fetchProfile();
-  }, []);
+    }
+  }, [router, profile, loading, fetchProfile]);
 
   if (!authorId) {
     return null;

@@ -1,26 +1,29 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 import toast from "react-hot-toast";
 
 import LogoutModal from "@/components/LogoutModal";
-import { getAuthorProfile } from "@/utils/auth/authorApi";
 import { signOutAuthor } from "@/utils/auth/authorApi";
+import { useAuthor } from "@/context/AuthorContext";
 
 const layout = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
-  const [profile, setProfile] = useState({});
   const pathname = usePathname();
   const isProfilePage = pathname.endsWith("/profile");
   const isPrivacyPage = pathname.endsWith("/security");
   const isNotificationPage = pathname.endsWith("/notification");
 
+  // Use global author context instead of making another API call
+  const { profile, loading, clearProfile } = useAuthor();
+
   const handleLogout = async () => {
     try {
       await signOutAuthor();
+      clearProfile(); // Clear the global profile state
       setShowModal(false);
       toast.success("Logged out successfully!");
       window.location.href = "/author/sign_in";
@@ -28,20 +31,6 @@ const layout = ({ children }) => {
       toast.error("Failed to log out. Please try again.");
     }
   };
-
-  const fetchProfile = async () => {
-    try {
-      const { data } = await getAuthorProfile();
-      setProfile(data);
-      console.log("Fetched Profile Data: ", data);
-    } catch (err) {
-      // setError("Failed to fetch author profile.");
-      console.error(err);
-    }
-  };
-  useEffect(() => {
-    fetchProfile();
-  }, []);
 
   return (
     <div className="mx-2  lg:pl-64  lg:pt-24 bg-gray-100 lg:bg-white">
