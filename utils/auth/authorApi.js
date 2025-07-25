@@ -27,7 +27,13 @@ api.interceptors.request.use(
         baseURL: config.baseURL,
         withCredentials: config.withCredentials,
         method: config.method,
+        headers: config.headers,
       });
+
+      // Log cookies being sent
+      if (typeof document !== "undefined") {
+        console.log("🍪 Current cookies:", document.cookie);
+      }
     }
 
     return config;
@@ -40,6 +46,13 @@ api.interceptors.request.use(
 // Add response interceptor for error handling
 api.interceptors.response.use(
   (response) => {
+    if (process.env.NODE_ENV === "production") {
+      console.log("✅ API Success:", {
+        url: response.config?.url,
+        status: response.status,
+        headers: response.headers,
+      });
+    }
     return response;
   },
   (error) => {
@@ -48,7 +61,13 @@ api.interceptors.response.use(
         url: error.config?.url,
         status: error.response?.status,
         data: error.response?.data,
+        responseHeaders: error.response?.headers,
       });
+
+      // Log current cookies when auth fails
+      if (typeof document !== "undefined") {
+        console.log("🍪 Cookies during auth failure:", document.cookie);
+      }
     }
     return Promise.reject(error);
   }
