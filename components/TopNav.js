@@ -22,7 +22,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { Bricolage_Grotesque } from "next/font/google";
+// import { Bricolage_Grotesque } from "next/font/google";
 
 library.add(
   faBars,
@@ -33,14 +33,14 @@ library.add(
   faQuestionCircle
 );
 
-const bricolage = Bricolage_Grotesque({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  style: ["normal"],
-  display: "swap",
-});
+// const bricolage = Bricolage_Grotesque({
+//   subsets: ["latin"],
+//   weight: ["400", "500", "600", "700"],
+//   style: ["normal"],
+//   display: "swap",
+// });
 
-const TopNav = ({ styles }) => {
+const TopNav = ({ styles, fontClass }) => {
   const [menu, setMenu] = useState(false);
   const [showCloseIcon, setShowCloseIcon] = useState(false);
 
@@ -70,7 +70,7 @@ const TopNav = ({ styles }) => {
     { title: "Publish", href: "/publish", icon: faBookOpen },
     { title: "Monetize", href: "/monetize", icon: faDollarSign },
     { title: "Help", href: "/help", icon: faQuestionCircle },
-    
+
     { title: "Blog", href: "/blog", icon: faQuestionCircle },
   ];
 
@@ -128,7 +128,7 @@ const TopNav = ({ styles }) => {
         </Link>
         <p
           // CHANGED: Added custom media query to hide text between 630px-770px
-          className={`${bricolage.className} hidden sm:flex text-gray-200 ml-2 font-medium items-baseline [@media(min-width:630px)_and_(max-width:770px)]:hidden`}
+          className={`${fontClass.className} hidden sm:flex text-gray-200 ml-2 font-medium items-baseline [@media(min-width:630px)_and_(max-width:770px)]:hidden`}
           style={{
             fontStretch: "condensed",
             fontVariationSettings: '"wdth" 75',
