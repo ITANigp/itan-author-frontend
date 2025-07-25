@@ -101,7 +101,7 @@ const Home = () => {
         </div>
 
         {/* Enhanced subtle texture overlay */}
-        <div className="absolute inset-0 bg-[url('/images/subtle-paper-texture.png')] opacity-10 mix-blend-overlay pointer-events-none"></div>
+        {/* <div className="absolute inset-0 bg-[url('/images/subtle-paper-texture.png')] opacity-10 mix-blend-overlay pointer-events-none"></div> */}
       </section>
 
       <div className="flex justify-center px-2">
