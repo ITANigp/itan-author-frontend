@@ -38,15 +38,14 @@ const SignIn = () => {
         author.status.requires_verification == true
       ) {
         router.push("/auth/mfa/verify");
+        return;
       }
 
       if (author?.data?.id) {
         localStorage.setItem("authorInfo", JSON.stringify(author.data));
-
         // Fetch the profile data after successful login
         await fetchProfile();
-
-        router.push(`/dashboard/author/${author.data.id}`);
+        router.push("/"); // Always redirect to landing page
         toast.success("Logged in successfully");
       }
     } catch (error) {

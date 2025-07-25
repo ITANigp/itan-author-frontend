@@ -89,7 +89,7 @@ const Profile = () => {
         <div className="flex justify-between lg:hidden">
           <FontAwesomeIcon
             icon={faChevronLeft}
-            onClick={() => router.back()}
+            onClick={() => router.push("/")}
             className="ml-3 p-2 py-1 rounded-md cursor-pointer hover:bg-gray-400"
           />
           <h2 className="font-bold text-xl mb-5">Profile</h2>
