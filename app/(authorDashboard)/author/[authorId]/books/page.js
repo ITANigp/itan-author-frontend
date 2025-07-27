@@ -187,7 +187,28 @@ export default function AuthorBooks() {
                 <p>
                   Book Status:{" "}
                   <span className="text-[#FF9A6C] font-semibold">
-                    {book.approval_status}
+                    {/* {book.approval_status} */}
+                    {book.approval_status === "approved" && book.slug && (
+                      <div className="mt-1 flex items-center space-x-2">
+                        <Link
+                          href={`/books/${book.slug}`}
+                          target="_blank"
+                          className="text-blue-500 hover:underline text-sm"
+                        >
+                          View Public Link
+                        </Link>
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_FRONTEND_URL}/books/${book.slug}`);
+                            toast.success("Link copied!");
+                          }}
+                          className="text-xs text-gray-500 hover:text-gray-700 border border-gray-300 px-2 py-0.5 rounded"
+                        >
+                          Copy Link
+                        </button>
+                      </div>
+                    )}
+
                   </span>
                 </p>
                 <img
@@ -248,7 +269,28 @@ export default function AuthorBooks() {
                 <p>
                   Book Status:{" "}
                   <span className="text-[#FF9A6C] font-semibold">
-                    {book.approval_status}
+                    {/* {book.approval_status} */}
+                    {book.approval_status === "approved" && book.slug && (
+                      <div className="mt-1 flex items-center space-x-2">
+                        <Link
+                          href={`/books/${book.slug}`}
+                          target="_blank"
+                          className="text-blue-500 hover:underline text-sm"
+                        >
+                          View Public Link
+                        </Link>
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_FRONTEND_URL}/books/${book.slug}`);
+                            toast.success("Link copied!");
+                          }}
+                          className="text-xs text-gray-500 hover:text-gray-700 border border-gray-300 px-2 py-0.5 rounded"
+                        >
+                          Copy Link
+                        </button>
+                      </div>
+                    )}
+
                   </span>
                   <img
                     src="/images/status.png"
