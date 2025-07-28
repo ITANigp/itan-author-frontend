@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import React, { useState } from "react";
 
 function App() {
@@ -18,10 +19,10 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4 font-sans">
-      <div className="bg-white rounded-lg shadow-xl p-6 md:p-8 lg:p-10 max-w-3xl w-full border-4 border-blue-600">
+      <div className="bg-white rounded-lg shadow-xl p-6 md:p-8 lg:p-10 max-w-3xl w-full border-4 border-blue-300">
         {/* Header */}
         <div className="flex justify-between items-center mb-6 border-b pb-4">
-          <h1 className="text-2xl font-bold text-blue-800">ITAN</h1>
+          <Image src="/images/logo.png" width={40} height={40} alt="Itan"/>
           <span className="text-gray-600 text-lg">3/3</span>
         </div>
 
