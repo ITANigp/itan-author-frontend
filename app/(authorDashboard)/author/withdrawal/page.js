@@ -189,7 +189,7 @@ export default function WalletPage() {
       >
         <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-6">
           <Plus className="mb-2 h-6 w-6 text-red-600" />
-          <p className="text-gray-600">Add New Details</p>
+          <p className="text-gray-600">Update Account Details</p>
         </div>
       </div>
 
