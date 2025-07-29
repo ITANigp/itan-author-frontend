@@ -56,8 +56,8 @@ export default function WalletPage() {
           bank_code: bankCode,
           account_number: accountNumber,
         });
-
-        if (res.data?.success) {
+        console.log("bank verification: ", res?.data);
+        if (res?.data?.verified) {
           setVerifiedAccountName(res.data.account_name);
           setAccountName(res.data.account_name);
           setMessage("Account verified successfully!");
