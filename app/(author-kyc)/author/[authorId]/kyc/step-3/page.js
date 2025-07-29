@@ -2,19 +2,33 @@
 
 import Image from "next/image";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { api } from "@/utils/auth/authorApi";
 
 function App() {
   const [agreed, setAgreed] = useState(false);
+  const router = useRouter();
 
   const handleAgreeChange = (event) => {
     setAgreed(event.target.checked);
   };
 
-  const handleDoneClick = () => {
-    // In a real application, you would typically submit this agreement
-    // For now, we'll just log the agreement status.
-    console.log("User agreed:", agreed);
-    alert(`Agreement status: ${agreed ? "Agreed" : "Not Agreed"}`);
+  const handleDoneClick = async () => {
+    if (!agreed) return;
+
+    try {
+      await api.patch("/authors/kyc/update-step", {
+        author: { kyc_step: 3 },
+      });
+
+      const { data: author } = await api.get("/authors/profile");
+
+      alert("Agreement accepted. Redirecting to dashboard...");
+      router.push(`/dashboard/author/${author?.data?.id}`);
+    } catch (error) {
+      alert("An error occurred. Please try again.");
+      console.error(error);
+    }
   };
 
   return (
@@ -22,7 +36,7 @@ function App() {
       <div className="bg-white rounded-lg shadow-xl p-6 md:p-8 lg:p-10 max-w-3xl w-full border-4 border-blue-300">
         {/* Header */}
         <div className="flex justify-between items-center mb-6 border-b pb-4">
-          <Image src="/images/logo.png" width={40} height={40} alt="Itan"/>
+          <Image src="/images/logo.png" width={40} height={40} alt="Itan" />
           <span className="text-gray-600 text-lg">3/3</span>
         </div>
 
@@ -39,7 +53,6 @@ function App() {
 
         {/* Agreement Sections */}
         <div className="space-y-6 text-gray-700 text-sm md:text-base">
-          {/* 1. GRANT OF RIGHTS */}
           <div>
             <h3 className="font-bold text-gray-800 mb-2">1. GRANT OF RIGHTS</h3>
             <p className="mb-2">
@@ -59,7 +72,6 @@ function App() {
             </p>
           </div>
 
-          {/* 2. AUTHOR'S WARRANTIES & REPRESENTATIONS */}
           <div>
             <h3 className="font-bold text-gray-800 mb-2">
               2. AUTHOR'S WARRANTIES & REPRESENTATIONS
@@ -92,7 +104,6 @@ function App() {
             </p>
           </div>
 
-          {/* 3. LIABILITY FOR PLAGIARIZED OR STOLEN CONTENT */}
           <div>
             <h3 className="font-bold text-gray-800 mb-2">
               3. LIABILITY FOR PLAGIARIZED OR STOLEN CONTENT
@@ -116,7 +127,6 @@ function App() {
             </p>
           </div>
 
-          {/* 4. TERM AND TERMINATION */}
           <div>
             <h3 className="font-bold text-gray-800 mb-2">
               4. TERM AND TERMINATION
@@ -138,7 +148,6 @@ function App() {
             </p>
           </div>
 
-          {/* 5. MODIFICATIONS AND UPDATES */}
           <div>
             <h3 className="font-bold text-gray-800 mb-2">
               5. MODIFICATIONS AND UPDATES
@@ -155,7 +164,6 @@ function App() {
             </p>
           </div>
 
-          {/* 6. GOVERNING LAW AND DISPUTE RESOLUTION */}
           <div>
             <h3 className="font-bold text-gray-800 mb-2">
               6. GOVERNING LAW AND DISPUTE RESOLUTION
@@ -174,7 +182,7 @@ function App() {
           </div>
         </div>
 
-        {/* Checkbox and Confirmation */}
+        {/* Checkbox */}
         <div className="mt-8">
           <div className="flex items-center mb-4">
             <input
@@ -201,7 +209,12 @@ function App() {
         <div className="flex justify-end">
           <button
             onClick={handleDoneClick}
-            className="px-6 py-2 bg-gray-300 text-gray-800 font-semibold rounded-md shadow-sm hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition duration-150 ease-in-out"
+            disabled={!agreed}
+            className={`px-6 py-2 font-semibold rounded-md shadow-sm transition duration-150 ease-in-out ${
+              agreed
+                ? "bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500"
+                : "bg-gray-300 text-gray-600 cursor-not-allowed"
+            }`}
           >
             Done
           </button>

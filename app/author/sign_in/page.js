@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 import toast from "react-hot-toast";
 
-import { signInAuthor } from "@/utils/auth/authorApi"; // Ensure this is correctly set up
+import { signInAuthor } from "@/utils/auth/authorApi";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
@@ -31,14 +31,24 @@ const SignIn = () => {
       const author = await signInAuthor(email, password, captchaToken);
       console.log("Author Sign-in Data:", author);
 
-      if (author.status.code === 202 && author.status.requires_verification == true) {
-        router.push("/auth/mfa/verify")
+      if (
+        author.status.code === 202 &&
+        author.status.requires_verification == true
+      ) {
+        router.push("/auth/mfa/verify");
+        return;
       }
 
       if (author?.data?.id) {
         localStorage.setItem("authorInfo", JSON.stringify(author.data));
-        router.push(`/dashboard/author/${author.data.id}`);
-        toast.success("Logged in successfully")
+        // Check for kyc_step in response and redirect accordingly
+        const kycStep = author?.data?.kyc_step;
+        if (kycStep < 3) {
+          router.push(`/author/${author?.data?.id}/kyc/step-${kycStep + 1}`);
+        } else {
+          router.push(`/dashboard/author/${author?.data?.id}`);
+        }
+        toast.success("Logged in successfully");
       }
     } catch (error) {
       toast.error(
@@ -55,10 +65,10 @@ const SignIn = () => {
     window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL}/authors/auth/google_oauth2`;
   };
 
-  useEffect(() => {    
+  useEffect(() => {
     if (recaptchaRef.current) {
       recaptchaRef.current.reset();
-      setCaptchaToken(""); 
+      setCaptchaToken("");
     }
   }, [email, password]);
 
@@ -123,7 +133,6 @@ const SignIn = () => {
             />
           </div>
 
-          {/* reCAPTCHA placed BEFORE the submit button */}
           <div className="my-4">
             <div className="w-full overflow-hidden">
               <div className="transform scale-75 sm:scale-90 md:scale-100 origin-left w-full">
@@ -152,7 +161,7 @@ const SignIn = () => {
             <button
               type="submit"
               disabled={loading || !captchaToken}
-              className={`${
+              className={`$
                 loading || !captchaToken
                   ? "cursor-not-allowed"
                   : "cursor-pointer"

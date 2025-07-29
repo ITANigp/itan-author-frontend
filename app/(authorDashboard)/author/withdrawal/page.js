@@ -10,7 +10,8 @@ import { Plus, Wallet } from "lucide-react";
  */
 
 export default function WalletPage() {
-  // ──────────────────────────────────────────────────────────────────────
+ 
+  const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [showModal, setShowModal] = useState(false);
 
   /** BANK LIST */
@@ -71,7 +72,7 @@ export default function WalletPage() {
 
       try {
         const res = await api.post(
-          "http://localhost:3000/api/v1/author/banking_details/verify",
+          `${BASE_URL}/author/banking_details/verify`,
           {
             bank_code: bankCode,
             account_number: accountNumber,
