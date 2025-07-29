@@ -182,12 +182,6 @@ export default function WalletPage() {
         </div>
       </div>
 
-      {/* Withdraw Button */}
-      <button className="mt-6 flex items-center gap-2 rounded-md bg-red-600 px-6 py-3 text-sm text-white hover:bg-red-700">
-        <Wallet className="h-4 w-4" />
-        Withdraw
-      </button>
-
       {/* Add New Details Trigger */}
       <div
         className="mt-10 w-full max-w-md cursor-pointer rounded-xl border border-gray-200 bg-white p-6 shadow-sm hover:border-gray-400"
