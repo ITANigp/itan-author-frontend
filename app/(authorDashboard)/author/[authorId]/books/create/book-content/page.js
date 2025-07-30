@@ -107,7 +107,23 @@ const BookContent = () => {
         </span>
       </label>
 
-      <h3 className="font-bold mt-3">
+      <div>
+        <div className="bg-[#E50913] hover:bg-[#b70911] w-48 flex items-center justify-center mx-auto h-10 rounded-md mt-6">
+          <img
+            src="/images/upload-book.png"
+            alt="upload book"
+            className="w-4 h-4 mx-2"
+          />
+          <button className="text-white mr-2" onClick={handleEbookButtonClick}>
+            Upload manuscript
+          </button>
+        </div>
+        {errors.ebook_file && (
+          <p className="text-red-500">{errors.ebook_file}</p>
+        )}
+      </div>
+
+      <h3 className="font-bold mt-6">
         Does the content has explicit images or text
       </h3>
       <div className="flex flex-col space-y-2">
@@ -154,21 +170,6 @@ const BookContent = () => {
         </label>
       </div>
 
-      <div>
-        <div className="bg-[#E50913] hover:bg-[#b70911] w-48 flex items-center justify-center mx-auto h-10 rounded-md mt-6">
-          <img
-            src="/images/upload-book.png"
-            alt="upload book"
-            className="w-4 h-4 mx-2"
-          />
-          <button className="text-white mr-2" onClick={handleEbookButtonClick}>
-            Upload manuscript
-          </button>
-        </div>
-        {errors.ebook_file && (
-          <p className="text-red-500">{errors.ebook_file}</p>
-        )}
-      </div>
       <input
         type="file"
         name="ebook_file"
@@ -179,7 +180,7 @@ const BookContent = () => {
         onChange={handleFileChange}
         className="border p-2 w-full hidden"
       />
-      <h3 className="my-2 font-bold text-lg">Book Cover</h3>
+      <h3 className="my-2 font-bold text-lg mt-6">Book Cover</h3>
       <p className="w-full">
         Make a lasting impression! Upload a captivating front cover that
         showcases your book's personality and draws readers in.

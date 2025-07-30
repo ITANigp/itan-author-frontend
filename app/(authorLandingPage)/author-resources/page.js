@@ -10,14 +10,14 @@ const AuthorResources = () => {
           <div className="text-center">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-[#272a4f] rounded-full mb-4">
               <Image
-              src="/images/logo.svg"
-              alt="ITAN Logo"
-              width={140}
-              height={56}
-              className="w-auto h-16 md:h-18 lg:h-24 xl:h-32"
-              priority
-              sizes="140px"
-            />              
+                src="/images/logo.svg"
+                alt="ITAN Logo"
+                width={140}
+                height={56}
+                className="w-auto h-16 md:h-18 lg:h-24 xl:h-32"
+                priority
+                sizes="140px"
+              />
             </div>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
               How to craft optimized book descriptions that boost your book
@@ -62,7 +62,10 @@ const AuthorResources = () => {
         {/* How to Create Steps */}
         <div className="bg-white rounded-xl shadow-lg mb-8">
           <div className="bg-blue-600 px-6 py-4">
-            <h2 className="text-xl font-semibold text-white">
+            <h2
+              className="text-xl font-semibold text-white"
+              id="book-description"
+            >
               How to Create an Optimized Book Description (Step-by-Step)
             </h2>
           </div>
@@ -141,7 +144,10 @@ const AuthorResources = () => {
               <span className="bg-white text-green-600 w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold mr-3">
                 2
               </span>
-              <h2 className="text-xl font-semibold text-white">
+              <h2
+                className="text-xl font-semibold text-white"
+                id="book-keywords"
+              >
                 How to Generate Book Keywords and Tags
               </h2>
             </div>
@@ -162,7 +168,7 @@ const AuthorResources = () => {
         {/* Steps to Generate Tags */}
         <div className="bg-white rounded-xl shadow-lg mb-8">
           <div className="bg-purple-600 px-6 py-4">
-            <h2 className="text-xl font-semibold text-white">
+            <h2 className="text-xl font-semibold text-white" id="book-tags">
               Steps to Generate book Tags
             </h2>
           </div>

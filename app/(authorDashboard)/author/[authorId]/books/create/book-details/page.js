@@ -117,7 +117,7 @@ const BookDetails = () => {
         be separated by a colon. Please double-check spelling, as this field
         cannot be edited after publication.
       </p>
-      <p className="mt-5">Book Title</p>
+      <p className="mt-5">Title</p>
       <input
         type="text"
         // required={!id}
@@ -202,7 +202,7 @@ const BookDetails = () => {
         readers/listeners can learn more about your book.
         <span className="inline-block ml-2">
           <Link
-            href="/author-resources"
+            href="/author-resources#book-description"
             target="_blank"
             className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 underline decoration-dotted underline-offset-2 hover:decoration-solid transition-all duration-200 font-medium"
           >
@@ -314,7 +314,7 @@ const BookDetails = () => {
         novel', 'sci-fi adventure'
         <span className="inline-block ml-2">
           <Link
-            href="/author-resources"
+            href="/author-resources#book-keywords"
             target="_blank"
             className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 underline decoration-dotted underline-offset-2 hover:decoration-solid transition-all duration-200 font-medium"
           >
@@ -387,7 +387,7 @@ const BookDetails = () => {
       <h3 className="font-bold">Tags</h3>
       <span className="inline-block ml-2">
         <Link
-          href="/author-resources"
+          href="/author-resources#book-tags"
           target="_blank"
           className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 underline decoration-dotted underline-offset-2 hover:decoration-solid transition-all duration-200 font-medium"
         >
