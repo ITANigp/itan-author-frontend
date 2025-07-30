@@ -42,6 +42,7 @@ const SignIn = () => {
       if (author?.data?.id) {
         localStorage.setItem("authorInfo", JSON.stringify(author.data));
         // Check for kyc_step in response and redirect accordingly
+        console.log("authorInfo: ", author.data);
         const kycStep = author?.data?.kyc_step;
         if (kycStep < 3) {
           router.push(`/author/${author?.data?.id}/kyc/step-${kycStep + 1}`);

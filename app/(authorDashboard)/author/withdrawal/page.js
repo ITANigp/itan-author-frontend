@@ -1,21 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { api } from "@/utils/auth/authorApi";
+
 import { Plus, Wallet } from "lucide-react";
 
-/**
- * Helper for auth header - tweak as you like
- * (e.g. pull token from cookies / context instead)
- */
+import { api } from "@/utils/auth/authorApi";
+import { getPaymentSummary } from "@/utils/payment";
+
 
 export default function WalletPage() {
- 
-  const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [showModal, setShowModal] = useState(false);
 
-  /** BANK LIST */
   const [banks, setBanks] = useState([]);
+  const [balance, setBalance] = useState(0)
 
   /** FORM DATA */
   const [bankCode, setBankCode] = useState("");
@@ -33,7 +30,20 @@ export default function WalletPage() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  /* ── Fetch bank list when modal opens ─────────────────────────────── */
+  
+useEffect(() => {
+  const fetchBalance = async () => {
+    try {
+      const data = await getPaymentSummary();
+      setBalance(data?.earnings_summary || 0);
+    } catch (err) {
+      console.error("Failed to fetch balance:", err);
+    }
+  };
+
+  fetchBalance();
+}, []);
+
   useEffect(() => {
     if (!showModal) return;
 
@@ -72,7 +82,8 @@ export default function WalletPage() {
 
       try {
         const res = await api.post(
-          `${BASE_URL}/author/banking_details/verify`,
+          // "/author/banking_details/verify",
+          "/author/banking_details/verify_account_preview",
           {
             bank_code: bankCode,
             account_number: accountNumber,
@@ -121,8 +132,6 @@ export default function WalletPage() {
       return;
     }
 
-    // This check becomes less critical if auto-populating, but still good as a fallback
-    // In a real scenario, you might entirely rely on the verifiedAccountName for submission
     if (
       verifiedAccountName &&
       verifiedAccountName.toLowerCase() !== accountName.toLowerCase()
@@ -135,24 +144,28 @@ export default function WalletPage() {
     }
 
     try {
+      // Find the selected bank object by bankCode
+      const selectedBank = banks.find((b) => b.code === bankCode);
+
       const res = await api.put(
         "/author/banking_details",
         {
           banking_detail: {
             bank_code: bankCode,
+            bank_name: selectedBank?.name || "",
+            currency: selectedBank?.currency || "",
             account_number: accountNumber,
-            account_name: accountName, // Using the (potentially auto-filled) user-entered account name
+            account_name: accountName,
           },
         },
         { "Content-Type": "application/json" }
       );
 
-      if (res.data?.active) {
+      if (res.data?.success) {
         setMessage(res.data.message || "Banking details updated!");
-        // Clear form / force re-fetch wallet balance here if needed
-        setShowModal(false);
+        setShowModal(false); // Optionally close the modal
       } else {
-        console.log("Bank Details Err: ", res)
+        console.log("Bank Details Err: ", res);
         setError("Something went wrong.");
       }
     } catch (err) {
@@ -162,23 +175,27 @@ export default function WalletPage() {
     }
   };
 
+
   return (
     <main className="relative mt-12 flex min-h-screen flex-col items-center justify-start bg-white px-4 py-10">
       {/* Balance Card */}
       <div className="w-full max-w-md rounded-xl border-4 border-orange-600 bg-gradient-to-r from-orange-300 to-orange-500 p-6 text-black shadow-md">
         <div className="mb-6 flex items-start justify-between">
           <div>
-            <p className="text-sm font-bold">itan</p>
             <p className="text-lg font-semibold">Available Balance</p>
           </div>
-          <p className="text-sm">{new Date().toLocaleDateString()}</p>
+          <div className="flex flex-col relative">
+            {/* <p className="text-sm">{new Date().toLocaleDateString()}</p> */}
+            <p className="text-sm">Pending Balance</p>
+            <p className="text-sm absolute right-0 top-8">${balance.pending_earnings}</p>
+          </div>
         </div>
 
-        <p className="mb-8 text-4xl font-bold">$0</p>
+        <p className="mb-8 text-4xl font-bold">${balance.approved_earnings}</p>
 
-        <div className="flex items-center justify-between text-sm text-black/80">
-          <p>Chimdindu Ezulike</p>
-          <p>itan wallet</p>
+        <div className="flex items-center justify-between text-sm text-black/80 border-0 border-b-2 border-gray-600">
+          <p>Total wallet balance</p>
+          <p>${balance.total}</p>
         </div>
       </div>
 

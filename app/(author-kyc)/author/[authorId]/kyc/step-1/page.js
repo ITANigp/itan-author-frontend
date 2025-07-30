@@ -93,7 +93,7 @@ const KycStep1 = () => {
           Upload Your Profile Picture
         </h1>
         <p className="text-gray-600 mb-6">
-          This helps us personalize your experience. (Optional)
+          This helps us personalize your experience.
         </p>
 
         <div className="relative w-40 h-40 mx-auto mb-6">

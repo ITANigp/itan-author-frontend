@@ -52,12 +52,17 @@ export default function WalletPage() {
       setVerifiedAccountName("");
 
       try {
-        const res = await api.post("/author/banking_details/verify", {
-          bank_code: bankCode,
-          account_number: accountNumber,
-        });
+        const res = await api.post(
+          // "/author/banking_details/verify",
+          "/author/banking_details/verify_account_preview",
+          {
+            bank_code: bankCode,
+            account_number: accountNumber,
+          },
+          { "Content-Type": "application/json" }
+        );
         console.log("bank verification: ", res?.data);
-        if (res?.data?.verified) {
+        if (res.data?.success) {
           setVerifiedAccountName(res.data.account_name);
           setAccountName(res.data.account_name);
           setMessage("Account verified successfully!");
@@ -109,15 +114,24 @@ export default function WalletPage() {
     }
 
     try {
-      const res = await api.put("/author/banking_details", {
-        banking_detail: {
-          bank_code: bankCode,
-          account_number: accountNumber,
-          account_name: accountName,
-        },
-      });
+      // Find the selected bank object by bankCode
+      const selectedBank = banks.find((b) => b.code === bankCode);
 
-      if (res.data?.verified) {
+      const res = await api.put(
+        "/author/banking_details",
+        {
+          banking_detail: {
+            bank_code: bankCode,
+            bank_name: selectedBank?.name || "",
+            currency: selectedBank?.currency || "",
+            account_number: accountNumber,
+            account_name: accountName,
+          },
+        },
+        { "Content-Type": "application/json" }
+      );
+
+      if (res.data?.success) {
         setMessage(res.data.message || "Banking details saved successfully!");
         await api.patch("/authors/kyc/update-step", {
           author: { kyc_step: 2 },
@@ -128,7 +142,9 @@ export default function WalletPage() {
 
         // Redirect after short delay
         setTimeout(() => {
-          router.push(`/author/${author.data?.id}/kyc/step-${author.data?.kyc_step + 1}`);
+          router.push(
+            `/author/${author.data?.id}/kyc/step-${author.data?.kyc_step + 1}`
+          );
         }, 1500);
       } else {
         setError(
