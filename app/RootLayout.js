@@ -38,6 +38,8 @@ export default function RootLayout({ children }) {
 
   const contentPolicy = pathname.startsWith("/content-policy");
 
+  const authorResources = pathname.startsWith("/author-resources");
+
   const PasswordPage =
     pathname.endsWith("/auth/forget-password") ||
     pathname.endsWith("/reset-password");
@@ -53,6 +55,7 @@ export default function RootLayout({ children }) {
     adminPage ||
     authPages ||
     contentPolicy ||
+    authorResources ||
     readerPage
       ? "hidden"
       : "";
