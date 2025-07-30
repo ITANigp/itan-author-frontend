@@ -145,7 +145,7 @@ export default function WalletPage() {
           router.push(
             `/author/${author.data?.id}/kyc/step-${author.data?.kyc_step + 1}`
           );
-        }, 1500);
+        }, 300);
       } else {
         setError(
           res.data?.message || "Something went wrong during final save."
