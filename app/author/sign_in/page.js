@@ -63,7 +63,9 @@ const SignIn = () => {
 
   const handleLoginWithGoogle = () => {
     setGoogleLoading(true);
-    window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL}/authors/auth/google_oauth2`;
+    localStorage.setItem("oauth_redirect", window.location.href);
+
+    window.location.href = `http://localhost:3000/api/v1/authors/auth/google_oauth2`;
   };
 
   useEffect(() => {
@@ -72,6 +74,20 @@ const SignIn = () => {
       setCaptchaToken("");
     }
   }, [email, password]);
+
+  useEffect(() => {
+    // Check for OAuth errors or success in URL params
+    const urlParams = new URLSearchParams(window.location.search);
+    const error = urlParams.get("error");
+
+    if (error === "oauth_failed") {
+      toast.error("Google sign-in failed. Please try again.");
+      setGoogleLoading(false);
+    } else if (error) {
+      toast.error(`Authentication error: ${error}`);
+      setGoogleLoading(false);
+    }
+  }, []);
 
   return (
     <main className="w-full mb-9 px-4 sm:px-0">

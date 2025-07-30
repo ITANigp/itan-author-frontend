@@ -10,14 +10,14 @@ const AuthorResources = () => {
           <div className="text-center">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-[#272a4f] rounded-full mb-4">
               <Image
-                src="/images/logo.svg"
-                alt="ITAN Logo"
-                width={140}
-                height={56}
-                className="w-auto h-16 md:h-18 lg:h-24 xl:h-32"
-                priority
-                sizes="140px"
-              />
+              src="/images/logo.svg"
+              alt="ITAN Logo"
+              width={140}
+              height={56}
+              className="w-auto h-16 md:h-18 lg:h-24 xl:h-32"
+              priority
+              sizes="140px"
+            />              
             </div>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
               How to craft optimized book descriptions that boost your book
@@ -31,12 +31,12 @@ const AuthorResources = () => {
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Section 1 */}
         <div className="bg-white rounded-xl shadow-lg mb-8 overflow-hidden">
-          <div className="bg-gradient-to-r from-gray-600 to-gray-700 px-4 sm:px-6 py-4">
-            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-0">
-              <span className="bg-white text-gray-600 w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold sm:mr-3 flex-shrink-0 self-start sm:self-center">
+          <div className="bg-gradient-to-r from-gray-600 to-gray-700 px-6 py-4">
+            <div className="flex items-center">
+              <span className="bg-white text-gray-600 w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold mr-3">
                 1
               </span>
-              <h2 className="text-lg sm:text-xl font-semibold text-white leading-tight">
+              <h2 className="text-xl font-semibold text-white">
                 How to craft optimized book descriptions that boost your book's
                 visibility and discoverability on AI-driven search platforms.
               </h2>
@@ -136,12 +136,12 @@ const AuthorResources = () => {
 
         {/* Section 2 */}
         <div className="bg-white rounded-xl shadow-lg mb-8 overflow-hidden">
-          <div className="bg-gradient-to-r from-green-600 to-green-700 px-4 sm:px-6 py-4">
-            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-0">
-              <span className="bg-white text-green-600 w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold sm:mr-3 flex-shrink-0 self-start sm:self-center">
+          <div className="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
+            <div className="flex items-center">
+              <span className="bg-white text-green-600 w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold mr-3">
                 2
               </span>
-              <h2 className="text-lg sm:text-xl font-semibold text-white leading-tight">
+              <h2 className="text-xl font-semibold text-white">
                 How to Generate Book Keywords and Tags
               </h2>
             </div>
@@ -233,12 +233,12 @@ const AuthorResources = () => {
 
         {/* Section 3 */}
         <div className="bg-white rounded-xl shadow-lg mb-8">
-          <div className="bg-gradient-to-r from-orange-600 to-orange-700 px-4 sm:px-6 py-4">
-            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-0">
-              <span className="bg-white text-orange-600 w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold sm:mr-3 flex-shrink-0 self-start sm:self-center">
+          <div className="bg-gradient-to-r from-orange-600 to-orange-700 px-6 py-4">
+            <div className="flex items-center">
+              <span className="bg-white text-orange-600 w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold mr-3">
                 3
               </span>
-              <h2 className="text-lg sm:text-xl font-semibold text-white leading-tight">
+              <h2 className="text-xl font-semibold text-white">
                 Please add some of these words under the TAGS section
               </h2>
             </div>

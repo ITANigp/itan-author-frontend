@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-        // 🔽 Add these lines below
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"]

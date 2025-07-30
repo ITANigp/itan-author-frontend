@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Bricolage_Grotesque } from "next/font/google";
+// import { Bricolage_Grotesque } from "next/font/google";
 
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,12 +13,12 @@ import {
   faInstagram,
 } from "@fortawesome/free-brands-svg-icons";
 
-const bricolage = Bricolage_Grotesque({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  style: ["normal"],
-  display: "swap",
-});
+// const bricolage = Bricolage_Grotesque({
+  // subsets: ["latin"],
+  // weight: ["400", "500", "600", "700"],
+  // style: ["normal"],
+  // display: "swap",
+// });
 
 const Footer = ({ styles }) => {
   const pathname = usePathname();
@@ -46,26 +46,16 @@ const Footer = ({ styles }) => {
           </p>
         </div>
 
-      <form
-  action="/api/subscribe"
-  method="POST"
-  className="relative z-10 flex justify-center w-[90%] xs:w-[85%] medium:w-[70%] large:w-[60%] xl:w-[50%] p-1 bg-white backdrop-blur-md rounded-md"
->
-  <input
-    type="email"
-    name="email"
-    placeholder="Enter email address"
-    required
-    className="w-10 flex-1 border-0 outline-none ring-0 focus:ring-0 text-xs xs:text-sm medium:text-base px-2"
-  />
-  <button
-    type="submit"
-    className="text-gray-200 bg-[#E50913] border border-black px-3 xs:px-4 medium:px-6 py-1.5 medium:py-2 text-xs xs:text-sm medium:text-base rounded-md cursor-pointer"
-  >
-    Subscribe
-  </button>
-</form>
-
+        <div className="relative z-10 flex justify-center w-[90%] xs:w-[85%] medium:w-[70%] large:w-[60%] xl:w-[50%] p-1 bg-white backdrop-blur-md rounded-md">
+          <input
+            type="email"
+            placeholder="Enter email address"
+            className="w-10 flex-1 border-0 outline-none ring-0 focus:ring-0 text-xs xs:text-sm medium:text-base px-2"
+          />
+          <button className="text-gray-200 bg-[#E50913] border border-black px-3 xs:px-4 medium:px-6 py-1.5 medium:py-2 text-xs xs:text-sm medium:text-base rounded-md cursor-pointer">
+            Subscribe
+          </button>
+        </div>
       </section>
 
       <section className="bg-[#111928] md:mx-5">
@@ -116,20 +106,21 @@ const Footer = ({ styles }) => {
             >
               Author Resources
             </Link>
-            <Link
-              href="https://itanglobalpublishing.substack.com/"
-              target="_blank"
-              className="cursor-pointer hover:text-[#EF5353]"
-            >
+            <Link href="/blog" className="cursor-pointer hover:text-[#EF5353]">
               Blog
             </Link>
-            <Link
+            <a
               href="mailto:support@itan.app"
               aria-label="Contact support via email"
               className="cursor-pointer hover:text-[#EF5353]"
+              onClick={(e) => {
+                // For debugging only
+                console.log("Email link clicked");
+                // Don't prevent default - let browser handle mailto
+              }}
             >
               Help Center
-            </Link>
+            </a>
             <Link
               href="/content-policy"
               target="_blank"
@@ -144,13 +135,13 @@ const Footer = ({ styles }) => {
             >
               Youtube
             </Link>
-            <Link
-              href="#"
-              target="_blank"
+            <a
+              href="mailto:support@itan.app"
+              aria-label="Contact support via email"
               className="cursor-pointer hover:text-[#EF5353]"
             >
               Contact
-            </Link>
+            </a>
           </div>
         </div>
 
@@ -206,14 +197,18 @@ const Footer = ({ styles }) => {
               >
                 Author Resources
               </Link>
-              <Link
+              <a
                 href="mailto:support@itan.app"
-                target="_blank"
                 aria-label="Contact support via email"
                 className="cursor-pointer hover:text-[#EF5353]"
+                onClick={(e) => {
+                  // For debugging only
+                  console.log("Mobile email link clicked");
+                  // Don't prevent default - let browser handle mailto
+                }}
               >
                 Help Center
-              </Link>
+              </a>
               <Link
                 href="https://www.youtube.com/@itanIGP"
                 target="_blank"
@@ -222,15 +217,13 @@ const Footer = ({ styles }) => {
                 Youtube
               </Link>
               <Link
-                href="https://itanglobalpublishing.substack.com/"
-                target="_blank"
+                href="/blog"
                 className="cursor-pointer hover:text-[#EF5353]"
               >
                 Blog
               </Link>
               <Link
-                href="#"
-                target="_blank"
+                href="/help"
                 className="cursor-pointer hover:text-[#EF5353]"
               >
                 Contact

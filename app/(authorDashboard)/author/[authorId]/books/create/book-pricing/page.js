@@ -31,6 +31,10 @@ async function directUploadFile(file) {
 
   try {
     const checksum = await computeChecksum(file);
+    
+    console.log("Requesting direct upload for:", file.name);
+    console.log("API Base URL:", process.env.NEXT_PUBLIC_API_BASE_URL);
+    
     const response = await api.post("/direct_uploads", {
       blob: {
         filename: file.name,
@@ -40,11 +44,16 @@ async function directUploadFile(file) {
       },
     });
 
+    console.log("Direct upload response:", response.data);
+
     const { signed_id, direct_upload } = response.data;
 
     if (!direct_upload?.url) {
-      throw new Error("Invalid direct upload response");
+      console.error("Invalid direct upload response:", response.data);
+      throw new Error("Invalid direct upload response - missing URL");
     }
+
+    console.log("Attempting S3 upload to:", direct_upload.url);
 
     const uploadResponse = await fetch(direct_upload.url, {
       method: "PUT",
@@ -58,13 +67,22 @@ async function directUploadFile(file) {
 
     if (!uploadResponse.ok) {
       const errorText = await uploadResponse.text();
-      throw new Error(`S3 upload failed: ${errorText}`);
+      console.error("S3 upload error:", errorText);
+      throw new Error(`S3 upload failed: ${uploadResponse.status} ${errorText}`);
     }
 
     console.log(`✅ Successfully uploaded ${file.name} to S3`);
     return signed_id;
   } catch (error) {
     console.error("Direct upload failed:", error);
+    
+    // Provide more specific error messages
+    if (error.response?.status === 401) {
+      throw new Error("Authentication failed. Please sign in again.");
+    } else if (error.message?.includes("Failed to fetch")) {
+      throw new Error("Network error. Please check your connection and try again.");
+    }
+    
     throw error;
   }
 }
@@ -179,7 +197,23 @@ export default function BookPricing() {
       }
     } catch (error) {
       console.error("Upload failed:", error);
-      alert(error.message || "Upload failed. Please try again.");
+      
+      // Provide user-friendly error messages
+      let errorMessage = "Upload failed. Please try again.";
+      
+      if (error.message?.includes("Authentication failed")) {
+        errorMessage = "Authentication failed. Please sign in again and try uploading.";
+      } else if (error.message?.includes("Network error")) {
+        errorMessage = "Network connection error. Please check your internet and try again.";
+      } else if (error.response?.status === 401) {
+        errorMessage = "Session expired. Please sign in again.";
+      } else if (error.message?.includes("S3 upload failed")) {
+        errorMessage = "File upload to storage failed. Please try again.";
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
+      alert(errorMessage);
     } finally {
       setUploading(false);
     }

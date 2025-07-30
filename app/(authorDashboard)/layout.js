@@ -17,16 +17,19 @@ import {
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { getAuthorProfile } from "@/utils/auth/authorApi";
+import { useAuthor } from "@/context/AuthorContext";
 
 export default function AuthorDashboardLayout({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [openSales, setOpenSales] = useState(false);
   const [authorId, setAuthorId] = useState(null);
-  const [profile, setProfile] = useState({});
   const sidebarRef = useRef(null);
   const pathName = usePathname();
   const router = useRouter();
+
+  // Use global author context
+  const { profile, loading, error, fetchProfile, isAuthenticated } =
+    useAuthor();
 
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem("authorInfo") || "{}");
@@ -35,22 +38,12 @@ export default function AuthorDashboardLayout({ children }) {
       router.push("/author/sign_in");
     } else {
       setAuthorId(stored.id);
-    }
-  }, [router]);
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const { data } = await getAuthorProfile();
-        setProfile(data);
-        console.log("Fetched Profile Data: ", data);
-      } catch (err) {
-        console.error(err);
+      // Fetch profile only if not already loaded and not currently loading
+      if (!profile && !loading) {
+        fetchProfile();
       }
-    };
-
-    fetchProfile();
-  }, []);
+    }
+  }, [router, profile, loading, fetchProfile]);
 
   if (!authorId) {
     return null;
@@ -91,17 +84,21 @@ export default function AuthorDashboardLayout({ children }) {
         } w-full h-16 py-2 shadow-md z-10 bg-white`}
       >
         <div className="flex-1 relative mr-8">
-          <Image
-            width={50}
-            height={50}
-            className={`w-12 h-12 absolute right-0 -top-6 rounded-full bg-slate-400 object-cover ${profile.author_profile_image_url ? "" : "bg-slate-400 p-2"}`}
-            alt="Profile"
-            src={
-              profile.author_profile_image_url
-                ? profile.author_profile_image_url
-                : `/images/avatar.png`
-            }
-          />
+          {loading ? (
+            <div className="w-12 h-12 absolute right-0 -top-6 rounded-full bg-gray-300 animate-pulse"></div>
+          ) : (
+            <Image
+              width={50}
+              height={50}
+              className={`w-12 h-12 absolute right-0 -top-6 rounded-full bg-slate-400 object-cover ${profile?.author_profile_image_url ? "" : "bg-slate-400 p-2"}`}
+              alt="Profile"
+              src={
+                profile?.author_profile_image_url
+                  ? profile?.author_profile_image_url
+                  : `/images/avatar.png`
+              }
+            />
+          )}
         </div>
       </div>
 
