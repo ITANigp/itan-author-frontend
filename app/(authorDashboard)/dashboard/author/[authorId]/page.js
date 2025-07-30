@@ -1,13 +1,13 @@
 "use client";
 
-import React from 'react';
-import Link from 'next/link';
+import React from "react";
+import Link from "next/link";
 
 import { storedAuthorInfo } from "@/utils/storedAuthorInfo";
 
 const AuthorDashboard = () => {
   const { id: authorId } = storedAuthorInfo || {};
-  
+
   if (!authorId) {
     return (
       <p className="lg:ml-72 lg:mt-20 px-4 lg:px-0 py-6">
@@ -16,15 +16,14 @@ const AuthorDashboard = () => {
     );
   }
 
-  
   return (
-    <section className="container">
-      <div className="lg:ml-72 lg:mt-20 px-4 lg:px-0 py-6">
-        <h2 className="font-bold text-2xl mb-6 text-center sm:text-left">
+    <section className="container min-h-[60vh] flex items-center justify-center bg-gradient-to-b from-white to-gray-50">
+      <div className="w-full lg:ml-72 lg:mt-20 px-4 lg:px-0 py-6">
+        <h2 className="font-bold text-2xl mb-6 text-center md:text-left xl:text-left">
           Welcome! What would you like to create?
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 max-w-screen-lg mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-screen-lg mx-auto">
           {[
             {
               title: "E-Books",
@@ -42,9 +41,16 @@ const AuthorDashboard = () => {
             <Link
               key={index}
               href={item.href}
-              className="flex flex-col items-center justify-center p-6 bg-white shadow-md rounded-2xl hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+              className="flex flex-col items-center justify-center p-6 bg-white shadow-md rounded-2xl hover:shadow-xl focus:shadow-2xl transition-shadow duration-300 cursor-pointer border border-gray-100 hover:border-primary-500 focus:border-primary-500 outline-none focus:ring-2 focus:ring-primary-200 group"
+              tabIndex={0}
             >
-              <img src={item.img} alt={item.title} className="w-16 h-16 mb-3" />
+              <div className="flex items-center justify-center w-20 h-20 mb-3 rounded-full bg-gray-50 group-hover:bg-primary-50 transition-colors duration-300">
+                <img
+                  src={item.img}
+                  alt={item.title}
+                  className="w-16 h-16 object-contain"
+                />
+              </div>
               <h5 className="text-lg font-medium text-gray-900 text-center">
                 {item.title}
               </h5>
@@ -54,6 +60,6 @@ const AuthorDashboard = () => {
       </div>
     </section>
   );
-}
+};
 
-export default AuthorDashboard
+export default AuthorDashboard;
