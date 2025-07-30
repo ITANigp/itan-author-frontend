@@ -12,6 +12,16 @@ const BookContent = () => {
   const router = useRouter();
   const [selectedOption, setSelectedOption] = useState("");
   const [errors, setErrors] = useState({});
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploading, setUploading] = useState(false);
+  const [showProgress, setShowProgress] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
+
+  // For cover image upload
+  const [coverUploadProgress, setCoverUploadProgress] = useState(0);
+  const [coverUploading, setCoverUploading] = useState(false);
+  const [showCoverProgress, setShowCoverProgress] = useState(false);
+  const [coverUploadSuccess, setCoverUploadSuccess] = useState(false);
 
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
@@ -64,10 +74,56 @@ const BookContent = () => {
 
   const { id: authorId } = storedAuthorInfo;
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    updateFormData({ [e.target.name]: file });
+    if (e.target.name === "ebook_file") {
+      setUploading(true);
+      setShowProgress(true);
+      setUploadSuccess(false);
+      setUploadProgress(0);
+      try {
+        let percent = 0;
+        const interval = setInterval(() => {
+          percent += 10;
+          setUploadProgress(percent);
+          if (percent >= 100) {
+            clearInterval(interval);
+            setUploading(false);
+            setUploadSuccess(true);
+            updateFormData({ [e.target.name]: file });
+          }
+        }, 100);
+      } catch (err) {
+        setUploading(false);
+        setShowProgress(false);
+        setUploadProgress(0);
+        setUploadSuccess(false);
+      }
+    } else if (e.target.name === "cover_image") {
+      setCoverUploading(true);
+      setShowCoverProgress(true);
+      setCoverUploadSuccess(false);
+      setCoverUploadProgress(0);
+      try {
+        let percent = 0;
+        const interval = setInterval(() => {
+          percent += 10;
+          setCoverUploadProgress(percent);
+          if (percent >= 100) {
+            clearInterval(interval);
+            setCoverUploading(false);
+            setCoverUploadSuccess(true);
+            updateFormData({ [e.target.name]: file });
+          }
+        }, 100);
+      } catch (err) {
+        setCoverUploading(false);
+        setShowCoverProgress(false);
+        setCoverUploadProgress(0);
+        setCoverUploadSuccess(false);
+      }
+    }
   };
 
   const handleEbookButtonClick = () => {
@@ -108,16 +164,42 @@ const BookContent = () => {
       </label>
 
       <div>
-        <div className="bg-[#E50913] hover:bg-[#b70911] w-48 flex items-center justify-center mx-auto h-10 rounded-md mt-6">
+        <div className="bg-[#E50913] hover:bg-[#b70911] w-48 flex items-center justify-center mx-auto h-10 rounded-md mt-6 relative">
           <img
             src="/images/upload-book.png"
             alt="upload book"
             className="w-4 h-4 mx-2"
           />
-          <button className="text-white mr-2" onClick={handleEbookButtonClick}>
-            Upload manuscript
+          <button
+            className="text-white mr-2"
+            onClick={handleEbookButtonClick}
+            disabled={uploading}
+          >
+            {uploading ? "Uploading..." : "Upload manuscript"}
           </button>
         </div>
+        {showProgress && (
+          <div className="w-48 mx-auto mt-2">
+            <div className="flex items-center justify-between mb-1">
+              <span
+                className={`text-xs font-medium ${uploadSuccess ? "text-green-600" : "text-[#E50913]"}`}
+              >
+                {uploadSuccess
+                  ? "Upload complete"
+                  : uploading
+                    ? "Uploading..."
+                    : "Ready to upload"}
+              </span>
+              <span className="text-xs text-gray-500">{uploadProgress}%</span>
+            </div>
+            <div className="h-3 bg-gray-200 rounded-full overflow-hidden border border-gray-200 shadow-sm">
+              <div
+                className={`h-full transition-all duration-300 ${uploadSuccess ? "bg-green-500" : "bg-[#E50913]"}`}
+                style={{ width: `${uploadProgress}%` }}
+              ></div>
+            </div>
+          </div>
+        )}
         {errors.ebook_file && (
           <p className="text-red-500">{errors.ebook_file}</p>
         )}
@@ -191,10 +273,33 @@ const BookContent = () => {
         name="cover_image"
         accept="image/*"
         ref={coverInputRef}
-        // value={formData.cover_image ?? ""}
         onChange={handleFileChange}
         className="border p-2 w-full hidden"
       />
+      {showCoverProgress && (
+        <div className="w-48 mx-auto mt-2">
+          <div className="flex items-center justify-between mb-1">
+            <span
+              className={`text-xs font-medium ${coverUploadSuccess ? "text-green-600" : "text-[#E50913]"}`}
+            >
+              {coverUploadSuccess
+                ? "Upload complete"
+                : coverUploading
+                  ? "Uploading..."
+                  : "Ready to upload"}
+            </span>
+            <span className="text-xs text-gray-500">
+              {coverUploadProgress}%
+            </span>
+          </div>
+          <div className="h-3 bg-gray-200 rounded-full overflow-hidden border border-gray-200 shadow-sm">
+            <div
+              className={`h-full transition-all duration-300 ${coverUploadSuccess ? "bg-green-500" : "bg-[#E50913]"}`}
+              style={{ width: `${coverUploadProgress}%` }}
+            ></div>
+          </div>
+        </div>
+      )}
 
       <div>
         <div className="w-48 flex items-center justify-center mx-auto h-10 rounded-md mt-6 border-2 border-gray-300 hover:bg-gray-100">
