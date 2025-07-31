@@ -11,7 +11,7 @@ const AuthCallback = () => {
     const handleCallback = async () => {
       try {        
         const backendUrl =
-          process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+          process.env.NEXT_PUBLIC_API_URL;
 
         const response = await fetch(`${backendUrl}/api/v1/authors/profile`, {
           method: "GET",
