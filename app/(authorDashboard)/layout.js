@@ -1,9 +1,8 @@
 "use client";
-
-import { useRef, useEffect, useState } from "react";
-import Link from "next/link";
+import React, { useState, useEffect, useRef } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -101,10 +100,6 @@ export default function AuthorDashboardLayout({ children }) {
           )}
         </div>
       </div>
-
-      {isSidebarOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-10 sm:hidden"></div>
-      )}
 
       <aside
         ref={sidebarRef}
