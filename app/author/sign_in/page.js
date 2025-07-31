@@ -65,7 +65,7 @@ const SignIn = () => {
     setGoogleLoading(true);
     localStorage.setItem("oauth_redirect", window.location.href);
 
-    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/authors/auth/google_oauth2`;
+    window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/authors/auth/google_oauth2`;
   };
 
   useEffect(() => {
