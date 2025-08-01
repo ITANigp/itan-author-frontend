@@ -29,7 +29,7 @@ export default function ContactUsPopup() {
         onClick={togglePopup}
         className="fixed bottom-6 right-6 z-50 bg-white text-black border border-black rounded-2xl shadow-lg hover:bg-gray-100 transition-colors duration-300 flex items-center gap-2 px-4 py-2 text-sm"
       >
-        Contact Us
+        Invite an author
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
@@ -54,19 +54,27 @@ export default function ContactUsPopup() {
             <X className="w-4 h-4" />
           </button>
 
-          <p className="text-sm text-gray-700 mb-2">Copy and share this link:</p>
+          <p className="text-sm text-gray-700 mb-2">
+            Copy and share this link:
+          </p>
           <div className="flex items-center justify-between bg-gray-100 rounded px-3 py-2">
             <span className="text-sm text-gray-800 truncate">{shareUrl}</span>
             <button
               onClick={handleCopy}
               className="text-[#E50913] hover:text-red-700 ml-2"
             >
-              {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+              {copied ? (
+                <Check className="w-4 h-4" />
+              ) : (
+                <Copy className="w-4 h-4" />
+              )}
             </button>
           </div>
 
           {copied && (
-            <p className="text-green-600 text-xs mt-1 font-medium">Link copied!</p>
+            <p className="text-green-600 text-xs mt-1 font-medium">
+              Link copied!
+            </p>
           )}
         </div>
       )}

@@ -20,7 +20,7 @@ const AuthorDashboard = () => {
 
   return (
     <section className="relative min-h-[60vh] flex items-center justify-center bg-gradient-to-b from-white to-gray-50 px-4">
-      <div className="w-full max-w-6xl py-6">
+      <div className="w-full max-w-6xl py-6 lg:ml-72 lg:mt-20">
         <h2 className="font-bold text-2xl mb-6 text-center">
           Welcome! What would you like to create?
         </h2>
@@ -61,7 +61,7 @@ const AuthorDashboard = () => {
         </div>
       </div>
       {/* Floating Share Link Button */}
-      <ShareLinkFloatingButton/>
+      <ShareLinkFloatingButton />
     </section>
   );
 };
