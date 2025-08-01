@@ -117,7 +117,7 @@ const BookDetails = () => {
         be separated by a colon. Please double-check spelling, as this field
         cannot be edited after publication.
       </p>
-      <p className="mt-5">Book Title</p>
+      <p className="mt-5">Title</p>
       <input
         type="text"
         // required={!id}
@@ -202,7 +202,7 @@ const BookDetails = () => {
         readers/listeners can learn more about your book.
         <span className="inline-block ml-2">
           <Link
-            href="/author-resources"
+            href="/author-resources#book-description"
             target="_blank"
             className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 underline decoration-dotted underline-offset-2 hover:decoration-solid transition-all duration-200 font-medium"
           >
@@ -314,7 +314,7 @@ const BookDetails = () => {
         novel', 'sci-fi adventure'
         <span className="inline-block ml-2">
           <Link
-            href="/author-resources"
+            href="/author-resources#book-keywords"
             target="_blank"
             className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 underline decoration-dotted underline-offset-2 hover:decoration-solid transition-all duration-200 font-medium"
           >
@@ -387,7 +387,7 @@ const BookDetails = () => {
       <h3 className="font-bold">Tags</h3>
       <span className="inline-block ml-2">
         <Link
-          href="/author-resources"
+          href="/author-resources#book-tags"
           target="_blank"
           className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 underline decoration-dotted underline-offset-2 hover:decoration-solid transition-all duration-200 font-medium"
         >
@@ -424,12 +424,12 @@ const BookDetails = () => {
           </div>
         ))}
       </div>
-      <div className="flex items-center border border-[#929292] w-full max-w-[650px] rounded-md my-8">
+      <div className="flex items-center border border-[#929292] w-full max-w-[650px] rounded-md my-8 flex-nowrap overflow-x-auto">
         <img
           src="/images/add-icon.png"
           alt=""
-          className="h-7 w-7 block ml-[5px] hover:bg-slate-300 p-1 rounded-md cursor-pointer"
-        />{" "}
+          className="h-7 w-7 block ml-[5px] hover:bg-slate-300 p-1 rounded-md cursor-pointer flex-shrink-0"
+        />
         <input
           type="text"
           placeholder={
@@ -445,12 +445,12 @@ const BookDetails = () => {
               handleAddTag();
             }
           }}
-          className="flex-1 outline-none border-none focus:ring-0 focus:outline-none rounded-md placeholder:text-gray-500"
+          className="flex-1 min-w-0 outline-none border-none focus:ring-0 focus:outline-none rounded-md placeholder:text-gray-500"
         />
         <button
           type="button"
           onClick={handleAddTag}
-          className="bg-[#E50913] text-white px-4 py-1 rounded-md text-sm mr-2"
+          className="bg-[#E50913] text-white px-4 py-1 rounded-md text-sm mr-2 flex-shrink-0"
         >
           Add
         </button>
