@@ -4,6 +4,8 @@ import React from "react";
 import Link from "next/link";
 
 import { storedAuthorInfo } from "@/utils/storedAuthorInfo";
+// import ContactUsFloatingButton from "./ContactUsFloattingButton";
+import ShareLinkFloatingButton from './ShareLinkFloatingButton'
 
 const AuthorDashboard = () => {
   const { id: authorId } = storedAuthorInfo || {};
@@ -17,13 +19,13 @@ const AuthorDashboard = () => {
   }
 
   return (
-    <section className="container min-h-[60vh] flex items-center justify-center bg-gradient-to-b from-white to-gray-50">
-      <div className="w-full lg:ml-72 lg:mt-20 px-4 lg:px-0 py-6">
-        <h2 className="font-bold text-2xl mb-6 text-center md:text-left xl:text-left">
+    <section className="relative min-h-[60vh] flex items-center justify-center bg-gradient-to-b from-white to-gray-50 px-4">
+      <div className="w-full max-w-6xl py-6">
+        <h2 className="font-bold text-2xl mb-6 text-center">
           Welcome! What would you like to create?
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-screen-lg mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {[
             {
               title: "E-Books",
@@ -58,6 +60,8 @@ const AuthorDashboard = () => {
           ))}
         </div>
       </div>
+      {/* Floating Share Link Button */}
+      <ShareLinkFloatingButton/>
     </section>
   );
 };

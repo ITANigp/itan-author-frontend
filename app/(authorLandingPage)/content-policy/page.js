@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import ContactUs from "./ContactUs";
 
 const ContentPolicy = () => {
   return (
@@ -349,7 +350,7 @@ const ContentPolicy = () => {
             </div>
 
             {/* Section 10 */}
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <div className="flex items-center mb-3">
                 <div className="bg-[#E50913]/10 text-[#E50913] font-bold rounded-full w-8 h-8 flex items-center justify-center mr-3">
                   10
@@ -384,7 +385,8 @@ const ContentPolicy = () => {
                   </Link>
                 </div>
               </div>
-            </div>
+            </div> */}
+            <ContactUs />
 
             {/* Document Version Footer */}
             <div className="mt-16 pt-6 border-t border-gray-200">
