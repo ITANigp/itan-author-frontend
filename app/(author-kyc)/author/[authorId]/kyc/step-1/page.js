@@ -55,9 +55,19 @@ const KycStep1 = () => {
         await fetchProfile(); // update preview from backend
       }
 
-      await api.patch("/authors/kyc/update-step", {
+      // Debug the request payload and authentication
+      console.log("🔍 About to send KYC update request:", {
+        payload: { author: { kyc_step: 1 } },
+        baseURL: api.defaults.baseURL,
+        withCredentials: api.defaults.withCredentials,
+        cookies: typeof document !== "undefined" ? document.cookie : "No document",
+      });
+
+      const kycResponse = await api.patch("/authors/kyc/update-step", {
         author: { kyc_step: 1 },
       });
+
+      console.log("✅ KYC update successful:", kycResponse.data);
 
       const { data: author } = await api.get("/authors/profile");
       router.push(

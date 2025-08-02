@@ -9,8 +9,9 @@ const AuthCallback = () => {
 
   useEffect(() => {
     const handleCallback = async () => {
-      try {
-        const backendUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+      try {        
+        const backendUrl =
+          process.env.NEXT_PUBLIC_API_BASE_URL;
 
         const response = await fetch(`${backendUrl}/authors/profile`, {
           method: "GET",
