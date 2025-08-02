@@ -55,27 +55,34 @@ const KycStep1 = () => {
         await fetchProfile(); // update preview from backend
       }
 
-      // Debug the request payload and authentication
-      console.log("🔍 About to send KYC update request:", {
-        payload: { author: { kyc_step: 1 } },
-        baseURL: api.defaults.baseURL,
-        withCredentials: api.defaults.withCredentials,
-        cookies: typeof document !== "undefined" ? document.cookie : "No document",
-      });
+      try {
+        const kycResponse = await api.patch("/authors/kyc/update-step", {
+          author: { kyc_step: 1 },
+        });
 
-      const kycResponse = await api.patch("/authors/kyc/update-step", {
-        author: { kyc_step: 1 },
-      });
-
-      console.log("✅ KYC update successful:", kycResponse.data);
+        console.log("✅ KYC update successful:", kycResponse.data);
+      } catch (kycError) {
+        throw kycError; // Re-throw to be caught by outer catch
+      }
 
       const { data: author } = await api.get("/authors/profile");
       router.push(
         `/author/${author?.data?.id}/kyc/step-${author?.data?.kyc_step + 1}`
       );
     } catch (err) {
-      console.error("Upload or KYC step failed:", err?.response?.data || err);
-      alert("Something went wrong while uploading. Please try again.");
+      console.error(
+        "Upload or KYC step failed:",
+        err?.response?.data || err?.message || err
+      );
+
+      // More user-friendly error message
+      const errorMessage =
+        err?.response?.data?.error ||
+        err?.response?.data?.message ||
+        err?.message ||
+        "Something went wrong while uploading. Please try again.";
+
+      alert(`Error: ${errorMessage}`);
     } finally {
       setUploading(false);
       setEditing(false);
