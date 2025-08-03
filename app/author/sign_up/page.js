@@ -3,9 +3,13 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
+import toast from "react-hot-toast";
+
 import { registerAuthor } from "@/utils/auth/authorApi";
 import ReCAPTCHA from "react-google-recaptcha";
-import { useEffect } from "react";
+import ErrorModal from "@/components/ErrorModal";
 
 const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
@@ -16,6 +20,8 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [password_confirmation, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -34,6 +40,8 @@ const SignUp = () => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
+    setModalMessage("");
+    setShowErrorModal(false);
 
     try {
       const author = await registerAuthor(
@@ -44,7 +52,9 @@ const SignUp = () => {
         // password_confirmation
       );
       if (author?.data?.id) {
-        setMessage("Registration successful! You can now log in.");
+        toast.success(
+          "Account created successfully! Please check your email to confirm your account."
+        );
         router.push("/author/sign_in");
       }
     } catch (error) {
