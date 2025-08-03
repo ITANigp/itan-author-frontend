@@ -53,15 +53,27 @@ const SignUp = () => {
       );
       if (author?.data?.id) {
         toast.success(
-          "Account created successfully! Please check your email to confirm your account."
+          "Please check your email to confirm your account.",
+          {
+            duration: 15000,
+          }
         );
         router.push("/author/sign_in");
       }
     } catch (error) {
-      setMessage(
-        error.response?.data?.message ||
-          "Registration failed. Please try again."
-      );
+       const errorMessage =
+         error.response?.data?.status?.message ||
+         "Registration failed. Please try again.";
+
+       // Check for the specific error message from the screenshot
+       if (errorMessage.includes("Email has already been taken")) {
+         setModalMessage(
+           "An account with this email already exists. Please log in or use a different email address."
+         );
+         setShowErrorModal(true);
+       } else {
+         setMessage(errorMessage);
+       }
     } finally {
       setLoading(false);
     }
@@ -208,6 +220,13 @@ const SignUp = () => {
           )}
         </form>
       </section>
+
+      <ErrorModal
+        show={showErrorModal}
+        onClose={() => setShowErrorModal(false)}
+        title="Email Already Registered"
+        message={modalMessage}
+      />
     </main>
   );
 };
