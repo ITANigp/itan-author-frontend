@@ -28,6 +28,8 @@ const BookContent = () => {
 
   const ebookInputRef = useRef();
   const coverInputRef = useRef();
+  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.3.31/pdf.worker.min.js`;
+
 
   // useEffect(() => {
   //   const savedData = localStorage.getItem("bookFormData");
@@ -77,55 +79,48 @@ const BookContent = () => {
   const handleFileChange = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
     if (e.target.name === "ebook_file") {
       setUploading(true);
       setShowProgress(true);
       setUploadSuccess(false);
       setUploadProgress(0);
       try {
-        let percent = 0;
-        const interval = setInterval(() => {
-          percent += 10;
-          setUploadProgress(percent);
-          if (percent >= 100) {
-            clearInterval(interval);
-            setUploading(false);
-            setUploadSuccess(true);
-            updateFormData({ [e.target.name]: file });
-          }
-        }, 100);
+        // Read PDF and extract page count
+        const fileReader = new FileReader();
+        fileReader.onload = async function () {
+          const typedArray = new Uint8Array(this.result);
+          const pdf = await pdfjsLib.getDocument({ data: typedArray }).promise;
+          const pageCount = pdf.numPages;
+
+          let percent = 0;
+          const interval = setInterval(() => {
+            percent += 10;
+            setUploadProgress(percent);
+            if (percent >= 100) {
+              clearInterval(interval);
+              setUploading(false);
+              setUploadSuccess(true);
+
+              // Save both file and page count to formData
+              updateFormData({
+                [e.target.name]: file,
+                total_pages: pageCount,
+              });
+            }
+          }, 100);
+        };
+        fileReader.readAsArrayBuffer(file);
       } catch (err) {
+        console.error("Failed to extract page count:", err);
         setUploading(false);
         setShowProgress(false);
         setUploadProgress(0);
         setUploadSuccess(false);
       }
-    } else if (e.target.name === "cover_image") {
-      setCoverUploading(true);
-      setShowCoverProgress(true);
-      setCoverUploadSuccess(false);
-      setCoverUploadProgress(0);
-      try {
-        let percent = 0;
-        const interval = setInterval(() => {
-          percent += 10;
-          setCoverUploadProgress(percent);
-          if (percent >= 100) {
-            clearInterval(interval);
-            setCoverUploading(false);
-            setCoverUploadSuccess(true);
-            updateFormData({ [e.target.name]: file });
-          }
-        }, 100);
-      } catch (err) {
-        setCoverUploading(false);
-        setShowCoverProgress(false);
-        setCoverUploadProgress(0);
-        setCoverUploadSuccess(false);
-      }
     }
-  };
 
+  };
   const handleEbookButtonClick = () => {
     ebookInputRef.current?.click();
   };

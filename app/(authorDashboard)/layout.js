@@ -105,7 +105,7 @@ export default function AuthorDashboardLayout({ children }) {
       </div>
 
       <div
-        className={`lg:flex items-center justify-between ${
+        className={`lg:flex items-center justify-between bg-white ${
           isRegPage ? "hidden" : "fixed top-0 left-0"
         } w-full h-16 py-2 shadow-md z-10`}
       >

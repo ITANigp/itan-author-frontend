@@ -100,7 +100,7 @@ export default function AuthorBooks() {
   if (loading) return <p>Loading books...</p>;
 
   return (
-    <section className="lg:ml-72 sm:mr-8 sm:mt-24 mb-8 lg:container lg:mx-auto">
+    <section className="lg:ml-72 sm:mr-8 mt-24 mb-8 lg:container lg:mx-auto">
       {books.length === 0 ? (
         <div className="flex flex-col items-center justify-center text-center py-10 space-y-4 text-gray-600 lg:-ml-52">
           <Image

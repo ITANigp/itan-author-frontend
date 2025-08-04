@@ -63,7 +63,7 @@ const BookPage = () => {
   const displayLength = total_pages ? `${total_pages} Pages` : "N/A";
   
   return (
-    <div className="md:p-4 lg:ml-64  lg:mt-24">
+    <div className="md:p-4 lg:ml-64  mt-24">
       <div className="sm:flex sm:space-x-4">
         <div className="">
           {cover_image_url && (
@@ -119,7 +119,7 @@ const BookPage = () => {
           </div>
           <div className="border-0 border-r-2">
             <strong>UBID</strong>
-            <p>{"ubid"}</p>
+            <p>{unique_book_id}</p>
           </div>
           <div className="border-0 border-r-2">
             <strong>LENGTH</strong>
