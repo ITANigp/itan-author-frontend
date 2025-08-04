@@ -59,18 +59,6 @@ const BankingDetailsCard = ({ bankingDetails }) => {
               {account_number}
             </p>
           </div>
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <p className="text-sm font-medium text-gray-500">Currency</p>
-            <p className="mt-1 text-lg font-semibold">{currency}</p>
-          </div>
-          <div className="bg-gray-50 p-4 rounded-lg md:col-span-2">
-            <p className="text-sm font-medium text-gray-500">
-              Verification Status
-            </p>
-            <p className="mt-1 text-lg font-semibold">
-              Verified on {formatDate(verified_at)}
-            </p>
-          </div>
         </div>
 
         {/* Optional: Add a note or footer */}
