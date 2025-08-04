@@ -56,15 +56,25 @@ export const AuthorProvider = ({ children }) => {
     setError(null);
   };
 
-  // Check for stored author info on mount
+  // Only fetch profile on authenticated/protected pages
   useEffect(() => {
+    // Only run in browser
+    if (typeof window === "undefined") return;
     const stored = localStorage.getItem("authorInfo");
-    if (stored) {
+    const pathname = window.location.pathname;
+    // List of protected routes (customize as needed)
+    const isProtectedRoute = [
+      "/author",
+      "/dashboard",
+      "/admin",
+      "/reader",
+    ].some((route) => pathname.startsWith(route));
+
+    if (stored && isProtectedRoute) {
       try {
         const authorInfo = JSON.parse(stored);
         if (authorInfo.id) {
           setIsAuthenticated(true);
-          // Only fetch profile if we don't already have it
           if (!profile) {
             fetchProfile();
           }
@@ -74,7 +84,7 @@ export const AuthorProvider = ({ children }) => {
         localStorage.removeItem("authorInfo");
       }
     }
-  }, []);
+  }, [profile]);
 
   const contextValue = {
     profile,

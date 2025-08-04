@@ -1,9 +1,8 @@
 "use client";
-
-import { useRef, useEffect, useState } from "react";
-import Link from "next/link";
+import React, { useState, useEffect, useRef } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -31,6 +30,23 @@ export default function AuthorDashboardLayout({ children }) {
   const { profile, loading, error, fetchProfile, isAuthenticated } =
     useAuthor();
 
+  // This useEffect handles click-outside-to-close for the sidebar on mobile/tablet.
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target) &&
+        isSidebarOpen
+      ) {
+        setIsSidebarOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [isSidebarOpen]);
+
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem("authorInfo") || "{}");
     if (!stored?.id) {
@@ -49,7 +65,7 @@ export default function AuthorDashboardLayout({ children }) {
     return null;
   }
 
-  const isDashboard = pathName.startsWith("/dashboard/author/")
+  const isDashboard = pathName.startsWith(`/dashboard/author/${authorId}`)
     ? "text-[#E50913]"
     : "text-gray-300";
   const isBookDetails = pathName.endsWith("/books/create/book-details");
@@ -69,19 +85,29 @@ export default function AuthorDashboardLayout({ children }) {
   };
 
   return (
-    <div className="">
-      <button onClick={toggleSidebar} className="lg:hidden text-gray-700">
-        <FontAwesomeIcon
-          icon={isSidebarOpen ? faTimes : faBars}
-          size="sm"
-          className="right-0 top-0 ml-3 mt-2 p-1 cursor-pointer text-white bg-slate-700 rounded-full"
-        />
-      </button>
+    <div className="relative min-h-screen">
+      {/* Overlay to close sidebar on mobile */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black opacity-50 lg:hidden z-30"
+          onClick={toggleSidebar}
+        ></div>
+      )}
+
+      {/* Menu Icon for Mobile/Tablet */}
+      <div className={`fixed top-4 left-4 z-50 lg:hidden`}>
+        <button
+          onClick={toggleSidebar}
+          className="py-1 px-2 text-gray-700 bg-slate-50 rounded-md shadow-md"
+        >
+          <FontAwesomeIcon icon={faBars} size="sm" className="text-gray-900" />
+        </button>
+      </div>
 
       <div
-        className={`lg:flex hidden items-center justify-between ${
+        className={`lg:flex items-center justify-between bg-white ${
           isRegPage ? "hidden" : "fixed top-0 left-0"
-        } w-full h-16 py-2 shadow-md z-10 bg-white`}
+        } w-full h-16 py-2 shadow-md z-10`}
       >
         <div className="flex-1 relative mr-8">
           {loading ? (
@@ -90,7 +116,7 @@ export default function AuthorDashboardLayout({ children }) {
             <Image
               width={50}
               height={50}
-              className={`w-12 h-12 absolute right-0 -top-6 rounded-full bg-slate-400 object-cover ${profile?.author_profile_image_url ? "" : "bg-slate-400 p-2"}`}
+              className={`lg:w-12 lg:h-12 h-10 w-10 absolute lg:right-0 -right-4 top-1 lg:-top-6 rounded-full bg-slate-400 object-cover ${profile?.author_profile_image_url ? "" : "bg-slate-400 p-2"}`}
               alt="Profile"
               src={
                 profile?.author_profile_image_url
@@ -102,34 +128,28 @@ export default function AuthorDashboardLayout({ children }) {
         </div>
       </div>
 
-      {isSidebarOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-10 sm:hidden"></div>
-      )}
-
       <aside
         ref={sidebarRef}
-        className={`fixed top-0 left-0 z-40 w-64 pt-6 h-full bg-gray-900 text-white transition-transform ${
+        className={`fixed top-0 left-0 z-50 w-64 pt-6 h-full bg-gray-900 text-white transition-transform duration-300 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0 sm:block`}
+        } lg:translate-x-0`}
         aria-label="Sidebar"
       >
-        <div className="w-full relative">
-          <button onClick={toggleSidebar} className="lg:hidden text-gray-700">
-            <FontAwesomeIcon
-              icon={isSidebarOpen ? faTimes : faBars}
-              className="hover:bg-red-100 hover:border-2 w-4 h-4 rounded-full hover:border-red-600 text-red-600 absolute right-3 top-2"
-            />
+        <div className="w-full relative z-50 flex items-center justify-between px-4">
+          <Link href="/">
+            <img src="/images/logo.png" className="w-16 ml-3" alt="Logo" />
+          </Link>
+          <button onClick={toggleSidebar} className="lg:hidden p-2 text-white">
+            <FontAwesomeIcon icon={faTimes} className="text-lg" />
           </button>
         </div>
-        <div className="h-full px-4 py-4 overflow-y-auto bg-gray-900 dark:bg-gray-800">
-          <Link href="/">
-            <img src="/images/logo.png" className="w-16 mb-8 ml-3" alt="Logo" />
-          </Link>
+        <div className="h-full px-4 py-4 mt-8 overflow-y-auto bg-gray-900">
           <ul className="space-y-2 font-medium">
             <li>
               <Link
                 href={`/dashboard/author/${authorId}`}
                 className="flex items-center p-2 text-[#C5C5C5] rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                onClick={() => setIsSidebarOpen(false)} // Close sidebar on click
               >
                 <FontAwesomeIcon
                   icon={faChartPie}
@@ -146,6 +166,7 @@ export default function AuthorDashboardLayout({ children }) {
               <Link
                 href={`/author/${authorId}/books/create/book-details`}
                 className="flex items-center p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                onClick={() => setIsSidebarOpen(false)} // Close sidebar on click
               >
                 <FontAwesomeIcon
                   icon={faUpload}
@@ -162,6 +183,7 @@ export default function AuthorDashboardLayout({ children }) {
               <Link
                 href={`/author/${authorId}/books`}
                 className="flex items-center p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                onClick={() => setIsSidebarOpen(false)} // Close sidebar on click
               >
                 <FontAwesomeIcon
                   icon={faClipboard}
@@ -182,11 +204,11 @@ export default function AuthorDashboardLayout({ children }) {
                 </span>
               </Link>
             </li>
+            {/* Sales Dropdown */}
             <li>
-              <Link
-                href="#"
+              <button
                 onClick={() => setOpenSales(!openSales)}
-                className="flex justify-between items-center p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex justify-between w-full items-center p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <div>
                   <FontAwesomeIcon
@@ -200,8 +222,8 @@ export default function AuthorDashboardLayout({ children }) {
                 <ChevronRight
                   className={`transition-transform duration-300 group-hover:text-[#E50913] ${openSales ? "rotate-90" : "rotate-0"}`}
                 />
-              </Link>
-              {/* Dropdown */}
+              </button>
+              {/* Dropdown content */}
               <div
                 className={`${openSales ? "block" : "hidden"} ml-10 mt-1 space-y-1`}
               >
@@ -209,22 +231,26 @@ export default function AuthorDashboardLayout({ children }) {
                   <Link
                     href="/author/analytics"
                     className="text-[#C5C5C5] hover:text-[#E50913] cursor-pointer"
+                    onClick={() => setIsSidebarOpen(false)} // Close sidebar on click
                   >
                     Analytics
                   </Link>
                   <Link
                     href="/author/withdrawal"
                     className="text-[#C5C5C5] hover:text-[#E50913] cursor-pointer mt-4"
+                    onClick={() => setIsSidebarOpen(false)} // Close sidebar on click
                   >
                     Withdrawal
                   </Link>
                 </div>
               </div>
             </li>
+            {/* ... (other menu items) */}
             <li>
               <Link
                 href="/help"
                 className="flex items-center p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                onClick={() => setIsSidebarOpen(false)}
               >
                 <FontAwesomeIcon
                   icon={faQuestionCircle}
@@ -239,13 +265,14 @@ export default function AuthorDashboardLayout({ children }) {
               <Link
                 href={`/author/${authorId}/profile`}
                 className="flex items-center p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                onClick={() => setIsSidebarOpen(false)}
               >
                 <FontAwesomeIcon
                   icon={faUser}
                   className="text-gray-300 text-lg group-hover:text-[#E50913]"
                 />
                 <span className="ml-2 text-[#C5C5C5] group-hover:text-[#E50913]">
-                  Profile
+                  Account
                 </span>
               </Link>
             </li>

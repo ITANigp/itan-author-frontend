@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Bricolage_Grotesque } from "next/font/google";
+// import { Bricolage_Grotesque } from "next/font/google";
 
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,12 +13,12 @@ import {
   faInstagram,
 } from "@fortawesome/free-brands-svg-icons";
 
-const bricolage = Bricolage_Grotesque({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  style: ["normal"],
-  display: "swap",
-});
+// const bricolage = Bricolage_Grotesque({
+  // subsets: ["latin"],
+  // weight: ["400", "500", "600", "700"],
+  // style: ["normal"],
+  // display: "swap",
+// });
 
 const Footer = ({ styles }) => {
   const pathname = usePathname();

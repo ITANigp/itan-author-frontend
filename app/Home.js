@@ -101,7 +101,7 @@ const Home = () => {
         </div>
 
         {/* Enhanced subtle texture overlay */}
-        <div className="absolute inset-0 bg-[url('/images/subtle-paper-texture.png')] opacity-10 mix-blend-overlay pointer-events-none"></div>
+        {/* <div className="absolute inset-0 bg-[url('/images/subtle-paper-texture.png')] opacity-10 mix-blend-overlay pointer-events-none"></div> */}
       </section>
 
       <div className="flex justify-center px-2">
@@ -147,7 +147,7 @@ const Home = () => {
       {/* Blue section */}
       <div className="relative overflow-hidden bg-[#111928] mt-12 lg:py-24 py-10">
         {/* Texture Overlay */}
-        <div className="absolute inset-0 bg-[url('/images/subtle-paper-texture.png')] opacity-5 mix-blend-overlay pointer-events-none"></div>
+        <div className="absolute inset-0 opacity-5 mix-blend-overlay pointer-events-none"></div>
 
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
           <FadeIn delay={0.1} direction="up" distance={10} duration={0.7}>

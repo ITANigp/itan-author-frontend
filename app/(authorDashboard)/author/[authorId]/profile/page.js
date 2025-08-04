@@ -10,6 +10,7 @@ import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import FormModal from "@/components/ProfileFormModal";
 import directUploadFile from "@/utils/updateAuthorImg";
 import { getAuthorProfile, api } from "@/utils/auth/authorApi";
+import { storedAuthorInfo } from "@/utils/storedAuthorInfo";
 
 const Profile = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -22,6 +23,7 @@ const Profile = () => {
   const [uploading, setUploading] = useState(false);
   const inputRef = useRef(null);
   const router = useRouter();
+  const { id: authorId } = storedAuthorInfo || {};
 
   useEffect(() => {
     fetchProfile();
@@ -89,7 +91,8 @@ const Profile = () => {
         <div className="flex justify-between lg:hidden">
           <FontAwesomeIcon
             icon={faChevronLeft}
-            onClick={() => router.back()}
+            // onClick={() => router.push("/")}
+           onClick={() => router.push(`/dashboard/author/${authorId}`)}
             className="ml-3 p-2 py-1 rounded-md cursor-pointer hover:bg-gray-400"
           />
           <h2 className="font-bold text-xl mb-5">Profile</h2>

@@ -7,10 +7,13 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 import { signInAuthor } from "@/utils/auth/authorApi";
-import { useAuthor } from "@/context/AuthorContext";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+console.log('env data:',process.env);
+
+console.log("RECAPTCHA KEY:", process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY);
+
 
 const SignIn = () => {
   const [captchaToken, setCaptchaToken] = useState("");
@@ -22,7 +25,6 @@ const SignIn = () => {
   const [googleLoading, setGoogleLoading] = useState(false);
 
   const router = useRouter();
-  const { fetchProfile, clearProfile } = useAuthor();
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -38,15 +40,19 @@ const SignIn = () => {
         author.status.requires_verification == true
       ) {
         router.push("/auth/mfa/verify");
+        return;
       }
 
       if (author?.data?.id) {
         localStorage.setItem("authorInfo", JSON.stringify(author.data));
-
-        // Fetch the profile data after successful login
-        await fetchProfile();
-
-        router.push(`/dashboard/author/${author.data.id}`);
+        // Check for kyc_step in response and redirect accordingly
+        console.log("authorInfo: ", author.data);
+        const kycStep = author?.data?.kyc_step;
+        if (kycStep < 3) {
+          router.push(`/author/${author?.data?.id}/kyc/step-${kycStep + 1}`);
+        } else {
+          router.push(`/dashboard/author/${author?.data?.id}`);
+        }
         toast.success("Logged in successfully");
       }
     } catch (error) {
@@ -63,7 +69,7 @@ const SignIn = () => {
     setGoogleLoading(true);
     localStorage.setItem("oauth_redirect", window.location.href);
 
-    window.location.href = `http://localhost:3000/api/v1/authors/auth/google_oauth2`;
+    window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL}/authors/auth/google_oauth2`;
   };
 
   useEffect(() => {
@@ -148,7 +154,6 @@ const SignIn = () => {
             />
           </div>
 
-          {/* reCAPTCHA placed BEFORE the submit button */}
           <div className="my-4">
             <div className="w-full overflow-hidden">
               <div className="transform scale-75 sm:scale-90 md:scale-100 origin-left w-full">
@@ -177,7 +182,7 @@ const SignIn = () => {
             <button
               type="submit"
               disabled={loading || !captchaToken}
-              className={`${
+              className={`$
                 loading || !captchaToken
                   ? "cursor-not-allowed"
                   : "cursor-pointer"

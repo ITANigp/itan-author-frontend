@@ -9,26 +9,28 @@ const layout = ({ children }) => {
   const isPage2 = pathname.endsWith("/books/create/book-content");
   const isPage3 = pathname.endsWith("/books/create/book-pricing");
   return (
-    <div className="mx-2  lg:pl-[270px]  lg:mt-24">
+    <div className="mx-2  lg:pl-[270px]  mt-24">
       {/* <div className="w-full flex justify-center">
         <div className="w-full max-w-[800px]"> */}
-      <h3 className="font-semibold text-lg mb-3">Add an Ebook</h3>
+      <h3 className="font-semibold text-lg mb-3 mt-6">Add an Ebook</h3>
 
       <div className="lg:hidden relative">
         <p className="text-[#B6B6B6] w-full max-w-[900px] border-dashed border-0 border-t-2 border-gray-400" />
         <div className="absolute -bottom-3 w-full max-w-[900px]">
           <div className="flex justify-between">
             <p
-              className={`h-6 w-6 rounded-full ${isPage2 || isPage3 ? "bg-[#E50913]" : "bg-[#B6B6B6]"} text-white flex items-center justify-center`}
+              className={`h-6 w-6 rounded-full ${isPage1 ? "bg-[#E50913]" : "bg-[#B6B6B6]"} text-white flex items-center justify-center`}
             >
               1
             </p>
             <p
-              className={`h-6 w-6 rounded-full ${isPage3 ? "bg-[#E50913]" : "bg-[#B6B6B6]"} text-white flex items-center justify-center`}
+              className={`h-6 w-6 rounded-full ${isPage2 ? "bg-[#E50913]" : "bg-[#B6B6B6]"} text-white flex items-center justify-center`}
             >
               2
             </p>
-            <p className="h-6 w-6 rounded-full bg-[#B6B6B6] text-white flex items-center justify-center">
+            <p
+              className={`h-6 w-6 rounded-full ${isPage3 ? "bg-[#E50913]" : "bg-[#B6B6B6]"} text-white flex items-center justify-center`}
+            >
               3
             </p>
           </div>
