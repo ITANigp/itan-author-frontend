@@ -10,6 +10,10 @@ import { signInAuthor } from "@/utils/auth/authorApi";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+console.log('env data:',process.env);
+
+console.log("RECAPTCHA KEY:", process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY);
+
 
 
 const SignIn = () => {

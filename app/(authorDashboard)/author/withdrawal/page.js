@@ -1,18 +1,28 @@
 "use client";
 
 import { useState, useEffect } from "react";
-
-import { Plus, Wallet } from "lucide-react";
-
+import { Plus, Wallet, Banknote } from "lucide-react"; // Added Banknote icon
 import { api } from "@/utils/auth/authorApi";
 import { getPaymentSummary } from "@/utils/payment";
 
+// Define the shape of the banking details object for clarity
+const emptyBankingDetails = {
+  bank_name: "",
+  bank_code: "",
+  account_number: "",
+  account_name: "",
+  currency: "",
+  verified_at: null,
+};
 
 export default function WalletPage() {
   const [showModal, setShowModal] = useState(false);
+  const [currentBankingDetails, setCurrentBankingDetails] =
+    useState(emptyBankingDetails);
+  const [loadingCurrentDetails, setLoadingCurrentDetails] = useState(true);
 
   const [banks, setBanks] = useState([]);
-  const [balance, setBalance] = useState(0)
+  const [balance, setBalance] = useState(0);
 
   /** FORM DATA */
   const [bankCode, setBankCode] = useState("");
@@ -26,24 +36,43 @@ export default function WalletPage() {
   /** UX FLAGS */
   const [loadingBanks, setLoadingBanks] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [verifying, setVerifying] = useState(false); // New state for verification loading
+  const [verifying, setVerifying] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  
-useEffect(() => {
-  const fetchBalance = async () => {
-    try {
-      const data = await getPaymentSummary();
-      setBalance(data?.earnings_summary || 0);
-    } catch (err) {
-      console.error("Failed to fetch balance:", err);
-    }
-  };
+  /* ── Initial Data Fetching on Component Load ────────────────── */
+  useEffect(() => {
+    // Function to fetch the user's current banking details
+    const fetchCurrentBankingDetails = async () => {
+      setLoadingCurrentDetails(true);
+      try {
+        const res = await api.get(
+          "/author/banking_details",
+        );
 
-  fetchBalance();
-}, []);
+        setCurrentBankingDetails(res.data);
+      } catch (err) {
+        console.error("Failed to fetch current banking details:", err.message);
+      } finally {
+        setLoadingCurrentDetails(false);
+      }
+    };
 
+    // Function to fetch the user's balance summary
+    const fetchBalance = async () => {
+      try {
+        const data = await getPaymentSummary();
+        setBalance(data?.earnings_summary || 0);
+      } catch (err) {
+        console.error("Failed to fetch balance:", err);
+      }
+    };
+
+    fetchCurrentBankingDetails();
+    fetchBalance();
+  }, []); // Empty dependency array means this runs once on mount
+
+  /* ── Fetch banks when modal is opened ───────────────────────── */
   useEffect(() => {
     if (!showModal) return;
 
@@ -82,7 +111,6 @@ useEffect(() => {
 
       try {
         const res = await api.post(
-          // "/author/banking_details/verify",
           "/author/banking_details/verify_account_preview",
           {
             bank_code: bankCode,
@@ -93,7 +121,7 @@ useEffect(() => {
 
         if (res.data?.success) {
           setVerifiedAccountName(res.data.account_name);
-          setAccountName(res.data.account_name); 
+          setAccountName(res.data.account_name);
         } else {
           setVerificationError(
             res.data?.message || "Account verification failed."
@@ -144,7 +172,6 @@ useEffect(() => {
     }
 
     try {
-      // Find the selected bank object by bankCode
       const selectedBank = banks.find((b) => b.code === bankCode);
 
       const res = await api.put(
@@ -163,7 +190,9 @@ useEffect(() => {
 
       if (res.data?.success) {
         setMessage(res.data.message || "Banking details updated!");
-        setShowModal(false); // Optionally close the modal
+        setShowModal(false);
+        // On successful update, re-fetch the current details to refresh the UI
+        setCurrentBankingDetails(res.data.banking_detail);
       } else {
         console.log("Bank Details Err: ", res);
         setError("Something went wrong.");
@@ -175,6 +204,16 @@ useEffect(() => {
     }
   };
 
+  // Helper function to format the date
+  const formatDate = (dateString) => {
+    if (!dateString) return "Not Verified";
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }).format(date);
+  };
 
   return (
     <main className="relative mt-12 flex min-h-screen flex-col items-center justify-start bg-white px-4 py-10">
@@ -185,9 +224,10 @@ useEffect(() => {
             <p className="text-lg font-semibold">Available Balance</p>
           </div>
           <div className="flex flex-col relative">
-            {/* <p className="text-sm">{new Date().toLocaleDateString()}</p> */}
             <p className="text-sm">Pending Balance</p>
-            <p className="text-sm absolute right-0 top-8">${balance.pending_earnings}</p>
+            <p className="text-sm absolute right-0 top-8">
+              ${balance.pending_earnings}
+            </p>
           </div>
         </div>
 
@@ -197,6 +237,67 @@ useEffect(() => {
           <p>Total wallet balance</p>
           <p>${balance.total}</p>
         </div>
+      </div>
+
+      {/* Current Banking Details Card */}
+      <div className="w-full max-w-md mt-10 rounded-xl bg-white shadow-lg p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+            <Banknote className="h-6 w-6 text-orange-600" />
+            Current Banking Details
+          </h2>
+          {currentBankingDetails.verified_at && (
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+              <svg
+                className="-ml-1 mr-1.5 h-3 w-3 text-green-500"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Verified
+            </span>
+          )}
+        </div>
+        {loadingCurrentDetails ? (
+          <div className="text-center text-gray-500 py-8">
+            Loading details...
+          </div>
+        ) : currentBankingDetails.account_number ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
+            <div className="bg-gray-50 p-4 rounded-lg col-span-2">
+              <p className="text-sm font-medium text-gray-500">Account Name</p>
+              <p className="mt-1 text-lg font-semibold">
+                {currentBankingDetails.account_name}
+              </p>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <p className="text-sm font-medium text-gray-500">Bank Name</p>
+              <p className="mt-1 text-lg font-semibold">
+                {currentBankingDetails.bank_name}
+              </p>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <p className="text-sm font-medium text-gray-500">
+                Account Number
+              </p>
+              <p className="mt-1 text-lg font-semibold tracking-wide">
+                {currentBankingDetails.account_number}
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="text-center text-gray-500 py-8">
+            <p>
+              No banking details found. Please add your account information
+              below.
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Add New Details Trigger */}
@@ -229,7 +330,7 @@ useEffect(() => {
             </div>
 
             <h2 className="mb-6 text-center text-xl font-bold">
-              Add New Details
+              Update Banking Details
             </h2>
 
             {/* FORM */}
@@ -243,14 +344,14 @@ useEffect(() => {
                   <p className="py-2 text-sm text-gray-500">Loading banks…</p>
                 ) : (
                   <select
-                    key={bankCode} // Key helps reset select when options change
+                    key={bankCode}
                     required
                     value={bankCode}
                     onChange={(e) => {
                       setBankCode(e.target.value);
-                      setVerifiedAccountName(""); // Clear verification on bank change
+                      setVerifiedAccountName("");
                       setVerificationError("");
-                      setAccountName(""); // Clear account name on bank change
+                      setAccountName("");
                     }}
                     className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   >
@@ -272,18 +373,16 @@ useEffect(() => {
                   Account Number
                 </label>
                 <input
-                  type="tel" // Use type="tel" for numeric input, but allow for flexible input on mobile
+                  type="tel"
                   placeholder="Enter Account Number (10 digits)"
                   value={accountNumber}
                   onChange={(e) => {
-                    // Restrict input to numbers and max 10 digits
-                    const value = e.target.value.replace(/\D/g, ""); // Remove non-digits
-                    setAccountNumber(value.slice(0, 10)); // Limit to 10 digits
-                    setVerifiedAccountName(""); // Clear verification on account number change
+                    const value = e.target.value.replace(/\D/g, "");
+                    setAccountNumber(value.slice(0, 10));
+                    setVerifiedAccountName("");
                     setVerificationError("");
-                    // Do NOT clear accountName here, as it will be auto-populated by verification
                   }}
-                  maxLength={10} // HTML attribute for max length
+                  maxLength={10}
                   required
                   className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
                 />

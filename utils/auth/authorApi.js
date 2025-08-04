@@ -74,6 +74,7 @@ api.interceptors.response.use(
 );
 
 // Register an author
+// Register an author
 export const registerAuthor = async (email, password, captchaToken) => {
   try {
     const response = await api.post("/authors", {
@@ -82,17 +83,7 @@ export const registerAuthor = async (email, password, captchaToken) => {
 
     return response.data;
   } catch (error) {
-    console.error(
-      "Registration failed:",
-      error.response?.data?.message || error.message || "Unknown error"
-    );
-
-    return {
-      success: false,
-      message:
-        error.response?.data?.message ||
-        "Something went wrong. Please try again.",
-    };
+    throw error;
   }
 };
 
