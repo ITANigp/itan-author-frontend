@@ -27,7 +27,7 @@ export const FormProvider = ({ children }) => {
     subtitle: "",
     tags: [],
     terms_and_conditions: null,
-    total_pages: null,
+    total_pages: 0,
     title: "",
   });
 

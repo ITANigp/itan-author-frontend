@@ -25,11 +25,11 @@ const EarningsTable = () => {
   }, []);
 
   return (
-    <div className="mt-10 w-full px-2 sm:px-4 lg:mt-20 lg:ml-72">
+    <div className="mt-10 w-full px-2 sm:px-4 lg:mt-20 lg:ml-64 mr-20">
       <h2 className="text-xl font-semibold mb-4">Recent Sales</h2>
 
-      <div className="w-full overflow-x-auto rounded-md border border-gray-200 shadow-sm">
-        <Table className="min-w-[600px]">
+      <div className="max-w-[800px] overflow-x-auto rounded-md border border-gray-200 shadow-sm ">
+        <Table className="min-w-[750px]">
           <TableHeader>
             <TableRow className="bg-slate-700 hover:bg-slate-700">
               <TableHead className="text-white">Book Title</TableHead>
