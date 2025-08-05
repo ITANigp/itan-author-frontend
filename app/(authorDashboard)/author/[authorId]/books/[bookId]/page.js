@@ -43,7 +43,7 @@ const BookPage = () => {
   } = book;
 
   const displayPrice = ebook_price
-    ? `₦${(ebook_price / 100).toFixed(2)}`
+    ? `$${(ebook_price / 100).toFixed(2)}`
     : "N/A";
 
   const displayGenre =
@@ -61,10 +61,14 @@ const BookPage = () => {
     : "N/A";
 
   const displayLength = total_pages ? `${total_pages} Pages` : "N/A";
+
+  const fileSizeInMB = book?.ebook_file_size
+    ? (book.ebook_file_size / (1024 * 1024)).toFixed(2) + " MB"
+    : "N/A";
   
   return (
     <div className="md:p-4 lg:ml-64  mt-24">
-      <div className="sm:flex sm:space-x-4">
+      <div className="sm:flex px-3 sm:space-x-4">
         <div className="">
           {cover_image_url && (
             <div className="">
@@ -90,7 +94,7 @@ const BookPage = () => {
                 </span>
               </p>
             </div>
-            <p className="text-2xl font-bold">${ebook_price}</p>
+            <p className="text-2xl font-bold">{displayPrice}</p>
           </div>
           <p className="mt-4">{description || "No description available."}</p>
           <Link
@@ -123,11 +127,11 @@ const BookPage = () => {
           </div>
           <div className="border-0 border-r-2">
             <strong>LENGTH</strong>
-            <p>{"length"}</p>
+            <p>{displayLength}</p>
           </div>
           <div>
             <strong>SIZE</strong>
-            <p>{"size"}</p>
+            <p>{fileSizeInMB}</p>
           </div>
         </div>
       </div>
