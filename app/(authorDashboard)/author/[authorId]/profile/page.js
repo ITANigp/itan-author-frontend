@@ -11,6 +11,7 @@ import FormModal from "@/components/ProfileFormModal";
 import directUploadFile from "@/utils/updateAuthorImg";
 import { getAuthorProfile, api } from "@/utils/auth/authorApi";
 import { storedAuthorInfo } from "@/utils/storedAuthorInfo";
+import ProfileDropdown from "@/components/ProfileDropdown";
 
 const Profile = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -96,6 +97,9 @@ const Profile = () => {
             className="ml-3 p-2 py-1 rounded-md cursor-pointer hover:bg-gray-400"
           />
           <h2 className="font-bold text-xl mb-5">Profile</h2>
+          <div className="ml-auto">
+            <ProfileDropdown />
+          </div>
           <p className="mr-7 lg:hidden" />
         </div>
 

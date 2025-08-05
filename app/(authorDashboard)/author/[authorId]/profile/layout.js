@@ -46,7 +46,9 @@ const layout = ({ children }) => {
   return (
     <div className="mx-2  lg:pl-64  lg:pt-24 bg-gray-100 lg:bg-white">
       <div className="lg:flex lg:space-x-6 p-4 bg-gray-100 rounded-md">
+        {/* Desktop nav */}
         <nav className="hidden lg:flex">
+
           <ul className="space-y-7">
             <Link href={`/author/${profile?.id}/profile`}>
               <li
@@ -63,13 +65,13 @@ const layout = ({ children }) => {
               </li>
             </Link>
 
-            {/* <Link href="/author/1/profile/notification">
+            <Link href="/author/1/profile/notification">
               <li
                 className={`hover:text-red-500 cursor-pointer ${isNotificationPage ? "text-red-500 " : ""} `}
               >
                 Notification
               </li>
-            </Link> */}
+            </Link>
 
             <Link href="#" onClick={() => setShowModal(true)}>
               <li
@@ -80,6 +82,7 @@ const layout = ({ children }) => {
             </Link>
           </ul>
         </nav>
+
         <div className="flex-1">{children}</div>
       </div>
       <LogoutModal
