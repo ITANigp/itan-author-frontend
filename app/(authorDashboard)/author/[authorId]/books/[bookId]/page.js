@@ -64,7 +64,7 @@ const BookPage = () => {
   
   return (
     <div className="md:p-4 lg:ml-64  mt-24">
-      <div className="sm:flex sm:space-x-4">
+      <div className="sm:flex px-3 sm:space-x-4">
         <div className="">
           {cover_image_url && (
             <div className="">
