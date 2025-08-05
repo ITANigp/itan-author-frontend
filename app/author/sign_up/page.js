@@ -3,9 +3,14 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
+import toast from "react-hot-toast";
+
 import { registerAuthor } from "@/utils/auth/authorApi";
 import ReCAPTCHA from "react-google-recaptcha";
-import { useEffect } from "react";
+import ErrorModal from "@/components/ErrorModal";
+import ResendConfirmationModal from "@/components/ResendConfirmationModal"
 
 const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
@@ -16,6 +21,8 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [password_confirmation, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -34,6 +41,8 @@ const SignUp = () => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
+    setModalMessage("");
+    setShowErrorModal(false);
 
     try {
       const author = await registerAuthor(
@@ -44,14 +53,28 @@ const SignUp = () => {
         // password_confirmation
       );
       if (author?.data?.id) {
-        setMessage("Registration successful! You can now log in.");
+        toast.success(
+          "Please check your email to confirm your account.",
+          {
+            duration: 15000,
+          }
+        );
         router.push("/author/sign_in");
       }
     } catch (error) {
-      setMessage(
-        error.response?.data?.message ||
-          "Registration failed. Please try again."
-      );
+       const errorMessage =
+         error.response?.data?.status?.message ||
+         "Registration failed. Please try again.";
+
+       // Check for the specific error message from the screenshot
+       if (errorMessage.includes("Email has already been taken")) {
+         setModalMessage(
+           "An account with this email already exists. Please log in or use a different email address."
+         );
+         setShowErrorModal(true);
+       } else {
+         setMessage(errorMessage);
+       }
     } finally {
       setLoading(false);
     }
@@ -166,6 +189,8 @@ const SignUp = () => {
               {loading ? "Loading..." : "Sign Up"}
             </button>
 
+            <ResendConfirmationModal />
+
             <div className="inline-flex items-center justify-center w-full my-5">
               <p className="ml-10 h-[1px] w-full bg-gray-300" />
               <span className="px-3 font-extralight text-sm text-gray-300">
@@ -198,6 +223,13 @@ const SignUp = () => {
           )}
         </form>
       </section>
+
+      <ErrorModal
+        show={showErrorModal}
+        onClose={() => setShowErrorModal(false)}
+        title="Email Already Registered"
+        message={modalMessage}
+      />
     </main>
   );
 };

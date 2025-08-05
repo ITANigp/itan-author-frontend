@@ -44,9 +44,9 @@ const layout = ({ children }) => {
   }
 
   return (
-    <div className="mx-2  lg:pl-64  lg:pt-24 bg-gray-100 lg:bg-white">
-      <div className="lg:flex lg:space-x-6 p-4 bg-gray-100 rounded-md">
         {/* Desktop nav */}
+    <div className="mx-2  lg:pl-64  lg:pt-24 lg:bg-white">
+      <div className="lg:flex lg:space-x-6 p-4 rounded-md">
         <nav className="hidden lg:flex">
 
           <ul className="space-y-7">

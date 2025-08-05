@@ -11,9 +11,9 @@ const AuthCallback = () => {
     const handleCallback = async () => {
       try {        
         const backendUrl =
-          process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+          process.env.NEXT_PUBLIC_API_BASE_URL;
 
-        const response = await fetch(`${backendUrl}/api/v1/authors/profile`, {
+        const response = await fetch(`${backendUrl}/authors/profile`, {
           method: "GET",
           credentials: "include",
           headers: {
@@ -29,14 +29,20 @@ const AuthCallback = () => {
 
           // Show success message
           toast.success("Signed in with Google successfully!");
-          
-          router.push(`/dashboard/author/${userData.data.id}`);
+
+          // Check KYC step and accepted terms before redirecting
+          const kycStep = userData.data?.kyc_step;
+          if (kycStep < 3) {
+            router.push(`/author/${userData.data.id}/kyc/step-${kycStep + 1}`);
+          } else {
+            router.push(`/dashboard/author/${userData.data.id}`);
+          }
         } else if (response.status === 401) {
           // User exists but not confirmed
           toast.error(
             "Please check your email and confirm your account to complete sign-in."
           );
-          router.push("/author/sign_in"); 
+          router.push("/author/sign_in");
         } else {
           // Other authentication failures
           toast.error("Google sign-in failed. Please try again.");

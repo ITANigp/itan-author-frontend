@@ -25,9 +25,10 @@ export const FormProvider = ({ children }) => {
     publisher: "",
     publishing_rights: null,
     subtitle: "",
-    terms_and_conditions: null,
-    title: "",
     tags: [],
+    terms_and_conditions: null,
+    total_pages: 0,
+    title: "",
   });
 
   const updateFormData = (newData) => {
