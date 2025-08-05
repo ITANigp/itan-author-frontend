@@ -22,7 +22,20 @@ export default function ResendConfirmationModal() {
       setEmail(""); // reset field
     } catch (err) {
       console.error(err);
-      toast.error("Failed to send confirmation email.");
+
+      // Check for the specific 422 error
+      if (err.response && err.response.status === 422) {
+        // Display the specific error message from the backend
+        const errorMessage =
+          err.response.data.message ||
+          "Email was already confirmed. Please try signing in.";
+        toast.error(errorMessage);
+      } else {
+        // Handle other, more general errors
+        toast.error(
+          "Failed to send confirmation email. Please try again later."
+        );
+      }
     } finally {
       setLoading(false);
     }
@@ -30,16 +43,17 @@ export default function ResendConfirmationModal() {
 
   return (
     <>
-      <button
-        onClick={() => setIsOpen(true)}
-        className="text-sm text-blue-600 underline hover:text-blue-800"
-      >
-        Haven’t received your confirmation email? Resend it here
-      </button>
+      <p onClick={() => setIsOpen(true)} className="text-sm">
+        Haven’t received your confirmation email?{" "}
+        <span className="text-blue-600 underline hover:text-blue-800">
+          <br className="sm:hidden"/>
+          Resend it here
+        </span>
+      </p>
 
       {isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-          <div className="bg-white w-[90%] max-w-md p-6 rounded-lg shadow-lg relative">
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center ">
+          <div className="bg-white p-6 rounded-lg shadow-lg relative max-w-[360px] mx-3">
             <button
               onClick={() => setIsOpen(false)}
               className="absolute top-2 right-2 text-gray-500 hover:text-red-600 text-lg"
