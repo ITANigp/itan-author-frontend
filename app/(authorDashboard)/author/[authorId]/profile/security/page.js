@@ -10,10 +10,46 @@ import { cn } from "@/lib/utils";
 
 import { api } from "@/utils/auth/authorApi";
 import { getTwoFactorStatus } from "@/utils/twoFactorAuth";
+import ProfileMenuItems from "@/components/ProfileMenuItems";
+import ConfirmDialog from "@/components/ConfirmDialog";
 
-const Profile = () => {
+import { useAuthor } from "@/context/AuthorContext";
+import { signOutAuthor } from "@/utils/auth/authorApi";
+import toast from "react-hot-toast";
+
+const PrivacyAndSecurity = () => {
   const router = useRouter();
+  const { profile, clearProfile } = useAuthor();
   const [twoFactorStatus, setTwoFactorStatus] = useState(null);
+   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      await signOutAuthor();
+      clearProfile();
+      toast.success("Logged out successfully!");
+      router.push("/author/sign_in");
+    } catch (err) {
+      toast.error("Failed to log out. Please try again.");
+    }
+  };
+
+  const menuItems = [
+    {
+      label: "Profile",
+      onClick: () => router.push(`/author/${profile?.id}/profile`),
+    },
+    {
+      label: "Privacy & Security",
+      onClick: () => router.push(`/author/${profile?.id}/profile/security`),
+    },
+    {
+      label: "Logout",
+      onClick: () => setShowLogoutConfirm(true),
+      isDanger: true,
+    },
+  ];
+
 
   // Fetch 2FA status on mount
   useEffect(() => {
@@ -58,18 +94,29 @@ const Profile = () => {
   return (
     <div>
       <section className="text-center mx-auto">
-        <div className="flex justify-between">
-          <div className="hidden lg:block"/>
-          <div className="lg:hidden">
-            <FontAwesomeIcon
-              icon={faChevronLeft}
-              onClick={() => router.back()}
-              className="ml-3 p-2 py-1 rounded-md cursor-pointer hover:bg-gray-400"
-            />
-          </div>
-          <h2 className="font-bold text-xl">Privacy and Security</h2>
-          <p className="mr-7" />
+      <div className="flex items-center justify-between px-4 py-2">
+        {/* Back Arrow */}
+        <FontAwesomeIcon
+          icon={faChevronLeft}
+          onClick={() => router.back()}
+          className="p-2 py-1 rounded-md cursor-pointer hover:bg-gray-400"
+        />
+
+        {/* Title */}
+        <h2 className="font-bold text-xl text-center flex-1">Privacy and Security</h2>
+
+        {/* Ellipsis Menu */}
+        <div className="p-2">
+          <ProfileMenuItems items={menuItems} />
+          <ConfirmDialog
+            isOpen={showLogoutConfirm}
+            onClose={() => setShowLogoutConfirm(false)}
+            onConfirm={handleLogout}
+            message="Are you sure you want to log out?"
+          />
         </div>
+      </div>
+
       </section>
 
       <section>
@@ -106,4 +153,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default PrivacyAndSecurity;

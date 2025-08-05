@@ -15,7 +15,7 @@ const layout = ({ children }) => {
   const pathname = usePathname();
   const isProfilePage = pathname.endsWith("/profile");
   const isPrivacyPage = pathname.endsWith("/security");
-  const isNotificationPage = pathname.endsWith("/notification");
+  // const isNotificationPage = pathname.endsWith("/notification");
 
   // Use global author context instead of making another API call
   const { profile, loading, clearProfile } = useAuthor();
@@ -65,13 +65,13 @@ const layout = ({ children }) => {
               </li>
             </Link>
 
-            <Link href="/author/1/profile/notification">
+            {/* <Link href="/author/1/profile/notification">
               <li
                 className={`hover:text-red-500 cursor-pointer ${isNotificationPage ? "text-red-500 " : ""} `}
               >
                 Notification
               </li>
-            </Link>
+            </Link> */}
 
             <Link href="#" onClick={() => setShowModal(true)}>
               <li
