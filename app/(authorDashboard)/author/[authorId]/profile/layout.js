@@ -15,7 +15,7 @@ const layout = ({ children }) => {
   const pathname = usePathname();
   const isProfilePage = pathname.endsWith("/profile");
   const isPrivacyPage = pathname.endsWith("/security");
-  const isNotificationPage = pathname.endsWith("/notification");
+  // const isNotificationPage = pathname.endsWith("/notification");
 
   // Use global author context instead of making another API call
   const { profile, loading, clearProfile } = useAuthor();
@@ -35,7 +35,7 @@ const layout = ({ children }) => {
   // Show loading state while profile is being fetched
   if (loading) {
     return (
-      <div className="mx-2 lg:pl-64 lg:pt-24 bg-gray-100 lg:bg-white">
+      <div className="mx-2 lg:pl-64 pt-24 bg-gray-100 lg:bg-white">
         <div className="flex justify-center items-center h-64">
           <p>Loading profile...</p>
         </div>
@@ -45,8 +45,10 @@ const layout = ({ children }) => {
 
   return (
     <div className="mx-2  lg:pl-64  lg:pt-24 lg:bg-white">
+      {/* Desktop nav */}
       <div className="lg:flex lg:space-x-6 p-4 rounded-md">
         <nav className="hidden lg:flex">
+
           <ul className="space-y-7">
             <Link href={`/author/${profile?.id}/profile`}>
               <li
@@ -80,6 +82,7 @@ const layout = ({ children }) => {
             </Link>
           </ul>
         </nav>
+
         <div className="flex-1">{children}</div>
       </div>
       <LogoutModal
