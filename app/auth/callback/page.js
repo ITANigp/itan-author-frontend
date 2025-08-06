@@ -29,14 +29,20 @@ const AuthCallback = () => {
 
           // Show success message
           toast.success("Signed in with Google successfully!");
-          
-          router.push(`/dashboard/author/${userData.data.id}`);
+
+          // Check KYC step and accepted terms before redirecting
+          const kycStep = userData.data?.kyc_step;
+          if (kycStep < 3) {
+            router.push(`/author/${userData.data.id}/kyc/step-${kycStep + 1}`);
+          } else {
+            router.push(`/dashboard/author/${userData.data.id}`);
+          }
         } else if (response.status === 401) {
           // User exists but not confirmed
           toast.error(
             "Please check your email and confirm your account to complete sign-in."
           );
-          router.push("/author/sign_in"); 
+          router.push("/author/sign_in");
         } else {
           // Other authentication failures
           toast.error("Google sign-in failed. Please try again.");

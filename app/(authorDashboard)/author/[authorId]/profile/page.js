@@ -7,15 +7,18 @@ import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
-import FormModal from "@/components/ProfileFormModal";
+import ProfileFormModal from "@/components/ProfileFormModal";
 import directUploadFile from "@/utils/updateAuthorImg";
 import { getAuthorProfile, api } from "@/utils/auth/authorApi";
 import { storedAuthorInfo } from "@/utils/storedAuthorInfo";
+import ProfileMenuItems from "@/components/ProfileMenuItems";
+import ConfirmDialog from "@/components/ConfirmDialog";
 
 const Profile = () => {
   const [openModal, setOpenModal] = useState(false);
   const [profile, setProfile] = useState({});
   const [error, setError] = useState("");
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   const [imageFile, setImageFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("/images/avatar.png");
@@ -85,6 +88,33 @@ const Profile = () => {
     return <div className="text-red-600">{error}</div>;
   }
 
+  const handleLogout = async () => {
+    try {
+      await signOutAuthor();
+      clearProfile();
+      toast.success("Logged out successfully!");
+      router.push("/author/sign_in");
+    } catch (err) {
+      toast.error("Failed to log out. Please try again.");
+    }
+  };
+
+  const menuItems = [
+    {
+      label: "Profile",
+      onClick: () => router.push(`/author/${profile?.id}/profile`),
+    },
+    {
+      label: "Privacy & Security",
+      onClick: () => router.push(`/author/${profile?.id}/profile/security`),
+    },
+    {
+      label: "Logout",
+        onClick: () => setShowLogoutConfirm(true),
+      isDanger: true,
+    },
+  ];
+
   return (
     <div className="h-screen">
       <section className="text-center mx-auto">
@@ -96,6 +126,15 @@ const Profile = () => {
             className="ml-3 p-2 py-1 rounded-md cursor-pointer hover:bg-gray-400"
           />
           <h2 className="font-bold text-xl mb-5">Profile</h2>
+          <div className="ml-auto">
+            <ProfileMenuItems items={menuItems}/>
+            <ConfirmDialog
+              isOpen={showLogoutConfirm}
+              onClose={() => setShowLogoutConfirm(false)}
+              onConfirm={handleLogout}
+              message="Are you sure you want to log out?"
+            />
+          </div>
           <p className="mr-7 lg:hidden" />
         </div>
 
@@ -221,7 +260,7 @@ const Profile = () => {
         </div>
       </section>
 
-      <FormModal
+      <ProfileFormModal
         isOpen={openModal}
         onClose={() => setOpenModal(false)}
         onProfileUpdate={fetchProfile}

@@ -9,7 +9,7 @@ import { updateAuthorProfile } from "@/utils/auth/authorApi";
 import { useAuthor } from "@/context/AuthorContext";
 import Image from "next/image";
 
-const Modal = ({ isOpen, onClose, onProfileUpdate }) => {
+const ProfileFormModal = ({ isOpen, onClose, onProfileUpdate }) => {
   const { profile: globalProfile, updateProfile } = useAuthor();
 
   const [profile, setProfile] = useState({
@@ -175,4 +175,4 @@ const Modal = ({ isOpen, onClose, onProfileUpdate }) => {
   );
 };
 
-export default Modal;
+export default ProfileFormModal;
