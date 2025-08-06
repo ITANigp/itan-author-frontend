@@ -92,7 +92,7 @@ const PrivacyAndSecurity = () => {
   };
 
   return (
-    <div>
+    <div className="mt-16 lg:mt-0">
       <section className="text-center mx-auto">
       <div className="flex items-center justify-between px-4 py-2">
         {/* Back Arrow */}

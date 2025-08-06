@@ -39,7 +39,7 @@ const AuthorDashboard = () => {
 
   return (
 <section className="relative min-h-[60vh] flex items-center justify-center bg-gradient-to-b from-white to-gray-50 px-4">
-  <div className="w-full max-w-6xl mx-auto px-4 py-4 lg:ml-72 mt-8 lg:mt-12">
+  <div className="w-full max-w-6xl mx-auto px-4 py-4 lg:ml-64 mt-16 sm:mt-12 md:mt-16">
     <h2 className="font-bold text-2xl mb-6 text-center">
         <span className="block sm:inline">Welcome!</span>{' '}
         <span className="block sm:inline">What would you like to create?</span>

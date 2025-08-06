@@ -35,7 +35,7 @@ const layout = ({ children }) => {
   // Show loading state while profile is being fetched
   if (loading) {
     return (
-      <div className="mx-2 lg:pl-64 lg:pt-24 bg-gray-100 lg:bg-white">
+      <div className="mx-2 lg:pl-64 pt-24 bg-gray-100 lg:bg-white">
         <div className="flex justify-center items-center h-64">
           <p>Loading profile...</p>
         </div>
@@ -44,8 +44,8 @@ const layout = ({ children }) => {
   }
 
   return (
-        {/* Desktop nav */}
     <div className="mx-2  lg:pl-64  lg:pt-24 lg:bg-white">
+      {/* Desktop nav */}
       <div className="lg:flex lg:space-x-6 p-4 rounded-md">
         <nav className="hidden lg:flex">
 

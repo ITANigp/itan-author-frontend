@@ -116,18 +116,22 @@ const Profile = () => {
   ];
 
   return (
-    <div className="h-screen">
+    <div className="h-screen mt-16 lg:mt-0">
       <section className="text-center mx-auto">
-        <div className="flex justify-between lg:hidden">
-          <FontAwesomeIcon
-            icon={faChevronLeft}
-            // onClick={() => router.push("/")}
-           onClick={() => router.push(`/dashboard/author/${authorId}`)}
-            className="ml-3 p-2 py-1 rounded-md cursor-pointer hover:bg-gray-400"
-          />
-          <h2 className="font-bold text-xl mb-5">Profile</h2>
+        <div className="relative flex justify-center lg:hidden">
+          <div>
+            <FontAwesomeIcon
+              icon={faChevronLeft}
+              // onClick={() => router.push("/")}
+              onClick={() => router.push(`/dashboard/author/${authorId}`)}
+              className="ml-3 p-2 py-1 rounded-md cursor-pointer hover:bg-gray-400"
+            />
+          </div>
+          <h2 className="font-bold text-xl mb-5 absolute left-1/2 transform -translate-x-1/2">
+            Profile
+          </h2>
           <div className="ml-auto">
-            <ProfileMenuItems items={menuItems}/>
+            <ProfileMenuItems items={menuItems} />
             <ConfirmDialog
               isOpen={showLogoutConfirm}
               onClose={() => setShowLogoutConfirm(false)}
@@ -135,7 +139,6 @@ const Profile = () => {
               message="Are you sure you want to log out?"
             />
           </div>
-          <p className="mr-7 lg:hidden" />
         </div>
 
         <div className="lg:flex max-w-lg lg:items-center lg:shadow-md lg:rounded-lg lg:bg-white space-x-2 p-3 mx-auto mb-5">
