@@ -78,6 +78,9 @@ const BookDetails = () => {
         .then((response) => {
           console.log("Print book info:", response.data.data);
           updateFormData(response.data.data); // Update the form context
+                if (Array.isArray(response.data.data.tags)) {
+                  setTags(response.data.data.tags);
+                }
         })
         
         .catch((error) => {
