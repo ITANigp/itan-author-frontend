@@ -191,7 +191,7 @@ export default function ProfileForm() {
               placeholder="Enter your first name"
               value={form.first_name}
               onChange={handleChange}
-              className={`w-full border rounded-md p-2 focus:outline-none focus:ring ${validationErrors.first_name ? "border-red-500" : "focus:ring-blue-300"}`}
+              className={`w-full placeholder:text-gray-400 border rounded-md p-2 focus:outline-none focus:ring ${validationErrors.first_name ? "border-red-500" : "focus:ring-blue-300"}`}
             />
             {validationErrors.first_name && (
               <p className="text-red-500 text-xs mt-1">
@@ -214,7 +214,7 @@ export default function ProfileForm() {
               placeholder="Enter your last name"
               value={form.last_name}
               onChange={handleChange}
-              className={`w-full border rounded-md p-2 focus:outline-none focus:ring ${validationErrors.last_name ? "border-red-500" : "focus:ring-blue-300"}`}
+              className={`w-full border placeholder:text-gray-400 rounded-md p-2 focus:outline-none focus:ring ${validationErrors.last_name ? "border-red-500" : "focus:ring-blue-300"}`}
             />
             {validationErrors.last_name && (
               <p className="text-red-500 text-xs mt-1">
@@ -234,10 +234,10 @@ export default function ProfileForm() {
               type="tel"
               id="phone_number"
               name="phone_number"
-              placeholder="08121212121"
+              placeholder="Enter your phone Number"
               value={form.phone_number}
               onChange={handleChange}
-              className={`w-full border rounded-md p-2 focus:outline-none focus:ring ${validationErrors.phone_number ? "border-red-500" : "focus:ring-blue-300"}`}
+              className={`w-full border placeholder:text-gray-400 rounded-md p-2 focus:outline-none focus:ring ${validationErrors.phone_number ? "border-red-500" : "focus:ring-blue-300"}`}
             />
             {validationErrors.phone_number && (
               <p className="text-red-500 text-xs mt-1">
@@ -260,7 +260,7 @@ export default function ProfileForm() {
               placeholder="Enter your address"
               value={form.location}
               onChange={handleChange}
-              className={`w-full border rounded-md p-2 focus:outline-none focus:ring ${validationErrors.location ? "border-red-500" : "focus:ring-blue-300"}`}
+              className={`w-full border placeholder:text-gray-400 rounded-md p-2 focus:outline-none focus:ring ${validationErrors.location ? "border-red-500" : "focus:ring-blue-300"}`}
             />
             {validationErrors.location && (
               <p className="text-red-500 text-xs mt-1">
