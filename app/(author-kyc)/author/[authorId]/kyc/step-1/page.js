@@ -135,10 +135,8 @@ export default function ProfileForm() {
 
         <div className="text-center mt-4">
           <h1 className="text-lg font-medium">1/3</h1>
-          <h2 className="text-xl font-semibold">Update your profile</h2>
-          <p className="text-gray-500 text-sm">
-            Add a profile picture for us to know you more
-          </p>
+          <h2 className="text-xl font-semibold">Fill in Your Details</h2>
+          <p className="text-gray-500 text-sm">Let’s Get to Know You Better</p>
         </div>
 
         <div className="flex justify-center mt-6">

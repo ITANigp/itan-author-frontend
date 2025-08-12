@@ -44,7 +44,7 @@ const BookDetails = () => {
       newErrors.title = "Book title is required.";
     }
 
-    if (!id && (!formData.total_pages || formData.total_pages.trim() === "")) {
+    if (!id && (!formData.total_pages)) {
       newErrors.total_pages = "Book Total Page is required.";
     }
 
@@ -62,6 +62,9 @@ const BookDetails = () => {
     //    newErrors.description = "Description must be under 1000 characters.";
     //  }
 
+     if (!formData.total_pages || formData.total_pages.trim() === "") {
+       newErrors.total_pages = "Number of Book Pages is required.";
+     }
     if (!id && (!formData.categories || formData.categories === "")) {
       newErrors.categories = "Category is required.";
     }
