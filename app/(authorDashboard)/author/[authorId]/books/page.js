@@ -122,7 +122,11 @@ export default function AuthorBooks() {
           </Link>
         </div>
       ) : (
-        books.map((book) => (
+       books.map((book) => {
+
+          const slugPath = book.slug ? book.slug.replace(/^\/+/, '') : "";
+
+        return (
           <div
             key={book.id}
             className="sm:flex rounded-lg sm:justify-between mx-auto shadow-md relative lg:max-w-[750px] lg:ml-0 mb-4 z-0"
@@ -209,12 +213,12 @@ export default function AuthorBooks() {
                     <input
                       type="text"
                       readOnly
-                      value={`${window.location.origin}/books/${book.slug}`}
+                      value={`${window.location.origin}/books/${slugPath}`}
                       className="text-sm border px-2 py-1 rounded flex-1 cursor-default bg-gray-50"
                       />
                     <button
                       onClick={() => {
-                        navigator.clipboard.writeText(`${window.location.origin}/books/${book.slug}`);
+                        navigator.clipboard.writeText(`${window.location.origin}/books/${slugPath}`);
                         toast.success("Book link copied to clipboard!");
                       }}
                       className="bg-[#3109e5] hover:bg-[#11103a86] text-white px-3 py-1.5 rounded text-sm"
@@ -236,10 +240,9 @@ export default function AuthorBooks() {
                   )}
                 </div>
               </div>
-
-            <p>
-              Last Updated on <span>{formatDate(book.updated_at)}</span>
-            </p>
+              <p>
+                Last Updated on <span>{formatDate(book.updated_at)}</span>
+              </p>
             </div>
 
             {/* Book Menu & Type */}
@@ -284,7 +287,8 @@ export default function AuthorBooks() {
             </div>
 
             {/* Mobile View */}
-            <div className="flex sm:hidden justify-between w-full px-2 py-2 text-sm border-t mt-2 text-gray-600">
+            <div className="flex sm:hidden flex-col w-full px-2 py-2 text-sm border-t mt-2 text-gray-600">
+              {/* Status and updated date */}
               <div>
                 <p>
                   Book Status:{" "}
@@ -301,12 +305,52 @@ export default function AuthorBooks() {
                   Last Updated on <span>{formatDate(book.updated_at)}</span>
                 </p>
               </div>
-              <p className="mt-5">
+
+              {/* Book type */}
+              <p className="mt-3">
                 Book Type: <span>Ebook</span>
               </p>
+
+              {/* Slug sharing */}
+              {book.slug && (
+                <div className="mt-3 w-full">
+                  <p className="text-sm text-gray-600 mb-1">Share your book:</p>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      readOnly
+                      value={`${window.location.origin}/books/${slugPath}`}
+                      className="text-xs border px-2 py-1 rounded flex-1 cursor-default bg-gray-50"
+                    />
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(`${window.location.origin}/books/${slugPath}`);
+                        toast.success("Book link copied to clipboard!");
+                      }}
+                      className="bg-[#3109e5] hover:bg-[#11103a86] text-white px-2 py-1 rounded text-xs"
+                    >
+                      Copy
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Admin feedback */}
+              <div className="mt-3 w-full">
+                <p className="text-sm text-gray-600 mb-1">Admin Feedback:</p>
+                <div className="text-xs border px-3 py-2 rounded bg-gray-50">
+                  {book.admin_feedback && book.admin_feedback.trim() !== "" ? (
+                    book.admin_feedback
+                  ) : (
+                    <span className="italic text-gray-400">No comment for now</span>
+                  )}
+                </div>
+              </div>
             </div>
+
           </div>
-        ))
+         );
+        })
       )}
     </section>
   );
