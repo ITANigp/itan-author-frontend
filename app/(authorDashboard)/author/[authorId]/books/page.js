@@ -224,6 +224,19 @@ export default function AuthorBooks() {
                   </div>
                 </div>
               )}
+
+              {/* Admin Feedback */}
+              <div className="mt-3 sm:w-[320px] w-full px-0">
+                <p className="text-sm text-gray-600 mb-1">Admin Feedback:</p>
+                <div className="text-sm border px-3 py-2 rounded bg-gray-50">
+                  {book.admin_feedback && book.admin_feedback.trim() !== "" ? (
+                    book.admin_feedback
+                  ) : (
+                    <span className="italic text-gray-400">No comment for now</span>
+                  )}
+                </div>
+              </div>
+
             <p>
               Last Updated on <span>{formatDate(book.updated_at)}</span>
             </p>
