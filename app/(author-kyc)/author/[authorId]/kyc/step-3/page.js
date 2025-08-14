@@ -18,7 +18,7 @@ function App() {
 
     try {
       await api.patch("/authors/kyc/update-step", {
-        author: { kyc_step: 3 },
+        author: { kyc_step: 3, accepted_terms: true },
       });
 
       const { data: author } = await api.get("/authors/profile");

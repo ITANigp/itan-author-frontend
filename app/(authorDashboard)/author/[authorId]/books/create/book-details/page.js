@@ -44,7 +44,7 @@ const BookDetails = () => {
       newErrors.title = "Book title is required.";
     }
 
-    if (!id && (!formData.total_pages || formData.total_pages.trim() === "")) {
+    if (!id && (!formData.total_pages)) {
       newErrors.total_pages = "Book Total Page is required.";
     }
 
@@ -62,6 +62,9 @@ const BookDetails = () => {
     //    newErrors.description = "Description must be under 1000 characters.";
     //  }
 
+     if (!formData.total_pages || formData.total_pages.trim() === "") {
+       newErrors.total_pages = "Number of Book Pages is required.";
+     }
     if (!id && (!formData.categories || formData.categories === "")) {
       newErrors.categories = "Category is required.";
     }
@@ -150,7 +153,9 @@ const BookDetails = () => {
         onChange={(e) => updateFormData({ total_pages: e.target.value })}
         className="h-[35px] w-full max-w-[360px] bg-gray-50 border focus:border-none text-gray-900 rounded-md focus:ring-1 focus:outline-none focus:ring-teal-300"
       />
-      {errors.total_pages && <p className="text-red-500">{errors.total_pages}</p>}
+      {errors.total_pages && (
+        <p className="text-red-500">{errors.total_pages}</p>
+      )}
 
       <h3 className="mt-5 font-bold ">Author's Bio</h3>
       <p className="text-sm md:w-[650px]">
@@ -307,9 +312,9 @@ const BookDetails = () => {
           onChange={(e) => updateFormData({ primary_audience: e.target.value })}
         >
           <option value="">Select age group</option>
-          <option value="18">18</option>
-          <option value="30">30</option>
-          <option value="50">50</option>
+          <option value="9-12">9-12</option>
+          <option value="13-17">13-17</option>
+          <option value="18-70">18-70</option>
         </select>
       </div>
       <h3 className="font-bold text-lg mt-6">Categories</h3>
