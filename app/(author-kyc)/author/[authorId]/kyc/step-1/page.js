@@ -106,7 +106,7 @@ export default function ProfileForm() {
 
       // 4. Redirect to the next KYC step
       const authorProfileResponse = await getAuthorProfile();
-      const authorData = authorProfileResponse.data.data;
+      const authorData = authorProfileResponse.data;
       router.push(
         `/author/${authorData.id}/kyc/step-${authorData.kyc_step + 1}`
       );
