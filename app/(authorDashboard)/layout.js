@@ -272,7 +272,7 @@ export default function AuthorDashboardLayout({ children }) {
                   className="text-gray-300 text-lg group-hover:text-[#E50913]"
                 />
                 <span className="ml-2 text-[#C5C5C5] group-hover:text-[#E50913]">
-                  Account
+                  Profile
                 </span>
               </Link>
             </li>

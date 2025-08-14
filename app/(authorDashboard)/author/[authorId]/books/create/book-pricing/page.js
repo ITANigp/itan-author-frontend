@@ -233,7 +233,7 @@ export default function BookPricing() {
             type="number"
             step="0.01"
             min="0"
-            value={formData.ebook_price || ""}
+            value={(formData.ebook_price / 100) || ""}
             onChange={(e) => {
               const value =
                 e.target.value === "" ? "" : parseFloat(e.target.value);

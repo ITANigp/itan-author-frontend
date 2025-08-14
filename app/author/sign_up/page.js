@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import { registerAuthor } from "@/utils/auth/authorApi";
 import ReCAPTCHA from "react-google-recaptcha";
 import ErrorModal from "@/components/ErrorModal";
+import ResendConfirmationModal from "@/components/ResendConfirmationModal"
 
 const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
@@ -187,6 +188,8 @@ const SignUp = () => {
             >
               {loading ? "Loading..." : "Sign Up"}
             </button>
+
+            <ResendConfirmationModal />
 
             <div className="inline-flex items-center justify-center w-full my-5">
               <p className="ml-10 h-[1px] w-full bg-gray-300" />

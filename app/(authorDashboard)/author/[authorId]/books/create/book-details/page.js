@@ -44,6 +44,10 @@ const BookDetails = () => {
       newErrors.title = "Book title is required.";
     }
 
+    if (!id && (!formData.total_pages || formData.total_pages.trim() === "")) {
+      newErrors.total_pages = "Book Total Page is required.";
+    }
+
     //  if (id && (formData.subtitle && formData.subtitle.length > 200)) {
     //    newErrors.subtitle = "Subtitle must be less than 200 characters.";
     //  }
@@ -74,6 +78,9 @@ const BookDetails = () => {
         .then((response) => {
           console.log("Print book info:", response.data.data);
           updateFormData(response.data.data); // Update the form context
+                if (Array.isArray(response.data.data.tags)) {
+                  setTags(response.data.data.tags);
+                }
         })
         
         .catch((error) => {
@@ -88,7 +95,6 @@ const BookDetails = () => {
     e.preventDefault();
     if (validateForm()) {
       console.log("Form1 is valid, submitting data...", formData);
-      router.push(`/author/${authorId}/books/create/book-content?id=${id}`);
     }
   };
 
@@ -135,6 +141,17 @@ const BookDetails = () => {
         onChange={(e) => updateFormData({ subtitle: e.target.value })}
         className="h-[35px] w-full max-w-[650px] bg-gray-50 border focus:border-none text-gray-900 rounded-md focus:ring-1 focus:outline-none focus:ring-teal-300"
       />
+
+      <p className="mt-5">Book Total Page</p>
+      <input
+        type="number"
+        // required={id ? false : true}
+        value={formData.total_pages}
+        onChange={(e) => updateFormData({ total_pages: e.target.value })}
+        className="h-[35px] w-full max-w-[360px] bg-gray-50 border focus:border-none text-gray-900 rounded-md focus:ring-1 focus:outline-none focus:ring-teal-300"
+      />
+      {errors.total_pages && <p className="text-red-500">{errors.total_pages}</p>}
+
       <h3 className="mt-5 font-bold ">Author's Bio</h3>
       <p className="text-sm md:w-[650px]">
         Enter the author's name exactly as it appears on the book cover,
