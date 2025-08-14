@@ -65,7 +65,7 @@ export default function WalletPage() {
         if (res.data?.success) {
           setVerifiedAccountName(res.data.account_name);
           setAccountName(res.data.account_name);
-          setMessage("Account verified successfully!");
+          setMessage("Account Name verified successfully!");
         } else {
           setVerificationError(
             res.data?.message || "Account verification failed."
@@ -123,7 +123,7 @@ export default function WalletPage() {
           banking_detail: {
             bank_code: bankCode,
             bank_name: selectedBank?.name || "",
-            currency: selectedBank?.currency || "",
+            // currency: selectedBank?.currency || "",
             account_number: accountNumber,
             account_name: accountName,
           },
@@ -257,22 +257,22 @@ export default function WalletPage() {
               )}
               {verifying && (
                 <p className="mt-1 text-sm text-blue-600">
-                  Verifying account...
+                  Verifying account name...
                 </p>
               )}
               {verificationError && (
                 <p className="mt-1 text-sm text-red-600">{verificationError}</p>
               )}
-              {verifiedAccountName && !verificationError && (
+              {/* {verifiedAccountName && !verificationError && (
                 <p className="mt-1 text-sm text-green-600">
                   Verified Name:{" "}
                   <span className="font-semibold">{verifiedAccountName}</span>
                 </p>
-              )}
+              )} */}
             </div>
 
             {/* Full Name */}
-            <div>
+            {verifiedAccountName && !verificationError && ( <div>
               <label
                 htmlFor="accountName"
                 className="mb-1 block text-sm font-medium text-gray-700"
@@ -280,9 +280,10 @@ export default function WalletPage() {
                 Full Name
               </label>
               <input
+                readOnly
                 id="accountName"
                 type="text"
-                placeholder="Enter name as it appears on the bank account"
+                placeholder="Name appears as on the bank account name"
                 value={accountName}
                 onChange={(e) => {
                   setAccountName(e.target.value);
@@ -290,9 +291,10 @@ export default function WalletPage() {
                   setError("");
                 }}
                 required
-                className="w-full rounded-md border border-red-600 bg-gray-100 px-4 py-2 text-sm text-gray-800 placeholder:text-gray-500 focus:outline-none"
+                className="w-full rounded-md border text-green-600 font-bold border-red-600 bg-gray-100 px-4 py-2 text-sm placeholder:text-gray-500 focus:outline-none"
               />
             </div>
+            )}
 
             {/* Feedback */}
             {error && <p className="text-sm text-red-600">{error}</p>}
