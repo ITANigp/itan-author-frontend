@@ -123,7 +123,7 @@ export default function WalletPage() {
           banking_detail: {
             bank_code: bankCode,
             bank_name: selectedBank?.name || "",
-            currency: selectedBank?.currency || "",
+            // currency: selectedBank?.currency || "",
             account_number: accountNumber,
             account_name: accountName,
           },
