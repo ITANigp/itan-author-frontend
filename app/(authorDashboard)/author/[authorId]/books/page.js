@@ -126,6 +126,10 @@ export default function AuthorBooks() {
 
           const slugPath = book.slug ? book.slug.replace(/^\/+/, '') : "";
 
+          const READER_BASE = process.env.NEXT_PUBLIC_READER_BASE_URL || "http://localhost:3003";
+
+          const shareUrl = `${READER_BASE}/book-store/${slugPath}`;
+
         return (
           <div
             key={book.id}
@@ -213,12 +217,14 @@ export default function AuthorBooks() {
                     <input
                       type="text"
                       readOnly
-                      value={`${window.location.origin}/books/${slugPath}`}
+                      // value={`${window.location.origin}/books/${slugPath}`}
+                      value ={shareUrl}
                       className="text-sm border px-2 py-1 rounded flex-1 cursor-default bg-gray-50"
                       />
                     <button
                       onClick={() => {
-                        navigator.clipboard.writeText(`${window.location.origin}/books/${slugPath}`);
+                        // navigator.clipboard.writeText(`${window.location.origin}/books/${slugPath}`);
+                       navigator.clipboard.writeText(shareUrl)
                         toast.success("Book link copied to clipboard!");
                       }}
                       className="bg-[#3109e5] hover:bg-[#11103a86] text-white px-3 py-1.5 rounded text-sm"
