@@ -31,10 +31,7 @@ async function directUploadFile(file) {
 
   try {
     const checksum = await computeChecksum(file);
-    
-    console.log("Requesting direct upload for:", file.name);
-    console.log("API Base URL:", process.env.NEXT_PUBLIC_API_BASE_URL);
-    
+
     const response = await api.post("/direct_uploads", {
       blob: {
         filename: file.name,
@@ -44,16 +41,11 @@ async function directUploadFile(file) {
       },
     });
 
-    console.log("Direct upload response:", response.data);
-
     const { signed_id, direct_upload } = response.data;
 
     if (!direct_upload?.url) {
-      console.error("Invalid direct upload response:", response.data);
       throw new Error("Invalid direct upload response - missing URL");
     }
-
-    console.log("Attempting S3 upload to:", direct_upload.url);
 
     const uploadResponse = await fetch(direct_upload.url, {
       method: "PUT",
@@ -67,22 +59,21 @@ async function directUploadFile(file) {
 
     if (!uploadResponse.ok) {
       const errorText = await uploadResponse.text();
-      console.error("S3 upload error:", errorText);
-      throw new Error(`S3 upload failed: ${uploadResponse.status} ${errorText}`);
+      throw new Error(
+        `S3 upload failed: ${uploadResponse.status} ${errorText}`
+      );
     }
 
-    console.log(`✅ Successfully uploaded ${file.name} to S3`);
     return signed_id;
   } catch (error) {
     console.error("Direct upload failed:", error);
-    
-    // Provide more specific error messages
     if (error.response?.status === 401) {
       throw new Error("Authentication failed. Please sign in again.");
     } else if (error.message?.includes("Failed to fetch")) {
-      throw new Error("Network error. Please check your connection and try again.");
+      throw new Error(
+        "Network error. Please check your connection and try again."
+      );
     }
-    
     throw error;
   }
 }
@@ -104,13 +95,10 @@ export default function BookPricing() {
     e.preventDefault();
     setUploading(true);
     try {
-      // If new book, ensure files are provided
-      if (isNew && !formData.ebook_file) {
+      if (isNew && !formData.ebook_file)
         throw new Error("Ebook file is required");
-      }
-      if (isNew && !formData.cover_image) {
+      if (isNew && !formData.cover_image)
         throw new Error("Cover image is required");
-      }
 
       const uploadPromises = {};
 
@@ -156,34 +144,23 @@ export default function BookPricing() {
           key !== "cover_image" &&
           value !== undefined
         ) {
-          // Convert arrays or objects to JSON
           if (Array.isArray(value) || typeof value === "object") {
             formDataToSend.append(`book[${key}]`, JSON.stringify(value));
           } else {
             formDataToSend.append(`book[${key}]`, value);
           }
         } else if (key === "ebook_price") {
-          // Ensure price is sent as decimal string with 2 decimal places
-          const priceValue =
-            typeof value === "number" ? value.toFixed(2) : value;
+          // Always send price as decimal string with 2 decimal places
+          const priceValue = value === "" ? "" : parseFloat(value).toFixed(2);
           formDataToSend.append(`book[${key}]`, priceValue);
           console.log("Price being sent:", priceValue);
         }
       });
-      
+
       if (ebookSignedId)
         formDataToSend.append("book[ebook_file]", ebookSignedId);
       if (coverImageSignedId)
         formDataToSend.append("book[cover_image]", coverImageSignedId);
-
-
-      console.log("Submitting data to:", isNew ? "/books" : `/books/${id}`);
-      for (let pair of formDataToSend.entries()) {
-        console.log(`${pair[0]}:`, pair[1]);
-      }
-
-
-      
 
       const response = await api({
         data: formDataToSend,
@@ -197,14 +174,11 @@ export default function BookPricing() {
       }
     } catch (error) {
       console.error("Upload failed:", error);
-      
-      // Provide user-friendly error messages
       let errorMessage = "Upload failed. Please try again.";
-      
       if (error.message?.includes("Authentication failed")) {
-        errorMessage = "Authentication failed. Please sign in again and try uploading.";
+        errorMessage = "Authentication failed. Please sign in again.";
       } else if (error.message?.includes("Network error")) {
-        errorMessage = "Network connection error. Please check your internet and try again.";
+        errorMessage = "Network connection error. Please check your internet.";
       } else if (error.response?.status === 401) {
         errorMessage = "Session expired. Please sign in again.";
       } else if (error.message?.includes("S3 upload failed")) {
@@ -212,14 +186,11 @@ export default function BookPricing() {
       } else if (error.message) {
         errorMessage = error.message;
       }
-      
       alert(errorMessage);
     } finally {
       setUploading(false);
     }
   };
-
-  
 
   return (
     <form onSubmit={handleSubmit}>
@@ -233,7 +204,7 @@ export default function BookPricing() {
             type="number"
             step="0.01"
             min="0"
-            value={(formData.ebook_price / 100) || ""}
+            value={formData.ebook_price || ""}
             onChange={(e) => {
               const value =
                 e.target.value === "" ? "" : parseFloat(e.target.value);
@@ -303,7 +274,6 @@ export default function BookPricing() {
         )}
       </div>
 
-      {/* Upload status */}
       {uploadProgress.ebook_file && (
         <p className="mt-2">
           E-book: {uploadProgress.ebook_file === "complete" ? "✅" : "⏳"}
@@ -315,7 +285,6 @@ export default function BookPricing() {
         </p>
       )}
 
-      {/* Buttons */}
       <div className="flex justify-between mt-10">
         <button
           type="button"
@@ -331,7 +300,11 @@ export default function BookPricing() {
         <button
           type="submit"
           disabled={!formData.terms_and_conditions || uploading}
-          className={`bg-[#E50913] hover:bg-[#cd3f46] text-white px-8 py-2 rounded-md ${!formData.terms_and_conditions || uploading ? "cursor-not-allowed" : "cursor-pointer"}`}
+          className={`bg-[#E50913] hover:bg-[#cd3f46] text-white px-8 py-2 rounded-md ${
+            !formData.terms_and_conditions || uploading
+              ? "cursor-not-allowed"
+              : "cursor-pointer"
+          }`}
         >
           {uploading ? "Uploading..." : isNew ? "Publish" : "Save Edit"}
         </button>

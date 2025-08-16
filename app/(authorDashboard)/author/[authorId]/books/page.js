@@ -27,6 +27,7 @@ export default function AuthorBooks() {
   console.log("Book data:", books);
 
   const [authorId, setAuthorId] = useState(null);
+  const READER_FRONTEND_DOMAIN = process.env.NEXT_PUBLIC_READER_FRONTEND_DOMAIN;
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -122,234 +123,244 @@ export default function AuthorBooks() {
           </Link>
         </div>
       ) : (
-       books.map((book) => {
+        books.map((book) => {
+          const slugPath = book.slug ? book.slug : "";
 
-          const slugPath = book.slug ? book.slug.replace(/^\/+/, '') : "";
-
-        return (
-          <div
-            key={book.id}
-            className="sm:flex rounded-lg sm:justify-between mx-auto shadow-md relative lg:max-w-[750px] lg:ml-0 mb-4 z-0"
-          >
-            <div className="absolute sm:hidden text-right flex justify-between mx-3">
-              <div className="relative z-50">
-                <img
-                  src="/images/book-menu.png"
-                  alt="book menu"
-                  className="h-1 w-5 cursor-pointer"
-                  onClick={() => {
-                    setOpenMenuForBookId(
-                      openMenuForBookId === book.id ? null : book.id
-                    );
-                    setOpenMenu(true);
-                  }}
-                />
-
-                {openMenuForBookId === book.id && isOpenMenu && (
-                  <BookMenu
-                    ref={bookMenuRef}
-                    book={book}
-                    onHandleEdit={() => {
-                      handleEdit(book.id);
-                      setOpenMenu(false);
+          return (
+            <div
+              key={book.id}
+              className="sm:flex rounded-lg sm:justify-between mx-auto shadow-md relative lg:max-w-[750px] lg:ml-0 mb-4 z-0"
+            >
+              <div className="absolute sm:hidden text-right flex justify-between mx-3">
+                <div className="relative z-50">
+                  <img
+                    src="/images/book-menu.png"
+                    alt="book menu"
+                    className="h-1 w-5 cursor-pointer"
+                    onClick={() => {
+                      setOpenMenuForBookId(
+                        openMenuForBookId === book.id ? null : book.id
+                      );
+                      setOpenMenu(true);
                     }}
-                    onHandleSetDeleteModalOpen={() => {
-                      setDeleteBook(true);
-                      setOpenMenu(false);
-                    }}
-                    onCloseMenu={() => setOpenMenu(false)}
                   />
-                )}
-                {openMenuForBookId === book.id && deleteBook && (
-                  <DeleteModal
-                    onHandleSetDeleteModalClose={() => setDeleteBook(false)}
-                    onHandleDeleteBook={() => handleDelete(book.id)}
-                  />
-                )}
-              </div>
-            </div>
 
-
-            {/* Book Cover and Info */}
-            <div className="flex flex-col items-center sm:border-r border-r-gray-600 mb-2 mt-3 pr-9 mx-auto">
-              <Link href={`/author/${authorId}/books/${book.id}`}>
-                <img
-                  src={book.cover_image_url || "/images/book-shelf.png"}
-                  alt={book.title}
-                  className="w-36 h-44 ml-3 rounded-lg mr-2"
-                />
-              </Link>
-              <div className="text-center sm:text-left">
-                <p className="font-semibold w-32">{book.title}</p>
-                <p className="text-sm">
-                  By{" "}
-                  {`${book.last_name}  ${book.first_name}` || "Author's Name"}
-                </p>
-              </div>
-            </div>
-
-            {/* Book Meta Info */}
-            <div className="hidden sm:flex flex-col justify-between my-3 ml-6">
-              <div className="flex items-center">
-                <p>
-                  Book Status:{" "}
-                  <span className="text-[#FF9A6C] font-semibold">
-                    {book.approval_status}
-                  </span>
-                </p>
-                <img
-                  src="/images/status.png"
-                  alt="status"
-                  className="w-3 h-3 ml-1"
-                />
-              </div>
-
-
-              {/* Slug Sharing - Desktop only (shown below Book Status) */}
-              {book.slug && (
-                <div className="mt-3 sm:w-[320px] w-full px-0">
-                  <p className="text-sm text-gray-600 mb-1">Share your book:</p>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="text"
-                      readOnly
-                      value={`${window.location.origin}/books/${slugPath}`}
-                      className="text-sm border px-2 py-1 rounded flex-1 cursor-default bg-gray-50"
-                      />
-                    <button
-                      onClick={() => {
-                        navigator.clipboard.writeText(`${window.location.origin}/books/${slugPath}`);
-                        toast.success("Book link copied to clipboard!");
+                  {openMenuForBookId === book.id && isOpenMenu && (
+                    <BookMenu
+                      ref={bookMenuRef}
+                      book={book}
+                      onHandleEdit={() => {
+                        handleEdit(book.id);
+                        setOpenMenu(false);
                       }}
-                      className="bg-[#3109e5] hover:bg-[#11103a86] text-white px-3 py-1.5 rounded text-sm"
-                      >
-                      Copy
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* Admin Feedback */}
-              <div className="mt-3 sm:w-[320px] w-full px-0">
-                <p className="text-sm text-gray-600 mb-1">Admin Feedback:</p>
-                <div className="text-sm border px-3 py-2 rounded bg-gray-50">
-                  {book.admin_feedback && book.admin_feedback.trim() !== "" ? (
-                    book.admin_feedback
-                  ) : (
-                    <span className="italic text-gray-400">No comment for now</span>
+                      onHandleSetDeleteModalOpen={() => {
+                        setDeleteBook(true);
+                        setOpenMenu(false);
+                      }}
+                      onCloseMenu={() => setOpenMenu(false)}
+                    />
+                  )}
+                  {openMenuForBookId === book.id && deleteBook && (
+                    <DeleteModal
+                      onHandleSetDeleteModalClose={() => setDeleteBook(false)}
+                      onHandleDeleteBook={() => handleDelete(book.id)}
+                    />
                   )}
                 </div>
               </div>
-              <p>
-                Last Updated on <span>{formatDate(book.updated_at)}</span>
-              </p>
-            </div>
 
-            {/* Book Menu & Type */}
-            <div className="sm:flex-1 sm:relative hidden sm:block">
-              <div className="sm:absolute right-0 sm:flex sm:flex-col justify-between items-end h-full mr-3">
-                <img
-                  src="/images/book-menu.png"
-                  alt="book menu"
-                  className="h-1 w-5 mt-3 cursor-pointer"
-                  onClick={() => {
-                    setOpenMenuForBookId(
-                      openMenuForBookId === book.id ? null : book.id
-                    );
-                    setOpenMenu(true);
-                  }}
-                />
-                {openMenuForBookId === book.id && isOpenMenu && (
-                  <BookMenu
-                    ref={bookMenuRef}
-                    book={book}
-                    onHandleEdit={() => {
-                      handleEdit(book.id);
-                      setOpenMenu(false);
-                    }}
-                    onHandleSetDeleteModalOpen={() => {
-                      setDeleteBook(true);
-                      setOpenMenu(false);
-                    }}
-                    onCloseMenu={() => setOpenMenu(false)}
+              {/* Book Cover and Info */}
+              <div className="flex flex-col items-center sm:border-r border-r-gray-600 mb-2 mt-3 pr-9 mx-auto">
+                <Link href={`/author/${authorId}/books/${book.id}`}>
+                  <img
+                    src={book.cover_image_url || "/images/book-shelf.png"}
+                    alt={book.title}
+                    className="w-36 h-44 ml-3 rounded-lg mr-2"
                   />
-                )}
-                {openMenuForBookId === book.id && deleteBook && (
-                  <DeleteModal
-                    onHandleSetDeleteModalClose={() => setDeleteBook(false)}
-                    onHandleDeleteBook={() => handleDelete(book.id)}
-                  />
-                )}
-                <p className="mb-3">
-                  Book Type: <span>Ebook</span>
-                </p>
+                </Link>
+                <div className="text-center sm:text-left">
+                  <p className="font-semibold w-32">{book.title}</p>
+                  <p className="text-sm">
+                    By{" "}
+                    {`${book.last_name}  ${book.first_name}` || "Author's Name"}
+                  </p>
+                </div>
               </div>
-            </div>
 
-            {/* Mobile View */}
-            <div className="flex sm:hidden flex-col w-full px-2 py-2 text-sm border-t mt-2 text-gray-600">
-              {/* Status and updated date */}
-              <div>
-                <p>
-                  Book Status:{" "}
-                  <span className="text-[#FF9A6C] font-semibold">
-                    {book.approval_status}
-                  </span>
+              {/* Book Meta Info */}
+              <div className="hidden sm:flex flex-col justify-between my-3 ml-6">
+                <div className="flex items-center">
+                  <p>
+                    Book Status:{" "}
+                    <span className="text-[#FF9A6C] font-semibold">
+                      {book.approval_status}
+                    </span>
+                  </p>
                   <img
                     src="/images/status.png"
                     alt="status"
-                    className="inline-block w-3 h-3 ml-1"
+                    className="w-3 h-3 ml-1"
                   />
-                </p>
+                </div>
+
+                {/* Slug Sharing - Desktop only (shown below Book Status) */}
+                {book.slug && (
+                  <div className="mt-3 sm:w-[320px] w-full px-0">
+                    <p className="text-sm text-gray-600 mb-1">
+                      Share your book:
+                    </p>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        readOnly
+                        value={`${READER_FRONTEND_DOMAIN}/bookstore/${slugPath}`}
+                        className="text-sm border px-2 py-1 rounded flex-1 cursor-default bg-gray-50"
+                      />
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(
+                            `${READER_FRONTEND_DOMAIN}/bookstore/${slugPath}`
+                          );
+                          toast.success("Book link copied to clipboard!");
+                        }}
+                        className="bg-[#3109e5] hover:bg-[#11103a86] text-white px-3 py-1.5 rounded text-sm"
+                      >
+                        Copy
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Admin Feedback */}
+                <div className="mt-3 sm:w-[320px] w-full px-0">
+                  <p className="text-sm text-gray-600 mb-1">Admin Feedback:</p>
+                  <div className="text-sm border px-3 py-2 rounded bg-gray-50">
+                    {book.admin_feedback &&
+                    book.admin_feedback.trim() !== "" ? (
+                      book.admin_feedback
+                    ) : (
+                      <span className="italic text-gray-400">
+                        No comment for now
+                      </span>
+                    )}
+                  </div>
+                </div>
                 <p>
                   Last Updated on <span>{formatDate(book.updated_at)}</span>
                 </p>
               </div>
 
-              {/* Book type */}
-              <p className="mt-3">
-                Book Type: <span>Ebook</span>
-              </p>
-
-              {/* Slug sharing */}
-              {book.slug && (
-                <div className="mt-3 w-full">
-                  <p className="text-sm text-gray-600 mb-1">Share your book:</p>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="text"
-                      readOnly
-                      value={`${window.location.origin}/books/${slugPath}`}
-                      className="text-xs border px-2 py-1 rounded flex-1 cursor-default bg-gray-50"
-                    />
-                    <button
-                      onClick={() => {
-                        navigator.clipboard.writeText(`${window.location.origin}/books/${slugPath}`);
-                        toast.success("Book link copied to clipboard!");
+              {/* Book Menu & Type */}
+              <div className="sm:flex-1 sm:relative hidden sm:block">
+                <div className="sm:absolute right-0 sm:flex sm:flex-col justify-between items-end h-full mr-3">
+                  <img
+                    src="/images/book-menu.png"
+                    alt="book menu"
+                    className="h-1 w-5 mt-3 cursor-pointer"
+                    onClick={() => {
+                      setOpenMenuForBookId(
+                        openMenuForBookId === book.id ? null : book.id
+                      );
+                      setOpenMenu(true);
+                    }}
+                  />
+                  {openMenuForBookId === book.id && isOpenMenu && (
+                    <BookMenu
+                      ref={bookMenuRef}
+                      book={book}
+                      onHandleEdit={() => {
+                        handleEdit(book.id);
+                        setOpenMenu(false);
                       }}
-                      className="bg-[#3109e5] hover:bg-[#11103a86] text-white px-2 py-1 rounded text-xs"
-                    >
-                      Copy
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* Admin feedback */}
-              <div className="mt-3 w-full">
-                <p className="text-sm text-gray-600 mb-1">Admin Feedback:</p>
-                <div className="text-xs border px-3 py-2 rounded bg-gray-50">
-                  {book.admin_feedback && book.admin_feedback.trim() !== "" ? (
-                    book.admin_feedback
-                  ) : (
-                    <span className="italic text-gray-400">No comment for now</span>
+                      onHandleSetDeleteModalOpen={() => {
+                        setDeleteBook(true);
+                        setOpenMenu(false);
+                      }}
+                      onCloseMenu={() => setOpenMenu(false)}
+                    />
                   )}
+                  {openMenuForBookId === book.id && deleteBook && (
+                    <DeleteModal
+                      onHandleSetDeleteModalClose={() => setDeleteBook(false)}
+                      onHandleDeleteBook={() => handleDelete(book.id)}
+                    />
+                  )}
+                  <p className="mb-3">
+                    Book Type: <span>Ebook</span>
+                  </p>
+                </div>
+              </div>
+
+              {/* Mobile View */}
+              <div className="flex sm:hidden flex-col w-full px-2 py-2 text-sm border-t mt-2 text-gray-600">
+                {/* Status and updated date */}
+                <div>
+                  <p>
+                    Book Status:{" "}
+                    <span className="text-[#FF9A6C] font-semibold">
+                      {book.approval_status}
+                    </span>
+                    <img
+                      src="/images/status.png"
+                      alt="status"
+                      className="inline-block w-3 h-3 ml-1"
+                    />
+                  </p>
+                  <p>
+                    Last Updated on <span>{formatDate(book.updated_at)}</span>
+                  </p>
+                </div>
+
+                {/* Book type */}
+                <p className="mt-3">
+                  Book Type: <span>Ebook</span>
+                </p>
+
+                {/* Slug sharing */}
+                {book.slug && (
+                  <div className="mt-3 w-full">
+                    <p className="text-sm text-gray-600 mb-1">
+                      Share your book:
+                    </p>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        readOnly
+                        value={`${READER_FRONTEND_DOMAIN}/bookstore/${slugPath}`}
+                        className="text-xs border px-2 py-1 rounded flex-1 cursor-default bg-gray-50"
+                      />
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(
+                            `${READER_FRONTEND_DOMAIN}/bookstore/${slugPath}`
+                          );
+                          toast.success("Book link copied to clipboard!");
+                        }}
+                        className="bg-[#3109e5] hover:bg-[#11103a86] text-white px-2 py-1 rounded text-xs"
+                      >
+                        Copy
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Admin feedback */}
+                <div className="mt-3 w-full">
+                  <p className="text-sm text-gray-600 mb-1">Admin Feedback:</p>
+                  <div className="text-xs border px-3 py-2 rounded bg-gray-50">
+                    {book.admin_feedback &&
+                    book.admin_feedback.trim() !== "" ? (
+                      book.admin_feedback
+                    ) : (
+                      <span className="italic text-gray-400">
+                        No comment for now
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-
-          </div>
-         );
+          );
         })
       )}
     </section>
