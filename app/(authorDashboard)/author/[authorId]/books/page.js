@@ -27,6 +27,7 @@ export default function AuthorBooks() {
   console.log("Book data:", books);
 
   const [authorId, setAuthorId] = useState(null);
+  const READER_FRONTEND_DOMAIN = process.env.NEXT_PUBLIC_READER_FRONTEND_DOMAIN;
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -124,7 +125,7 @@ export default function AuthorBooks() {
       ) : (
        books.map((book) => {
 
-          const slugPath = book.slug ? book.slug.replace(/^\/+/, '') : "";
+          const slugPath = book.slug ? book.slug : "";
 
         return (
           <div
@@ -213,12 +214,14 @@ export default function AuthorBooks() {
                     <input
                       type="text"
                       readOnly
-                      value={`${window.location.origin}/books/${slugPath}`}
+                      value={`${READER_FRONTEND_DOMAIN}/bookstore/${slugPath}`}
                       className="text-sm border px-2 py-1 rounded flex-1 cursor-default bg-gray-50"
                       />
                     <button
                       onClick={() => {
-                        navigator.clipboard.writeText(`${window.location.origin}/books/${slugPath}`);
+                        navigator.clipboard.writeText(
+                          `${READER_FRONTEND_DOMAIN}/bookstore/${slugPath}`
+                        );
                         toast.success("Book link copied to clipboard!");
                       }}
                       className="bg-[#3109e5] hover:bg-[#11103a86] text-white px-3 py-1.5 rounded text-sm"

@@ -272,28 +272,29 @@ export default function WalletPage() {
             </div>
 
             {/* Full Name */}
-            {verifiedAccountName && !verificationError && ( <div>
-              <label
-                htmlFor="accountName"
-                className="mb-1 block text-sm font-medium text-gray-700"
-              >
-                Full Name
-              </label>
-              <input
-                readOnly
-                id="accountName"
-                type="text"
-                placeholder="Name appears as on the bank account name"
-                value={accountName}
-                onChange={(e) => {
-                  setAccountName(e.target.value);
-                  setMessage("");
-                  setError("");
-                }}
-                required
-                className="w-full rounded-md border text-green-600 font-bold border-red-600 bg-gray-100 px-4 py-2 text-sm placeholder:text-gray-500 focus:outline-none"
-              />
-            </div>
+            {verifiedAccountName && !verificationError && (
+              <div>
+                <label
+                  htmlFor="accountName"
+                  className="mb-1 block text-sm font-medium text-gray-700"
+                >
+                  Full Name
+                </label>
+                <input
+                  readOnly
+                  id="accountName"
+                  type="text"
+                  placeholder="Name appears as on the bank account name"
+                  value={accountName}
+                  onChange={(e) => {
+                    setAccountName(e.target.value);
+                    setMessage("");
+                    setError("");
+                  }}
+                  required
+                  className="w-full rounded-md border text-green-600 font-bold border-red-600 bg-gray-100 px-4 py-2 text-sm placeholder:text-gray-500 focus:outline-none"
+                />
+              </div>
             )}
 
             {/* Feedback */}
