@@ -31,10 +31,10 @@ async function directUploadFile(file) {
 
   try {
     const checksum = await computeChecksum(file);
-    
+
     console.log("Requesting direct upload for:", file.name);
     console.log("API Base URL:", process.env.NEXT_PUBLIC_API_BASE_URL);
-    
+
     const response = await api.post("/direct_uploads", {
       blob: {
         filename: file.name,
@@ -68,21 +68,25 @@ async function directUploadFile(file) {
     if (!uploadResponse.ok) {
       const errorText = await uploadResponse.text();
       console.error("S3 upload error:", errorText);
-      throw new Error(`S3 upload failed: ${uploadResponse.status} ${errorText}`);
+      throw new Error(
+        `S3 upload failed: ${uploadResponse.status} ${errorText}`
+      );
     }
 
     console.log(`✅ Successfully uploaded ${file.name} to S3`);
     return signed_id;
   } catch (error) {
     console.error("Direct upload failed:", error);
-    
+
     // Provide more specific error messages
     if (error.response?.status === 401) {
       throw new Error("Authentication failed. Please sign in again.");
     } else if (error.message?.includes("Failed to fetch")) {
-      throw new Error("Network error. Please check your connection and try again.");
+      throw new Error(
+        "Network error. Please check your connection and try again."
+      );
     }
-    
+
     throw error;
   }
 }
@@ -170,20 +174,16 @@ export default function BookPricing() {
           console.log("Price being sent:", priceValue);
         }
       });
-      
+
       if (ebookSignedId)
         formDataToSend.append("book[ebook_file]", ebookSignedId);
       if (coverImageSignedId)
         formDataToSend.append("book[cover_image]", coverImageSignedId);
 
-
       console.log("Submitting data to:", isNew ? "/books" : `/books/${id}`);
       for (let pair of formDataToSend.entries()) {
         console.log(`${pair[0]}:`, pair[1]);
       }
-
-
-      
 
       const response = await api({
         data: formDataToSend,
@@ -197,14 +197,16 @@ export default function BookPricing() {
       }
     } catch (error) {
       console.error("Upload failed:", error);
-      
+
       // Provide user-friendly error messages
       let errorMessage = "Upload failed. Please try again.";
-      
+
       if (error.message?.includes("Authentication failed")) {
-        errorMessage = "Authentication failed. Please sign in again and try uploading.";
+        errorMessage =
+          "Authentication failed. Please sign in again and try uploading.";
       } else if (error.message?.includes("Network error")) {
-        errorMessage = "Network connection error. Please check your internet and try again.";
+        errorMessage =
+          "Network connection error. Please check your internet and try again.";
       } else if (error.response?.status === 401) {
         errorMessage = "Session expired. Please sign in again.";
       } else if (error.message?.includes("S3 upload failed")) {
@@ -212,14 +214,12 @@ export default function BookPricing() {
       } else if (error.message) {
         errorMessage = error.message;
       }
-      
+
       alert(errorMessage);
     } finally {
       setUploading(false);
     }
   };
-
-  
 
   return (
     <form onSubmit={handleSubmit}>
