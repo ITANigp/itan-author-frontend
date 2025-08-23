@@ -196,6 +196,9 @@ export default function BookPricing() {
     <form onSubmit={handleSubmit}>
       <div className="relative mt-5">
         <h3 className="font-bold text-lg mb-2">Price</h3>
+        <p className="text-blue-800 italic">
+          Minimum allowed price: $2 or higher.
+        </p>
         <div className="relative">
           <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
             $
@@ -203,7 +206,7 @@ export default function BookPricing() {
           <input
             type="number"
             step="0.01"
-            min="0"
+            min="2"
             value={formData.ebook_price || ""}
             onChange={(e) => {
               const value =

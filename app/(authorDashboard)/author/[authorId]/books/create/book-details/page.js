@@ -62,8 +62,10 @@ const BookDetails = () => {
     //    newErrors.description = "Description must be under 1000 characters.";
     //  }
 
-     if (!formData.total_pages || formData.total_pages.trim() === "") {
+     if (!formData.total_pages || formData.total_pages === "") {
        newErrors.total_pages = "Number of Book Pages is required.";
+     } else if (Number(formData.total_pages) < 2) {
+       newErrors.total_pages = "Number of Book Pages must be at least 2.";
      }
     if (!id && (!formData.categories || formData.categories === "")) {
       newErrors.categories = "Category is required.";
