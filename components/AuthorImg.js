@@ -82,7 +82,7 @@ export default function ProfileImageUploader({ profile }) {
       alert("✅ Image updated!");
       setEditing(false);
     } catch (err) {
-      console.error("Upload failed", err);
+      
       alert("Upload failed");
     } finally {
       setUploading(false);

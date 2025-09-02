@@ -24,7 +24,6 @@ export default function AuthorBooks() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  console.log("Book data:", books);
 
   const [authorId, setAuthorId] = useState(null);
   const READER_FRONTEND_DOMAIN = process.env.NEXT_PUBLIC_READER_FRONTEND_DOMAIN;
@@ -51,12 +50,11 @@ export default function AuthorBooks() {
         if (Array.isArray(data)) {
           setBooks(data);
         } else {
-          console.error("Unexpected API response format", response.data);
+        
           setBooks([]);
         }
       })
       .catch((error) => {
-        console.error("Error fetching books:", error);
         setBooks([]);
       })
       .finally(() => setLoading(false));
@@ -78,7 +76,6 @@ export default function AuthorBooks() {
         if (error.response?.status === 403) {
           toast.error("You are not authorized to delete this book.");
         } else {
-          console.error("Error deleting book:", error);
           alert("An error occurred while deleting the book. Please try again.");
         }
       });

@@ -27,7 +27,6 @@ export default function ContributorsForm({ value, onChange }) {
     onChange(updated);
   };
 
-  console.log("Contributors' data: ", contributors);
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow rounded space-y-4">
       <h2 className="text-xl font-semibold">Contributors</h2>

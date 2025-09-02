@@ -10,9 +10,6 @@ import { signInAuthor } from "@/utils/auth/authorApi";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
-console.log('env data:',process.env);
-
-console.log("RECAPTCHA KEY:", process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY);
 
 
 
@@ -34,7 +31,6 @@ const SignIn = () => {
 
     try {
       const author = await signInAuthor(email, password, captchaToken);
-      console.log("Author Sign-in Data:", author);
 
       if (
         author.status.code === 202 &&
@@ -47,7 +43,7 @@ const SignIn = () => {
       if (author?.data?.id) {
         localStorage.setItem("authorInfo", JSON.stringify(author.data));
         // Check for kyc_step in response and redirect accordingly
-        console.log("authorInfo: ", author.data);
+     
         const kycStep = author?.data?.kyc_step;
         if (kycStep < 3) {
           router.push(`/author/${author?.data?.id}/kyc/step-${kycStep + 1}`);
@@ -164,7 +160,7 @@ const SignIn = () => {
                     sitekey={SITE_KEY}
                     onChange={(token) => setCaptchaToken(token || "")}
                     onError={(err) => {
-                      console.error("reCAPTCHA error:", err);
+                      
                       toast.error(
                         "reCAPTCHA failed to load. Please refresh the page."
                       );

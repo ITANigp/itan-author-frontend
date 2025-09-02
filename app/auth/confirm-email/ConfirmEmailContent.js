@@ -40,7 +40,7 @@ export default function ConfirmEmailContent() {
         }
       } catch (error) {
         setStatus("An error occurred. Please try again.");
-        console.error("Email confirmation error:", error);
+        
       }
     };
 

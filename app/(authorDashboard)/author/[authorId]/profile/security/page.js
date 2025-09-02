@@ -56,10 +56,9 @@ const PrivacyAndSecurity = () => {
     const fetchStatus = async () => {
       try {
         const status = await getTwoFactorStatus();
-        console.log("2FA Status:", status);
+    
         setTwoFactorStatus(status);
       } catch (err) {
-        console.error("Failed to fetch 2FA status:", err);
       }
     };
 
@@ -80,14 +79,14 @@ const PrivacyAndSecurity = () => {
 
     try {
       const response = await api.patch("/authors/profile", { author });
-      console.log("2FA updated:", response);
+      
       setTwoFactorStatus((prev) => ({
         ...prev,
         two_factor_enabled: author.two_factor_enabled,
         preferred_method: author.preferred_2fa_method,
       }));
     } catch (err) {
-      console.error("2FA update error:", err);
+      
     }
   };
 

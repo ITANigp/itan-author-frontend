@@ -43,8 +43,6 @@ const BookContent = () => {
   const validateForm = () => {
     let newErrors = {};
 
-    console.log("book id @ form2: ", id);
-
     if (id == "null") {
       if (!formData.ebook_file) {
         newErrors.ebook_file = "Ebook file is required.";
@@ -67,7 +65,7 @@ const BookContent = () => {
   //         updateFormData(response.data.data); // Update the form context
   //       })
   //       .catch((error) => {
-  //         console.error("Error fetching book:", error);
+  //         
   //       });
   //   }
   // }, [id]);
@@ -136,7 +134,6 @@ const BookContent = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("Form2 is valid, submitting data...", formData);
       router.push(`/author/${authorId}/books/create/book-pricing?id=${id}`);
     }
   };

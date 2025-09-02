@@ -52,7 +52,7 @@ export default function WalletPage() {
 
         setCurrentBankingDetails(res.data);
       } catch (err) {
-        console.error("Failed to fetch current banking details:", err.message);
+    
       } finally {
         setLoadingCurrentDetails(false);
       }
@@ -64,7 +64,7 @@ export default function WalletPage() {
         const data = await getPaymentSummary();
         setBalance(data?.earnings_summary || 0);
       } catch (err) {
-        console.error("Failed to fetch balance:", err);
+       
       }
     };
 
@@ -194,7 +194,7 @@ export default function WalletPage() {
         // On successful update, re-fetch the current details to refresh the UI
         setCurrentBankingDetails(res.data.banking_detail);
       } else {
-        console.log("Bank Details Err: ", res);
+       
         setError("Something went wrong.");
       }
     } catch (err) {

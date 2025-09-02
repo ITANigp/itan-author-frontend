@@ -25,7 +25,7 @@ export async function POST(req: Request) {
 
     return Response.redirect(`${origin}/subscribe/success`, 302)
   } catch (err) {
-    console.error(err)
+    
     return Response.redirect(`${origin}/subscribe/error`, 302)
   }
 }

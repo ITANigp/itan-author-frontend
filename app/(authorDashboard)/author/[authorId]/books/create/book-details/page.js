@@ -11,7 +11,6 @@ import GenreSelector from "@/components/SelectGenre";
 
 const BookDetails = () => {
   const { formData, updateFormData } = useForm();
-  console.log("Current categories value:", formData.categories);
   // const [selectedOption, setSelectedOption] = useState("option1");
   const [errors, setErrors] = useState({});
   const [tags, setTags] = useState([]);
@@ -23,7 +22,6 @@ const BookDetails = () => {
   const id = searchParams.get("id");
 
   useEffect(() => {
-    console.log("Categories changed:", formData.categories);
   }, [formData.categories]);
 
   useEffect(() => {
@@ -81,7 +79,6 @@ const BookDetails = () => {
      api
         .get(`/books/${id}`)
         .then((response) => {
-          console.log("Print book info:", response.data.data);
           updateFormData(response.data.data); // Update the form context
                 if (Array.isArray(response.data.data.tags)) {
                   setTags(response.data.data.tags);
@@ -89,7 +86,6 @@ const BookDetails = () => {
         })
         
         .catch((error) => {
-          console.error("Error fetching book:", error);
         });
     }
   }, [id]);
@@ -99,7 +95,6 @@ const BookDetails = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("Form1 is valid, submitting data...", formData);
     }
   };
 
@@ -327,7 +322,6 @@ const BookDetails = () => {
       <GenreSelector
         value={formData.categories}
         onChange={(updated) => {
-          console.log("GenreSelector updated:", updated);
           updateFormData({ categories: updated });
         }}
       />

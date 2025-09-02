@@ -58,7 +58,7 @@ const ProfileFormModal = ({ isOpen, onClose, onProfileUpdate }) => {
       onProfileUpdate?.();
       onClose();
     } catch (err) {
-      console.error("Profile Error: ", err);
+
     } finally {
       setLoading(false);
     }

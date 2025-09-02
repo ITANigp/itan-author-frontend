@@ -22,17 +22,10 @@ api.interceptors.request.use(
 
     // Debug logging for production issues
     if (process.env.NODE_ENV === "production") {
-      console.log("🚀 API Request:", {
-        url: config.url,
-        baseURL: config.baseURL,
-        withCredentials: config.withCredentials,
-        method: config.method,
-        headers: config.headers,
-      });
+  
 
       // Log cookies being sent
       if (typeof document !== "undefined") {
-        console.log("🍪 Current cookies:", document.cookie);
       }
     }
 
@@ -47,26 +40,15 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => {
     if (process.env.NODE_ENV === "production") {
-      console.log("✅ API Success:", {
-        url: response.config?.url,
-        status: response.status,
-        headers: response.headers,
-      });
+      
     }
     return response;
   },
   (error) => {
     if (error.response?.status === 401) {
-      console.error("🔒 Authentication failed:", {
-        url: error.config?.url,
-        status: error.response?.status,
-        data: error.response?.data,
-        responseHeaders: error.response?.headers,
-      });
 
       // Log current cookies when auth fails
       if (typeof document !== "undefined") {
-        console.log("🍪 Cookies during auth failure:", document.cookie);
       }
     }
     return Promise.reject(error);
@@ -138,7 +120,7 @@ export const signOutAuthor = async () => {
 
     return { success: true };
   } catch (error) {
-    console.error("Sign-out failed:", error.response?.data || error);
+   
   }
 };
 
@@ -148,10 +130,7 @@ export const getAuthorProfile = async () => {
     const response = await api.get("/authors/profile");
     return response.data;
   } catch (error) {
-    console.error(
-      "Failed to fetch author profile:",
-      error.response?.data || error
-    );
+    
     throw error;
   }
 };
@@ -175,7 +154,7 @@ export const createAuthorProfile = async (authorData, imageFile) => {
 
     return response.data;
   } catch (error) {
-    console.error("Failed to create profile:", error.response?.data || error);
+    
     throw error;
   }
 };
@@ -199,7 +178,7 @@ export const updateAuthorProfile = async (authorData, imageFile) => {
 
     return response.data;
   } catch (error) {
-    console.error("Failed to update profile:", error.response?.data || error);
+    
     throw error;
   }
 };
@@ -220,7 +199,6 @@ export const updateAuthorProfileImg = async (imageFile) => {
 
     return response.data;
   } catch (error) {
-    console.error("Failed to update profile:", error.response?.data || error);
     throw error;
   }
 };

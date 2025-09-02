@@ -49,7 +49,7 @@ export default function ProfileForm() {
           );
         }
       } catch (err) {
-        console.error("Failed to fetch profile", err);
+       
         setError("Failed to load profile data.");
       }
     };
@@ -111,10 +111,7 @@ export default function ProfileForm() {
         `/author/${authorData.id}/kyc/step-${authorData.kyc_step + 1}`
       );
     } catch (err) {
-      console.error(
-        "Update or KYC step failed:",
-        err?.response?.data || err?.message || err
-      );
+      
       const errorMessage =
         err?.response?.data?.error ||
         err?.response?.data?.message ||

@@ -38,7 +38,7 @@ const Profile = () => {
       setProfile(data);
       setPreviewUrl(data?.author_profile_image_url || "/images/avatar.png");
     } catch (err) {
-      console.error(err);
+      
       setError("Failed to fetch author profile.");
     }
   };
@@ -67,7 +67,6 @@ const Profile = () => {
       setEditing(false);
       fetchProfile(); // refresh profile info
     } catch (err) {
-      console.error("Upload failed", err);
       alert("Upload failed");
     } finally {
       setUploading(false);

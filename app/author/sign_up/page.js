@@ -163,7 +163,7 @@ const SignUp = () => {
                     sitekey={SITE_KEY}
                     onChange={(token) => setCaptchaToken(token || "")}
                     onError={(err) => {
-                      console.error("reCAPTCHA error:", err);
+                    
                       // If you have toast imported, uncomment the line below
                       // toast.error("reCAPTCHA failed to load. Please refresh the page.");
                       setMessage(

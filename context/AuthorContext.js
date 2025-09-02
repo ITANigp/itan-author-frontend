@@ -34,11 +34,9 @@ export const AuthorProvider = ({ children }) => {
       const { data } = await getAuthorProfile();
       setProfile(data);
       setIsAuthenticated(true);
-      console.log("Fetched Profile Data: ", data);
     } catch (err) {
       setError("Failed to fetch author profile.");
       setIsAuthenticated(false);
-      console.error("Profile fetch error:", err);
     } finally {
       setLoading(false);
     }
@@ -80,7 +78,7 @@ export const AuthorProvider = ({ children }) => {
           }
         }
       } catch (error) {
-        console.error("Error parsing stored author info:", error);
+        
         localStorage.removeItem("authorInfo");
       }
     }

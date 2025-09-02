@@ -66,7 +66,7 @@ async function directUploadFile(file) {
 
     return signed_id;
   } catch (error) {
-    console.error("Direct upload failed:", error);
+    
     if (error.response?.status === 401) {
       throw new Error("Authentication failed. Please sign in again.");
     } else if (error.message?.includes("Failed to fetch")) {
@@ -153,7 +153,7 @@ export default function BookPricing() {
           // Always send price as decimal string with 2 decimal places
           const priceValue = value === "" ? "" : parseFloat(value).toFixed(2);
           formDataToSend.append(`book[${key}]`, priceValue);
-          console.log("Price being sent:", priceValue);
+          
         }
       });
 
@@ -173,7 +173,7 @@ export default function BookPricing() {
         localStorage.removeItem("bookFormData");
       }
     } catch (error) {
-      console.error("Upload failed:", error);
+      
       let errorMessage = "Upload failed. Please try again.";
       if (error.message?.includes("Authentication failed")) {
         errorMessage = "Authentication failed. Please sign in again.";

@@ -28,7 +28,6 @@ export default function GenreSelector({ value, onChange }) {
 
   const hasMaxSelections = selections.length >= 3;
 
-  console.log("Selected genre array: ", selections);
   return (
     <div className="bg-white p-6 rounded-xl shadow max-w-xl">
       <h2 className="text-lg font-semibold mb-4">Select Genre (Max 3)</h2>

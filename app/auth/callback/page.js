@@ -49,7 +49,7 @@ const AuthCallback = () => {
           router.push("/author/sign_up?error=oauth_failed");
         }
       } catch (error) {
-        console.error("OAuth callback error:", error);
+      
         toast.error("Authentication error. Please try again.");
         router.push("/author/sign_up?error=oauth_error");
       }

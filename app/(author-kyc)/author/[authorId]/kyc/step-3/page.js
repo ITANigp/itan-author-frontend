@@ -27,7 +27,7 @@ function App() {
       router.push(`/dashboard/author/${author?.data?.id}`);
     } catch (error) {
       alert("An error occurred. Please try again.");
-      console.error(error);
+     
     }
   };
 

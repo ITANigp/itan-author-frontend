@@ -61,7 +61,7 @@ export default function WalletPage() {
           },
           { "Content-Type": "application/json" }
         );
-        console.log("bank verification: ", res?.data);
+       
         if (res.data?.success) {
           setVerifiedAccountName(res.data.account_name);
           setAccountName(res.data.account_name);
@@ -138,7 +138,7 @@ export default function WalletPage() {
         });
 
         const { data: author } = await api.get("/authors/profile");
-        console.log("Author Info after update: ", author.data);
+        
 
         // Redirect after short delay
         setTimeout(() => {

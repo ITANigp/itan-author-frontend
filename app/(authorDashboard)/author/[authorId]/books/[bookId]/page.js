@@ -16,10 +16,8 @@ const BookPage = () => {
         .get(`/books/${bookId}`)
         .then((response) => {
           setBook(response.data.data);
-          console.log("Single Book: ", response.data.data);
         })
         .catch((error) => {
-          console.error("Error fetching book:", error);
         })
         .finally(() => setLoading(false));
     }

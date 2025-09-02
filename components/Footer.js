@@ -115,7 +115,7 @@ const Footer = ({ styles }) => {
               className="cursor-pointer hover:text-[#EF5353]"
               onClick={(e) => {
                 // For debugging only
-                console.log("Email link clicked");
+               
                 // Don't prevent default - let browser handle mailto
               }}
             >
@@ -203,7 +203,7 @@ const Footer = ({ styles }) => {
                 className="cursor-pointer hover:text-[#EF5353]"
                 onClick={(e) => {
                   // For debugging only
-                  console.log("Mobile email link clicked");
+                
                   // Don't prevent default - let browser handle mailto
                 }}
               >

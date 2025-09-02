@@ -28,7 +28,7 @@ const TwoFactorSettings = () => {
         const res = await getTwoFactorStatus();
         setStatus(res);
       } catch (error) {
-        console.error("Failed to fetch 2FA status", error);
+        
       }
     };
 
@@ -71,7 +71,7 @@ const TwoFactorSettings = () => {
 
     try {
       const data2FA = await verify2FA(code);
-      console.log("2FA Verification Result:", data2FA);
+      
       setMessage("Verification successful.");
 
       if (data2FA.status.code === 200) {
@@ -79,12 +79,12 @@ const TwoFactorSettings = () => {
         localStorage.removeItem(TIMER_KEY);
         setResendTimer(0);
         // localStorage.setItem("authorInfo", JSON.stringify(author.data));
-        console.log("2fa data: ", data2FA.data);
+       
         localStorage.setItem("authorInfo", JSON.stringify(data2FA.data));
         router.push(`/dashboard/author/${data2FA.data.id}`);
       }
     } catch (error) {
-      console.error("Verification failed:", error);
+      
       setMessage("Verification failed. Please check the code and try again.");
     } finally {
       setLoading(false);
@@ -102,7 +102,7 @@ const TwoFactorSettings = () => {
       localStorage.setItem(TIMER_KEY, expiry.toString());
       setResendTimer(120);
     } catch (err) {
-      console.log("Resend code error: ", err);
+      
       setMessage("Failed to resend code. Please try again later.");
     }
   };

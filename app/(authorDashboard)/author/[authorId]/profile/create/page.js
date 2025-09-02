@@ -63,11 +63,9 @@ export default function AuthorProfilePage() {
         const errorText = await uploadResponse.text();
         throw new Error(`S3 upload failed: ${uploadResponse.status}`);
       }
-
-      console.log(`✅ Successfully uploaded ${file.name} to S3`);
       return signed_id;
     } catch (error) {
-      console.error("Direct upload failed:", error);
+     
       throw error;
     }
   }
@@ -80,7 +78,7 @@ export default function AuthorProfilePage() {
         setProfile(data);
       } catch (err) {
         setError("Failed to fetch author profile.");
-        console.error(err);
+        
       }
     };
 
@@ -108,17 +106,17 @@ export default function AuthorProfilePage() {
       if (editing) {
         // If editing, update the profile
         const updatedProfile = await updateAuthorProfile(profile, profileImage);
-        console.log("Updated Profile: ", updatedProfile);
+        
         setProfile(updatedProfile);
       } else {
         // If creating, create a new profile
         const createdProfile = await createAuthorProfile(profile, profileImage);
-        console.log("Created Profile: ", createdProfile);
+        
         setProfile(createdProfile);
       }
       setEditing(false); // Reset the editing flag after submission
     } catch (error) {
-      console.error("Profile Error: ", error);
+      
     }
   };
 

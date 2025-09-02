@@ -21,7 +21,6 @@ export default function ResendConfirmationModal() {
       setIsOpen(false); // close modal
       setEmail(""); // reset field
     } catch (err) {
-      console.error(err);
 
       // Check for the specific 422 error
       if (err.response && err.response.status === 422) {

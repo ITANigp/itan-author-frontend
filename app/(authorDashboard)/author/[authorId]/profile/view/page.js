@@ -12,10 +12,9 @@ export default function AuthorProfilePage() {
       try {
         const { data } = await getAuthorProfile();
         setAuthor(data);
-        console.log("View Author: ", data);
+      
       } catch (err) {
         setError("Failed to load author profile.");
-        console.error(err);
       }
     };
 
