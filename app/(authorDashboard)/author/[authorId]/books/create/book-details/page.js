@@ -83,6 +83,11 @@ const BookDetails = () => {
                 if (Array.isArray(response.data.data.tags)) {
                   setTags(response.data.data.tags);
                 }
+                if (bookData.primary_audience) {
+                  updateFormData({
+                    primary_audience: bookData.primary_audience,
+                  });
+                }
         })
         
         .catch((error) => {
@@ -309,6 +314,7 @@ const BookDetails = () => {
           onChange={(e) => updateFormData({ primary_audience: e.target.value })}
         >
           <option value="">Select age group</option>
+          <option value="6-9">6-9</option>
           <option value="9-12">9-12</option>
           <option value="13-17">13-17</option>
           <option value="18-70">18-70</option>
