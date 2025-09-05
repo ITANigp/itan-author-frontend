@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { Eye, EyeOff } from "lucide-react";
+
 
 import toast from "react-hot-toast";
 
@@ -19,12 +21,13 @@ const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [password_confirmation, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
 
   const handleGoogleSignup = () => {
     // Get your backend URL from environment variables
@@ -137,7 +140,7 @@ const SignUp = () => {
             />
           </div>
 
-          <div className="my-4">
+          <div className="my-4 relative">
             <label
               htmlFor="password"
               className="block mb-2 text-sm font-medium text-gray-900"
@@ -145,13 +148,22 @@ const SignUp = () => {
               Password
             </label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Enter your password"
-              className="placeholder-gray-400 h-[45px] sm:h-[50px] bg-gray-50 border-0 text-gray-900 rounded-lg focus:ring-1 focus:outline-none focus:ring-teal-200 block w-full p-2 sm:p-2.5 text-sm sm:text-base"
+              className="placeholder-gray-400 h-[45px] sm:h-[50px] bg-gray-50 border-0 text-gray-900 rounded-lg focus:ring-1 focus:outline-none focus:ring-teal-200 block w-full p-2 sm:p-2.5 text-sm sm:text-base pr-10"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute right-3 top-10 text-gray-500 hover:text-gray-700"
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
           </div>
 
           {/* ✅ Updated reCAPTCHA component with error handling */}
@@ -163,7 +175,6 @@ const SignUp = () => {
                     sitekey={SITE_KEY}
                     onChange={(token) => setCaptchaToken(token || "")}
                     onError={(err) => {
-                    
                       // If you have toast imported, uncomment the line below
                       // toast.error("reCAPTCHA failed to load. Please refresh the page.");
                       setMessage(
