@@ -4,6 +4,7 @@ import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 
+import { Eye, EyeOff } from "lucide-react";
 import toast from "react-hot-toast";
 
 import { signInAuthor } from "@/utils/auth/authorApi";
@@ -18,6 +19,7 @@ const SignIn = () => {
   const recaptchaRef = useRef(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
@@ -133,7 +135,7 @@ const SignIn = () => {
             />
           </div>
 
-          <div className="my-4">
+          <div className="my-4 relative">
             <label
               htmlFor="password"
               className="block mb-2 text-sm font-medium text-gray-900"
@@ -141,14 +143,23 @@ const SignIn = () => {
               Password
             </label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
               required
               placeholder="Enter your password"
-              className="placeholder-gray-400 h-[50px] bg-gray-50 border-0 text-gray-900 rounded-lg focus:ring-1 focus:outline-none focus:ring-teal-200 block w-full p-2.5"
+              className="placeholder-gray-400 h-[50px] bg-gray-50 border-0 text-gray-900 rounded-lg focus:ring-1 focus:outline-none focus:ring-teal-200 block w-full p-2.5 pr-10"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute right-3 top-10 text-gray-500 hover:text-gray-700"
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
           </div>
 
           <div className="my-4">
@@ -160,7 +171,6 @@ const SignIn = () => {
                     sitekey={SITE_KEY}
                     onChange={(token) => setCaptchaToken(token || "")}
                     onError={(err) => {
-                      
                       toast.error(
                         "reCAPTCHA failed to load. Please refresh the page."
                       );

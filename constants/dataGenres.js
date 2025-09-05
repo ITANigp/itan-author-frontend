@@ -1,5 +1,5 @@
 const genreData = {
-  "Afrocentric Literature & Fiction": {
+  "Africa Literature & Fiction": {
     "Literary Fiction": [
       "Action and Adventure",
       "Anthologies and Literature Collections",
@@ -15,21 +15,21 @@ const genreData = {
     ],
   },
 
-  "Afrocentric Children Books": [
+  "Africa Children Books": [
     "Action and Adventure",
     "Animals",
     "Biographical Stories",
     "Comics",
     "Graphic Novels",
   ],
-  "Afrocentric Comics, Manga and Graphic Novels": [
+  "Africa Comics, Manga and Graphic Novels": [
     "Comic Strips and Cartoons",
     "Fantasy",
     "Science Fiction",
     "Superhero",
   ],
 
-  "Afrocentric Religious Fiction": {
+  "Africa Religious Fiction": {
     Christian: [
       "Apocalypse",
       "Contemporary",
@@ -62,7 +62,7 @@ const genreData = {
       "Supernatural",
     ],
   },
-  "Afrocentric Mystery, Thriller and Suspense": {
+  "Africa Mystery, Thriller and Suspense": {
     "Crime Fiction": [
       "General",
       "Heist",
@@ -93,7 +93,7 @@ const genreData = {
     ],
     "Science Fiction": ["Futuristic", "Space/Time travel", "Speculative"],
   },
-  "Afrocentric Romance": {
+  "Africa Romance": {
     others: [
       "Action & Adventure",
       "Adaptations",
@@ -114,7 +114,7 @@ const genreData = {
     ],
     "Young Adult": ["Coming of Age", "Teen"],
   },
-  "Afrocentric Science Fiction & Fantasy": {
+  "Africa Science Fiction & Fantasy": {
     Fantasy: [
       "Afrofuturism",
       "Apocalyptic",
